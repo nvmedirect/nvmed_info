@@ -15,6 +15,7 @@
 
 struct nvmed_info_cmd main_cmds[] = {
 	{"identify", 1, "IDENTIFY Command", nvmed_info_identify},
+	{"features", 1, "FEATURES Command", nvmed_info_features},
 	{NULL, 0, NULL, NULL}
 };
 
@@ -60,6 +61,7 @@ int nvmed_info_usage (char *arg0, char *invalid_cmd)
 	if (invalid_cmd)
 		printf("%s: Invalid command \"%s\"\n", arg0, invalid_cmd);
 
+	PRINT_NVMED_INFO;
 	printf("Usage: %s <device_path> <command> <args> ...\n", arg0);
 	while (c->cmd_name) {
 		printf("\t%-12s\t%s\n", c->cmd_name, c->cmd_help);

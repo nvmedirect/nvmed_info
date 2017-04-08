@@ -72,9 +72,10 @@ extern char *nvme_sc[];
 #define PH4(offset) \
 	printf ("%04d:%04d  %02x %02x %02x %02x  ", offset, offset+3,  \
 			p[offset], p[offset+1], p[offset+2], p[offset+3]);
-
+#if 0
 #define PF4(id) \
-	printf ("    %02x     %08x     ", id, rc);
+	printf ("    %02x     %08x     ", id, res);
+#endif
 
 #define ISSET_BIT0(x)	((p[x]) & (__u8) 0x01)
 #define ISSET_BIT1(x)	((p[x]) & (__u8) 0x02)
@@ -99,6 +100,7 @@ extern char *nvme_sc[];
 #define U64(x)			((__u64) *((__u64 *) &p[x]))
 
 #define P	printf
+#define SP	' '
 #define S	printf("%26c", ' ')
 #define PRINT_NVMED_INFO	printf("nvmed_info version " NVMED_INFO_VERSION "\n\n")
 
@@ -122,6 +124,10 @@ extern int nvmed_info_identify_namespace (NVMED *nvmed, char **cmd_args);
 extern int nvmed_info_identify_issue (NVMED *nvmed, int cns, int nsid, __u8 *p);
 extern void nvmed_info_identify_parse_controller (__u8 *p);
 extern void nvmed_info_identify_parse_namespace (__u8 *p, int nsid);
+extern int nvmed_info_features (NVMED *nvmed, char **cmd_args);
+extern int nvmed_info_features_help (char *s);
+extern int nvmed_info_get_features_issue (NVMED *nvmed, int fid, int nsid, __u8 *p, __u32 *result);
+extern int nvmed_info_get_features (NVMED *nvmed, char **cmd_args);
 extern void print_something (enum print_format format, __u8 *p, int offset, int len, char *title, char *unit);
 extern void print_bytes (__u8 *p, int len);
 

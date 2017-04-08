@@ -67,12 +67,11 @@ int nvmed_info_identify_namespace (NVMED *nvmed, char **cmd_args)
 		return -1;
 	}
 
-	if (cmd_args[0])
-	{
+	if (cmd_args && cmd_args[0]) {
 		nsid = atoi(cmd_args[0]);
 		if (nsid <= 0)
 		{
-			printf ("Invalid namespace ID %d\n", nsid);
+			printf("Invalid namespace ID %d\n", nsid);
 			return -1;
 		}
 	}
@@ -92,7 +91,7 @@ int nvmed_info_identify_issue (NVMED *nvmed, int cns, int nsid, __u8 *p)
 	int rc;
 
 	memset(&cmd, 0, sizeof(cmd));
-	cmd.opcode = 0x06; //nvme_admin_identify;
+	cmd.opcode = nvme_admin_identify;
 	cmd.nsid = htole32(nsid);
 	cmd.addr = (__u64) htole64(p);
 	cmd.data_len = htole32(PAGE_SIZE);
