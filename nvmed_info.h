@@ -29,6 +29,35 @@ extern char *nvme_sc[];
 #define CNS_NAMESPACE	0
 #define CNS_CONTROLLER	1
 
+#define FEATURE_SEL_CURRENT     (0)
+#define FEATURE_SEL_DEFAULT     (1 << 8)
+#define FEATURE_SEL_SAVED       (2 << 8)
+#define FEATURE_SEL_SUPPORTED   (3 << 8)
+
+#define FEATURE_ARBITRATION                     (0x01)
+#define FEATURE_POWER_MANAGEMENT                (0x02)
+#define FEATURE_LBA_RANGE_TYPE                  (0x03)
+#define FEATURE_TEMPERATURE_THRESHOLD           (0x04)
+#define FEATURE_ERROR_RECOVERY                  (0x05)
+#define FEATURE_VOLATILE_WRITE_CACHE            (0x06)
+#define FEATURE_NUMBER_OF_QUEUES                (0x07)
+#define FEATURE_INTERRUPT_COALESCING            (0x08)
+#define FEATURE_INTERRUPT_VECTOR_CONFIG         (0x09)
+#define FEATURE_WRITE_ATOMICITY_NORMAL          (0x0a)
+#define FEATURE_ASYNC_EVENT_CONFIG              (0x0b)
+#define FEATURE_AUTO_POWER_STATE_TRANSITION     (0x0c)
+#define FEATURE_HOST_MEMORY_BUFFER              (0x0d)
+#define FEATURE_SW_PROGRESS_MARKER              (0x80)
+#define FEATURE_HOST_IDENTIFIER                 (0x81)
+#define FEATURE_RESERVATION_NOTI_MASK			(0x82)
+#define FEATURE_RESERVATION_PERSISTENCE         (0x83)
+
+#define LOG_ERROR_INFO                          (0x01)
+#define LOG_SMART_INFO                          (0x02)
+#define LOG_FIRMWARE_SLOT_INFO                  (0x03)
+#define LOG_CHANGED_NAMESPACE_LIST              (0x04)
+#define LOG_COMMAND_EFFECTS                     (0x05)
+
 // Admin command set (1.2 spec, p52)
 // 
 // 00:03 CDW0	Command Dword 0

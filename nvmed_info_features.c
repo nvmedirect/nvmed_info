@@ -60,23 +60,23 @@ struct feature_set {
 };
 
 static struct feature_set features[] = {
-	{0x01,	0, "Arbitration"},				
-	{0x02, 	0, "Power Management"},		
-	{0x03,	1, "LBA Range Type"},	
-	{0x04,	0, "Temperature Threshold"},
-	{0x05,	0, "Error Recovery"},	
-	{0x06,	0, "Volatile Write Cache"},
-	{0x07,	0, "Number of Queues"},
-	{0x08,	0, "Interrupt Coalescing"},
-	{0x09,	0, "Interrupt Vector Configuration"},
-	{0x0a,	0, "Write Atomicity Normal"},
-	{0x0b,	0, "Asynchronous Event Configuration"},
-	{0x0c,	0, "Autonomous Power State Transition"},
-	{0x0d,	0, "Host Memory Buffer"},
-	{0x80,	0, "Software Progress Marker"},
-	{0x81,	0, "Host Identifier"},
-	{0x82,	0, "Reservation Notification Mask"},
-	{0x83,	0, "Reservation Persistence"},
+	{FEATURE_ARBITRATION,					0, "Arbitration"},				
+	{FEATURE_POWER_MANAGEMENT, 				0, "Power Management"},		
+	{FEATURE_LBA_RANGE_TYPE,				1, "LBA Range Type"},	
+	{FEATURE_TEMPERATURE_THRESHOLD,			0, "Temperature Threshold"},
+	{FEATURE_ERROR_RECOVERY,				0, "Error Recovery"},	
+	{FEATURE_VOLATILE_WRITE_CACHE,			0, "Volatile Write Cache"},
+	{FEATURE_NUMBER_OF_QUEUES,				0, "Number of Queues"},
+	{FEATURE_INTERRUPT_COALESCING,			0, "Interrupt Coalescing"},
+	{FEATURE_INTERRUPT_VECTOR_CONFIG,		0, "Interrupt Vector Configuration"},
+	{FEATURE_WRITE_ATOMICITY_NORMAL,		0, "Write Atomicity Normal"},
+	{FEATURE_ASYNC_EVENT_CONFIG,			0, "Asynchronous Event Configuration"},
+	{FEATURE_AUTO_POWER_STATE_TRANSITION,	0, "Autonomous Power State Transition"},
+	{FEATURE_HOST_MEMORY_BUFFER,			0, "Host Memory Buffer"},
+	{FEATURE_SW_PROGRESS_MARKER,			0, "Software Progress Marker"},
+	{FEATURE_HOST_IDENTIFIER,				0, "Host Identifier"},
+	{FEATURE_RESERVATION_NOTI_MASK,			0, "Reservation Notification Mask"},
+	{FEATURE_RESERVATION_PERSISTENCE,		0, "Reservation Persistence"},
 	{0,		0, NULL}
 };
 
@@ -125,7 +125,7 @@ int nvmed_info_get_features (NVMED *nvmed, char **cmd_args)
 		}
 
 		switch (f->fid) {
-			case 0x01:	/* Arbitration */
+			case FEATURE_ARBITRATION:	/* Arbitration */
 				P ("%24c  High Priority Weight (HPW): %u\n", SP, (res & 0xff000000) >> 24);
 				P ("%24c  Medium Priority Weight (MPW): %u\n", SP, (res & 0x00ff0000) >> 16);
 				P ("%24c  Low Priority Weight (MPW): %u\n", SP, (res & 0x0000ff00) >> 8);
@@ -136,16 +136,16 @@ int nvmed_info_get_features (NVMED *nvmed, char **cmd_args)
 					P ("%u\n", 1 << (res & 0x07));
 				break;
 
-			case 0x02:	/* Power Management */
+			case FEATURE_POWER_MANAGEMENT:	/* Power Management */
 				P ("%24c  Workload Hint (WH): %u\n", SP, (res >> 5) & 0x07);
 				P ("%24c  Power State (PS): %u\n", SP, (res & 0x1f));
 				break;
 
-			case 0x03:	/* LBA Range Type */
+			case FEATURE_LBA_RANGE_TYPE:	/* LBA Range Type */
 				P ("%24c  Number of LBA Ranges (NUM): %u\n", SP, res & 0x3f);
 				break;
 
-			case 0x04:	/* Temperature Threshold */
+			case FEATURE_TEMPERATURE_THRESHOLD:	/* Temperature Threshold */
 				P ("%24c  Threshold Type Select (THSEL): %s\n", SP,
 						(((res >> 20) & 3) == 0)? "Over temperature threshold" :
 						(((res >> 20) & 3) == 1)? "Under temperature threshold" :
@@ -172,22 +172,22 @@ int nvmed_info_get_features (NVMED *nvmed, char **cmd_args)
 				P ("%24c  Temperature Threshold (TMPTH): %u\n", SP, res & 0xffff);
 				break;
 
-			case 0x05:	/* Error Recovery */
+			case FEATURE_ERROR_RECOVERY:	/* Error Recovery */
 				P ("%24c  Deallocated or Unwritten Logical Block Error Enable (DULBE): %s\n", SP,
 					((res >> 16) & 1)? "Yes" : "No");
 				P ("%24c  Time Limited Error Recovery (TLER): %u\n", SP, res & 0xffff);
 				break;
 
-			case 0x06:	/* Volatile Write Cache */
+			case FEATURE_VOLATILE_WRITE_CACHE:	/* Volatile Write Cache */
 				P ("%24c  Volatile Write Cache Enable (WCE): %s\n", SP, (res & 1)? "Yes" : "No");
 				break;
 
-			case 0x07:	/* Number of Queues */
+			case FEATURE_NUMBER_OF_QUEUES:	/* Number of Queues */
 				P ("%24c  Number of I/O Completion Queues Allocated (NCQA): %u\n", SP, res >> 16);
 				P ("%24c  Number of I/O Submission Queues Allocated (NSQA): %u\n", SP, res & 0xffff);
 				break;
 
-			case 0x08:	/* Interrupt Coalescing */
+			case FEATURE_INTERRUPT_COALESCING:	/* Interrupt Coalescing */
 				P ("%24c  Aggregation Time: ", SP);
 				if (((res >> 8) & 0xff))
 					printf ("%u (100 msec)\n", (res >> 8) & 0xff);
@@ -196,18 +196,18 @@ int nvmed_info_get_features (NVMED *nvmed, char **cmd_args)
 				P ("%24c  Aggreation Threshold (THR): %u\n", SP, res & 0xff);
 				break;
 
-			case 0x09:	/* Interrupt Vector Configuration */
+			case FEATURE_INTERRUPT_VECTOR_CONFIG:	/* Interrupt Vector Configuration */
 				P ("%24c  Coalescing Disable (CD): %s\n", SP,
 					((res >> 16) & 1)? "Yes" : "No");
 				P ("%24c  Interrupt Vector (IV): 0x%02x\n", SP, res & 0xff);
 				break;
 
-			case 0x0a:	/* Write Atomicity Normal */
+			case FEATURE_WRITE_ATOMICITY_NORMAL:	/* Write Atomicity Normal */
 				P ("%24c  Disable Normal (DN): %s\n", SP,
 					(res & 1)? "Yes" : "No");
 				break;
 
-			case 0x0b:	/* Asynchronous Event Configuration */
+			case FEATURE_ASYNC_EVENT_CONFIG:	/* Asynchronous Event Configuration */
 				P ("%24c  Firmware Activation Notices: %s\n", SP,
 					(res >> 9)? "Yes" : "No");
 				P ("%24c  Namespace Attribute Notices: %s\n", SP,
@@ -215,25 +215,25 @@ int nvmed_info_get_features (NVMED *nvmed, char **cmd_args)
 				P ("%24c  SMART / Health Critical Warnings: 0x%02x\n", SP, res & 0xff);
 				break;
 
-			case 0x0c:	/* Autonomous Power State Transition */
+			case FEATURE_AUTO_POWER_STATE_TRANSITION:	/* Autonomous Power State Transition */
 				P ("%24c  Autonomous Power State Transition Enable (APSTE): %s\n", SP,
 					(res & 1)? "Yes" : "No");
 				break;
 
-			case 0x0d:	/* Host Memory Buffer */
+			case FEATURE_HOST_MEMORY_BUFFER:	/* Host Memory Buffer */
 				P ("%24c  Memory Return (MR): %s\n", SP, ((res >> 1) & 1)? "Yes" : "No");
 				P ("%24c  Enable Host Memory (EHM): %s\n", SP, (res & 1)? "Yes" : "No");
 				break;
 
-			case 0x80:	/* Software Progress Marker */
+			case FEATURE_SW_PROGRESS_MARKER:	/* Software Progress Marker */
 				P ("%24c  Pre-boot Software Load Count (PBSLC): %u\n", SP, res & 0xff);
 				break;
 
-			case 0x81:	/* Host Identifier */
+			case FEATURE_HOST_IDENTIFIER:	/* Host Identifier */
 				P ("%24c  Host Identifier (HOSTID): 0x%2x\n", SP, res & 0xff);
 				break;
 
-			case 0x82:	/* Reservation Notification Mask */
+			case FEATURE_RESERVATION_NOTI_MASK:	/* Reservation Notification Mask */
 				P ("%24c  Mask Reservation Preempted Notification (RESPRE): %s\n", SP,
 					(res >> 3) & 1? "Yes" : "No");
 				P ("%24c  Mask Reservation Released Notification (RESREL): %s\n", SP,
@@ -242,7 +242,7 @@ int nvmed_info_get_features (NVMED *nvmed, char **cmd_args)
 					(res >> 1) & 1? "Yes" : "No");
 				break;
 
-			case 0x83:	/* Reservation Persistence */
+			case FEATURE_RESERVATION_PERSISTENCE:	/* Reservation Persistence */
 				P ("%24c  Persist Through Power Loss (PTPL): %s\n", SP, (res & 1)? "Yes" : "No");
 				break;
 
