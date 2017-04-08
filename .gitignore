@@ -9,5 +9,4 @@
 modules.order
 Module.symvers
 tags
-utils/nvmed_admin
-utils/nvmed_info/nvmed_info
+nvmed_info
