@@ -33,7 +33,7 @@ int nvmed_info_features_help (char *s)
 	return cmd_help(s, "FEATURES subcommands", features_cmds);
 }
 
-int nvmed_info_get_features_issue (NVMED *nvmed, int fid, int nsid, __u8 *p, __u32 *result)
+int nvmed_info_get_features_issue (NVMED *nvmed, int fid, int nsid, __u8 *p, int len, __u32 *result)
 {
 	struct nvme_admin_cmd cmd;
 	int rc;
@@ -44,7 +44,7 @@ int nvmed_info_get_features_issue (NVMED *nvmed, int fid, int nsid, __u8 *p, __u
 		cmd.nsid = htole32(nsid);
 	if (p) {
 		cmd.addr = (__u64) htole64(p);
-		cmd.data_len = htole32(PAGE_SIZE);
+		cmd.data_len = htole32(len);
 	}
 	cmd.cdw10 = htole32(fid);
 
@@ -84,16 +84,18 @@ static struct feature_set features[] = {
 int nvmed_info_get_features (NVMED *nvmed, char **cmd_args)
 {
 	int rc;
-	__u8 *p;
 	__u32 res;
 	int nsid = 1;
 	struct feature_set *f;
-	
+#if 0
+	__u8 *p;
+
 	p = (__u8 *) nvmed_get_buffer(nvmed, 1);
 	if (p == NULL) {
 		printf("Memory allocation failed.\n");
 		return -1;
 	}
+#endif
 
 	if (cmd_args && cmd_args[0]) {
 		nsid = atoi(cmd_args[0]);
@@ -110,7 +112,7 @@ int nvmed_info_get_features (NVMED *nvmed, char **cmd_args)
 
 	f = features;
 	while (f->fname) {
-		rc = nvmed_info_get_features_issue(nvmed, f->fid, f->cns? nsid : 0, NULL, &res);
+		rc = nvmed_info_get_features_issue(nvmed, f->fid, f->cns? nsid : 0, NULL, 0, &res);
 		if (rc < 0) {
 			P ("    %02x     ----N/A---  %s\n", f->fid, f->fname);
 			f++;
@@ -253,7 +255,9 @@ int nvmed_info_get_features (NVMED *nvmed, char **cmd_args)
 	}
 	P ("\n\n");
 
+#if 0
 	nvmed_put_buffer(p);
+#endif
 	return 0;
 }
 

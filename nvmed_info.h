@@ -137,7 +137,7 @@ enum print_format { FORMAT_STRING, FORMAT_ID, FORMAT_VALUE };
 
 #define PS(offset, end, title)	print_something(FORMAT_STRING, p, offset, end, title, NULL);
 #define PI(offset, end, title)	print_something(FORMAT_ID, p, offset, end, title, NULL);
-#define PV(offset, end, title, unit)	print_something(FORMAT_VALUE, p, offset, end,title, unit);
+#define PV(offset, end, title, unit)	print_something(FORMAT_VALUE, p, offset, end, title, unit);
 
 
 
@@ -155,9 +155,18 @@ extern void nvmed_info_identify_parse_controller (__u8 *p);
 extern void nvmed_info_identify_parse_namespace (__u8 *p, int nsid);
 extern int nvmed_info_features (NVMED *nvmed, char **cmd_args);
 extern int nvmed_info_features_help (char *s);
-extern int nvmed_info_get_features_issue (NVMED *nvmed, int fid, int nsid, __u8 *p, __u32 *result);
+extern int nvmed_info_get_features_issue (NVMED *nvmed, int fid, int nsid, __u8 *p, int len, __u32 *result);
 extern int nvmed_info_get_features (NVMED *nvmed, char **cmd_args);
 extern void print_something (enum print_format format, __u8 *p, int offset, int len, char *title, char *unit);
+extern int nvmed_info_logs (NVMED *nvmed, char **cmd_args);
+extern int nvmed_info_logs_help (char *s);
+extern int nvmed_info_get_logs_issue (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 *result);
+extern int nvmed_info_get_logs (NVMED *nvmed, char **cmd_args);
+extern int nvmed_info_logs_error (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 result);
+extern int nvmed_info_logs_smart (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 result);
+extern int nvmed_info_logs_firmware (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 result);
+extern int nvmed_info_logs_namespace (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 result);
+extern int nvmed_info_logs_command (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 result);
 extern void print_bytes (__u8 *p, int len);
 
 #if 0

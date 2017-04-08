@@ -7,7 +7,7 @@ CFLAGS := -Wall -O2 -g -D_GNU_SOURCE -D_REENTRANT -I$(INCLUDE_PATH)
 LDFLAGS := -pthread -L$(LIBRARY_PATH) -lnvmed
 
 NVMED_INFO = nvmed_info
-NVMED_INFO_OBJS = nvmed_info.o nvmed_info_identify.o nvmed_info_utils.o nvmed_info_features.o #nvmed_pci.o nvmed_features.o nvmed_status.o nvmed_log.o
+NVMED_INFO_OBJS = nvmed_info.o nvmed_info_identify.o nvmed_info_utils.o nvmed_info_features.o nvmed_info_logs.o
 
 default: $(NVMED_INFO)
 
