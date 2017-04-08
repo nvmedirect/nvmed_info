@@ -1,7 +1,7 @@
 CC := gcc
 
-INCLUDE_PATH := ../../include
-LIBRARY_PATH := ../../library
+INCLUDE_PATH := /usr/local/include
+LIBRARY_PATH := /usr/local/lib
 
 CFLAGS := -Wall -O2 -g -D_GNU_SOURCE -D_REENTRANT -I$(INCLUDE_PATH)
 LDFLAGS := -pthread -L$(LIBRARY_PATH) -lnvmed

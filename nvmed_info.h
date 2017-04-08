@@ -12,6 +12,7 @@ extern "C" {
 #include <sys/mman.h>
 #include <errno.h>
 
+#define NVMED_INFO_VERSION	"0.9"
 
 struct nvmed_info_cmd {
 	const char *cmd_name;					// subcommand name
@@ -21,9 +22,6 @@ struct nvmed_info_cmd {
 };
 
 extern char *nvme_sc[];
-
-
-
 
 #define pow2(x)		(1 << (x))
 
@@ -101,7 +99,8 @@ extern char *nvme_sc[];
 #define U64(x)			((__u64) *((__u64 *) &p[x]))
 
 #define P	printf
-#define S	printf("%26c", ' ');
+#define S	printf("%26c", ' ')
+#define PRINT_NVMED_INFO	printf("nvmed_info version " NVMED_INFO_VERSION "\n\n")
 
 enum print_format { FORMAT_STRING, FORMAT_ID, FORMAT_VALUE };
 
@@ -119,8 +118,10 @@ extern int nvmed_info_usage (char *arg0, char *invalid_cmd);
 extern int nvmed_info_identify (NVMED *nvmed, char **cmd_args);
 extern int nvmed_info_identify_help (char *s);
 extern int nvmed_info_identify_controller (NVMED *nvmed, char **cmd_args);
+extern int nvmed_info_identify_namespace (NVMED *nvmed, char **cmd_args);
 extern int nvmed_info_identify_issue (NVMED *nvmed, int cns, int nsid, __u8 *p);
 extern void nvmed_info_identify_parse_controller (__u8 *p);
+extern void nvmed_info_identify_parse_namespace (__u8 *p, int nsid);
 extern void print_something (enum print_format format, __u8 *p, int offset, int len, char *title, char *unit);
 extern void print_bytes (__u8 *p, int len);
 

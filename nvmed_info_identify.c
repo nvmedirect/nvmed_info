@@ -9,7 +9,7 @@
 
 struct nvmed_info_cmd identify_cmds[] = {
 	{"controller", 1, "IDENTIFY Controller", nvmed_info_identify_controller},
-	//{"namespace", 1, "IDENTIFY Namespace", nvmed_info_identify_namespace},
+	{"namespace", 1, "IDENTIFY Namespace", nvmed_info_identify_namespace},
 	{NULL, 0, NULL, NULL}
 };
 
@@ -40,16 +40,48 @@ int nvmed_info_identify_controller (NVMED *nvmed, char **cmd_args)
 	int rc;
 	__u8 *p;
 	
-	p =  (__u8 *) nvmed_get_buffer(nvmed, 1);
+	p = (__u8 *) nvmed_get_buffer(nvmed, 1);
 	if (p == NULL) {
-		printf ("Memory allocation failed.\n");
+		printf("Memory allocation failed.\n");
 		return -1;
 	}
+
 	rc = nvmed_info_identify_issue(nvmed, CNS_CONTROLLER, 0, p);
 	if (rc < 0)
 		return rc;
 
 	nvmed_info_identify_parse_controller(p);
+	nvmed_put_buffer(p);
+	return 0;
+}
+
+int nvmed_info_identify_namespace (NVMED *nvmed, char **cmd_args)
+{
+	int rc;
+	int nsid = 1;
+	__u8 *p;
+
+	p = (__u8 *) nvmed_get_buffer(nvmed, 1);
+	if (p == NULL) {
+		printf("Memory allocation failed.\n");
+		return -1;
+	}
+
+	if (cmd_args[0])
+	{
+		nsid = atoi(cmd_args[0]);
+		if (nsid <= 0)
+		{
+			printf ("Invalid namespace ID %d\n", nsid);
+			return -1;
+		}
+	}
+
+	rc = nvmed_info_identify_issue(nvmed, CNS_NAMESPACE, nsid, p);
+	if (rc < 0)
+		return rc;
+
+	nvmed_info_identify_parse_namespace(p, nsid);
 	nvmed_put_buffer(p);
 	return 0;
 }
@@ -71,28 +103,9 @@ int nvmed_info_identify_issue (NVMED *nvmed, int cns, int nsid, __u8 *p)
 }
 
 
-
-#if 0
-int unvme_identify_namespace (int fd, char **cmd_args)
-{
-	int nsid = 1;
-
-	if (cmd_args[0])
-	{
-		nsid = atoi (cmd_args[0]);
-		if (nsid <= 0)
-		{
-			printf ("Invalid namespace ID %d\n", nsid);
-			return -1;
-		}
-	}
-
-	unvme_identify_issue (fd, CNS_NAMESPACE, nsid);
-}
-#endif
-
 void nvmed_info_identify_parse_controller (__u8 *p)
 {
+	PRINT_NVMED_INFO;
 	P ("IDENTIFY Controller\n");
 	P ("Bytes      Values       Description\n");
 	P ("---------  -----------  -----------\n");
@@ -221,14 +234,14 @@ void nvmed_info_identify_parse_controller (__u8 *p)
 	P ("\n\n");
 }
 
-#if 0
-void unvme_identify_parse_namespace (__u8 *p, int nsid)
+void nvmed_info_identify_parse_namespace (__u8 *p, int nsid)
 {
 	int i;
 
-	printf ("IDENTIFY Namespace %d\n", nsid);
-	printf ("Bytes      Values       Description\n");
-	printf ("---------  -----------  -----------\n");
+	PRINT_NVMED_INFO;
+	P ("IDENTIFY Namespace %d\n", nsid);
+	P ("Bytes      Values       Description\n");
+	P ("---------  -----------  -----------\n");
 	
 	PV (0, 7, "Namespace Size (NSZE)", "bytes");
 	PV (8, 15, "Namespace Capacity (NCAP)", "blocks");
@@ -317,5 +330,4 @@ void unvme_identify_parse_namespace (__u8 *p, int nsid)
 	P ("\n\n");
 }
 
-#endif
 
