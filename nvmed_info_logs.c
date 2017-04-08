@@ -66,7 +66,7 @@ static struct log_pages logs[] = {
 	{LOG_ERROR_INFO,					0, "Error Information",			nvmed_info_logs_error},				
 	{LOG_SMART_INFO,	 				0, "SMART/Health Information",	nvmed_info_logs_smart},		
 	{LOG_FIRMWARE_SLOT_INFO,			0, "Firmware Slot Information",	nvmed_info_logs_firmware},	
-	/* TODO: not supported yet?
+	/* optional
 	{LOG_CHANGED_NAMESPACE_LIST,		0, "Changed Namespace List",	nvmed_info_logs_namespace},
 	{LOG_COMMAND_EFFECTS,				0, "Command Effects Log",		nvmed_info_logs_command},	
 	*/
@@ -105,12 +105,12 @@ int nvmed_info_get_logs (NVMED *nvmed, char **cmd_args)
 	while (f->logname) {
 		rc = nvmed_info_get_logs_issue(nvmed, f->logid, f->cns? nsid : 0, p, PAGE_SIZE, &res);
 		if (rc < 0) {
-			P ("    %02x     ----N/A---  %s\n", f->logid, f->logname);
+			P ("%02x-------  ----N/A---  %s\n", f->logid, f->logname);
 			f++;
 			continue;
 		}
 		else {
-			P ("    %02x     0x%08x  %s", f->logid, res, f->logname);
+			P ("%02x-------  0x%08x  %s", f->logid, res, f->logname);
 			if (f->cns)
 				P (" (Namespace ID: %d)\n", nsid);
 			else
@@ -144,6 +144,8 @@ int nvmed_info_logs_error (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, 
 }
 int nvmed_info_logs_smart (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 res)
 {
+	int i;
+
 	PH1 (0);	P ("Critical Warning: %s\n", p[0]? "" : "None");
 	if (ISSET_BIT0(p[0]))
 		P ("%26c  The available spare space has fallen below the threshold\n", SP);
@@ -158,7 +160,7 @@ int nvmed_info_logs_smart (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, 
 
 	PH2 (1); 	P ("Composite Temperature: %d\n", U16(1));
 	PH1 (3);	P ("Available Space: %d%%\n", p[3]);
-	PH1 (4);	P ("Available Spare: %d%%\n", p[4]);
+	PH1 (4);	P ("Available Spare Threshold: %d%%\n", p[4]);
 	PH1 (5);	P ("Percent Used: %d%%\n", p[5]);
 	PV (32, 47, "Data Units Read", "(x1000 512 bytes)");
 	PV (48, 63, "Data Units Written", "(x1000 512 bytes)");
@@ -168,23 +170,25 @@ int nvmed_info_logs_smart (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, 
 	PV (112, 127, "Power Cycles", "");
 	PV (128, 143, "Power On Hours", "(hours)");
 	PV (144, 159, "Unsafe Shutdowns", "");
-	PV (160, 177, "Media and Data Integrity Errors", "");
-	PV (178, 193, "Number of Error Information Log Entries", "");
+	PV (160, 175, "Media and Data Integrity Errors", "");
+	PV (176, 191, "Number of Error Information Log Entries", "");
 
-	//TODO: check the spec for the following entires
-	PH4 (194);	P ("Warning Temperature Time: %d\n", U32(194));
-	PH4 (198); 	P ("Critical Comp Time: %d\n", U32(198));
-	PH2 (202);	P ("Temperature Sensor: %d\n", U16(202));
+	PH4 (192);	P ("Warning Composite Temperature Time: %d (min)\n", U32(192));
+	PH4 (196); 	P ("Critical Composite Temperature Time: %d (min)\n", U32(196));
+	for (i = 0; i < 8; i++) {
+		PH2 (200+i*2);	P ("Temperature Sensor %d: %d\n", i, U16(200+i*2));
+	}
 
 	return 0;
 }
 int nvmed_info_logs_firmware (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 res)
 {
+
 	PH1 (0);	P ("Active Firmware Info (AFI):\n");
-				P ("%26c  Slot to be activated at the next reset: %d\n", SP, ((p[0] >> 4) & 0x7));
+				P ("%26c  Slot to be activated at the next controller reset: %d\n", SP, ((p[0] >> 4) & 0x7));
 				P ("%26c  Slot the actively running firmware revision was loaded: %d\n", SP,
 					(p[0] & 0x7));
-	//TODO: check the spec. formerly, FRS1 begins at the offset 4.
+
 	PS (8, 15, "Firmware Revision for Slot 1 (FRS1)");
 	PS (16, 23, "Firmware Revision for Slot 2 (FRS2)");
 	PS (24, 31, "Firmware Revision for Slot 3 (FRS3)");

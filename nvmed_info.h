@@ -47,6 +47,7 @@ extern char *nvme_sc[];
 #define FEATURE_ASYNC_EVENT_CONFIG              (0x0b)
 #define FEATURE_AUTO_POWER_STATE_TRANSITION     (0x0c)
 #define FEATURE_HOST_MEMORY_BUFFER              (0x0d)
+#define FEATURE_KEEP_ALIVE_TIMER				(0x0f)
 #define FEATURE_SW_PROGRESS_MARKER              (0x80)
 #define FEATURE_HOST_IDENTIFIER                 (0x81)
 #define FEATURE_RESERVATION_NOTI_MASK			(0x82)

@@ -256,16 +256,13 @@ void nvmed_info_identify_parse_namespace (__u8 *p, int nsid)
 	PV (8, 15, "Namespace Capacity (NCAP)", "blocks");
 	PV (16, 23, "Namespace Utilization (NUSE)", "blocks");
 	PH1 (24);	P ("Namespace Features (NSFEAT)\n");
-				P ("%26c  Supports Deallocated or Unwritten Logical Block error: %s\n", 
-					SP, YN_BIT2(24));
-				P ("%26c  Supports NAWUN, NAWUPF, and NACWU fields: %s\n", 
-					SP, YN_BIT1(24));
-				P ("%26c  Supports thin provisioning: %s\n", 
-					SP, YN_BIT0(24));
+				P ("%26c  Supports Deallocated or Unwritten Logical Block error: %s\n", SP, YN_BIT2(24));
+				P ("%26c  Supports NAWUN, NAWUPF, and NACWU fields: %s\n", SP, YN_BIT1(24));
+				P ("%26c  Supports thin provisioning: %s\n", SP, YN_BIT0(24));
 	PH1 (25);	P ("Number of LBA Formats (NLBAF): %d\n", p[25]);
 	PH1 (26);	P ("Formatted LBA Size (FLBAS):\n");
-				P ("%26c  Metadata transferred at the end of the data LBA: %s\n", 
-					SP, YN_BIT4(26));
+				P ("%26c  Metadata transferred at the end of the data LBA: %s\n", SP, YN_BIT4(26));
+				P ("%26c  Supported LBA formats: %d\n", SP, p[26] & 0x0f);
 	PH1 (27);	P ("Metadata Capabilties (MC):\n");
 				P ("%26c  Supports the metadata being transferred as part of a separate buffer: %s\n", 
 					SP, YN_BIT1(27));
@@ -289,34 +286,24 @@ void nvmed_info_identify_parse_namespace (__u8 *p, int nsid)
 					((p[29] & 7) == 2)? "Type 2" :
 					((p[29] & 7) == 3)? "Type 3" : "Reserved");
 	PH1 (30);	P ("Namespace Multi-path I/O and Namespace Sharing Capabilities (NMIC):\n");
-				P ("%26c  Namespace may be accessible by two or more controllers?: %s\n",
-					SP, YN_BIT0(30));
+				P ("%26c  Namespace may be accessible by two or more controllers?: %s\n", SP, YN_BIT0(30));
 	PH1 (31);	P ("Reservation Capabilities (RESCAP)\n");
-				P ("%26c  Supports Exclusive Access - All Registrants: %s\n", 
-					SP, YN_BIT6(31));
-				P ("%26c  Supports Write Exclusive Access - All Registrants: %s\n", 
-					SP, YN_BIT6(31));
-				P ("%26c  Supports Exclusive Access - Registrants Only: %s\n", 
-					SP, YN_BIT4(31));
-				P ("%26c  Supports Write Exclusive Access - Registrants Only: %s\n", 
-					SP, YN_BIT3(31));
-				P ("%26c  Supports Exclusive Access: %s\n", 
-					SP, YN_BIT2(31));
-				P ("%26c  Supports Write Exclusive Access: %s\n", 
-					SP, YN_BIT1(31));
-				P ("%26c  Supports Persist Through Power Loss capability: %s\n", 
-					SP, YN_BIT0(31));
+				P ("%26c  Supports Exclusive Access - All Registrants: %s\n", SP, YN_BIT6(31));
+				P ("%26c  Supports Write Exclusive Access - All Registrants: %s\n", SP, YN_BIT5(31));
+				P ("%26c  Supports Exclusive Access - Registrants Only: %s\n", SP, YN_BIT4(31));
+				P ("%26c  Supports Write Exclusive Access - Registrants Only: %s\n", SP, YN_BIT3(31));
+				P ("%26c  Supports Exclusive Access: %s\n", SP, YN_BIT2(31));
+				P ("%26c  Supports Write Exclusive Access: %s\n", SP, YN_BIT1(31));
+				P ("%26c  Supports Persist Through Power Loss capability: %s\n", SP, YN_BIT0(31));
 	PH1 (32);	P ("Format Progress Indicator (FPI):\n");
 				P ("%26c  Supports the Format Proress Indicator: %s\n", SP, YN_BIT7(32));
-				P ("%26c  Percentage of the namespace that remains to be formatted: %d\n",
-					SP, p[32] & 0x7f);
+				P ("%26c  Percentage of the namespace that remains to be formatted: %d\n", SP, p[32] & 0x7f);
 	PH2 (34);	P ("Namespace Atomic Write Unit Normal (NAWUN): %d blocks\n", U16(34));
 	PH2 (36);	P ("Namespace Atomic Write Unit Power Fail (NAWUPF): %d blocks\n", U16(36));
 	PH2 (38);	P ("Namespace Atomic Write Unit Compare & Write Unit (NACWU): %d blocks\n", U16(38));
 	PH2 (40);	P ("Namespace Atomic Boundary Size Normal (NABSN): %d blocks\n", U16(40));
 	PH2 (42);	P ("Namespace Atomic Boundary Offset (NABO): %d\n", U16(42));
 	PH2 (44);	P ("Namespace Atomic Boundary Size Power Fail (NABSPF): %d\n", U16(44));
-
 	PV (48, 63, "NVM Capacity (NVMCAP)", "bytes");
 	PI (104, 119, "Namespace Globally Unique Identifier (NGUID)");
 	PI (120, 127, "IEEE Extended Unique Identifier (EUI64)");
