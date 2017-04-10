@@ -13,14 +13,27 @@
 #include "nvmed_info.h"
 
 
-#define PCI_FILE_COPY	0
-#define PCI_FILE_MMAP	1
 
 struct nvmed_info_cmd pci_cmds[] = {
 	{"nvme", 1, "NVMe Controller Registers", nvmed_info_pci_nvme},
 	{"config", 1, "PCIe Config Registers", nvmed_info_pci_config},
 	{NULL, 0, NULL, NULL}
 };
+
+struct pci_cap {
+	int capid;
+	void (*parse_fn)(NVMED *nvmed, struct pci_info *pci, int offset);;
+};
+
+struct pci_cap caps[] = {
+	{PCI_PMCAP_CID,		nvmed_info_pci_parse_pmcap},
+	{PCI_MSICAP_CID, 	nvmed_info_pci_parse_msicap},
+	{PCI_MSIXCAP_CID, 	nvmed_info_pci_parse_msixcap},
+	{PCI_PXCAP_CID,		nvmed_info_pci_parse_pxcap},
+	//{PCI_AERCAP_CID,	nvmed_info_pci_parse_aercap},	
+	{0,					NULL}
+};
+
 
 int nvmed_info_pci (NVMED *nvmed, char **cmd_args)
 {
@@ -248,32 +261,6 @@ void nvmed_info_pci_parse_config (NVMED *nvmed, struct pci_info *pci)
 }
 
 
-#define PCI_CAP_NEXT(id)	(((id) >> 8) & 0xff)
-#define PCI_CAP_CID(id)		((id) & 0xff)
-
-#define PCI_PMCAP_CID		(0x01)
-#define PCI_MSICAP_CID		(0x05)
-#define	PCI_MSIXCAP_CID		(0x11)
-#define PCI_PXCAP_CID		(0x10)
-#define PCI_AERCAP_CID		(0x0001)						// This has a 32-bit header
-
-#define PCI_CAP_OFFSET		52
-
-
-struct pci_cap {
-	int capid;
-	void (*parse_fn)(NVMED *nvmed, struct pci_info *pci, int offset);;
-};
-
-struct pci_cap caps[] = {
-	{PCI_PMCAP_CID,		nvmed_info_pci_parse_pmcap},
-	{PCI_MSICAP_CID, 	nvmed_info_pci_parse_msicap},
-	{PCI_MSIXCAP_CID, 	nvmed_info_pci_parse_msixcap},
-	{PCI_PXCAP_CID,		nvmed_info_pci_parse_pxcap},
-	//{PCI_AERCAP_CID,	nvmed_info_pci_parse_aercap},	
-	{0,					NULL}
-};
-
 
 void nvmed_info_pci_parse_caps (NVMED *nvmed, struct pci_info *pci)
 {
@@ -387,6 +374,8 @@ void nvmed_info_pci_parse_pxcap (NVMED *nvmed, struct pci_info *pci, int offset)
 {
 	__u8 *p = (__u8 *) pci->regs + offset;
 	__u32 _v;
+	static char *tph[] = {"None", "TPH Completer Supported", "Reserved", 
+						"Both TPH and Extended TPH Completer Supported"};
 
 	P ("\n[PCI Express Capabilities] @ offset 0x%02x\n", offset);
 
@@ -455,7 +444,6 @@ void nvmed_info_pci_parse_pxcap (NVMED *nvmed, struct pci_info *pci, int offset)
 				P ("%26c Negotiated Link Width (NLW): %d lanes\n", SP, F(4,9));
 				P ("%26c Current Link Speed (CLS): Gen %d\n", SP,F(0,3));
 
-	static char *tph[] = {"None", "TPH Completer Supported", "Reserved", "Both TPH and Extended TPH Completer Supported"};
 
 	PH4 (36);	P ("PCI Express Device Capabilities 2 (PXDCAP2):\n");
 				P ("%26c Max End-End TLP Prefixes (MEETP): %d\n", SP, F(22,23));

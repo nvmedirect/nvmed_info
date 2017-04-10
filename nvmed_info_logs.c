@@ -12,6 +12,24 @@ struct nvmed_info_cmd logs_cmds[] = {
 	{NULL, 0, NULL, NULL}
 };
 
+struct log_pages {
+	int	logid;
+	int cns;
+	char *logname;
+	int (*cmd_fn)(NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 result);
+};
+
+static struct log_pages logs[] = {
+	{LOG_ERROR_INFO,					0, "Error Information",			nvmed_info_logs_error},				
+	{LOG_SMART_INFO,	 				0, "SMART/Health Information",	nvmed_info_logs_smart},		
+	{LOG_FIRMWARE_SLOT_INFO,			0, "Firmware Slot Information",	nvmed_info_logs_firmware},	
+	/* optional
+	{LOG_CHANGED_NAMESPACE_LIST,		0, "Changed Namespace List",	nvmed_info_logs_namespace},
+	{LOG_COMMAND_EFFECTS,				0, "Command Effects Log",		nvmed_info_logs_command},	
+	*/
+	{0,									0, NULL,						NULL}
+};
+
 int nvmed_info_logs (NVMED *nvmed, char **cmd_args)
 {
 	struct nvmed_info_cmd *c;
@@ -54,25 +72,6 @@ int nvmed_info_get_logs_issue (NVMED *nvmed, int logid, int nsid, __u8 *p, int l
 	*result = cmd.result;
 	return rc;
 }
-
-struct log_pages {
-	int	logid;
-	int cns;
-	char *logname;
-	int (*cmd_fn)(NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 result);
-};
-
-static struct log_pages logs[] = {
-	{LOG_ERROR_INFO,					0, "Error Information",			nvmed_info_logs_error},				
-	{LOG_SMART_INFO,	 				0, "SMART/Health Information",	nvmed_info_logs_smart},		
-	{LOG_FIRMWARE_SLOT_INFO,			0, "Firmware Slot Information",	nvmed_info_logs_firmware},	
-	/* optional
-	{LOG_CHANGED_NAMESPACE_LIST,		0, "Changed Namespace List",	nvmed_info_logs_namespace},
-	{LOG_COMMAND_EFFECTS,				0, "Command Effects Log",		nvmed_info_logs_command},	
-	*/
-	{0,									0, NULL,						NULL}
-};
-
 
 int nvmed_info_get_logs (NVMED *nvmed, char **cmd_args)
 {

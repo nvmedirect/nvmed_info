@@ -244,6 +244,7 @@ void nvmed_info_identify_parse_namespace (__u8 *p, int nsid)
 {
 	int i;
 	__u32 _v;
+	static char *pi[] = {"Not enabled", "Type 1", "Type 2", "Type 3"};
 
 	PRINT_NVMED_INFO;
 	P ("IDENTIFY Namespace %d\n", nsid);
@@ -274,8 +275,6 @@ void nvmed_info_identify_parse_namespace (__u8 *p, int nsid)
 				P ("%26c  Supports Protection Information Type 3: %s\n", SP, YN(2));
 				P ("%26c  Supports Protection Information Type 2: %s\n", SP, YN(1));
 				P ("%26c  Supports Protection Information Type 1: %s\n", SP, YN(0));
-
-	static char *pi[] = {"Not enabled", "Type 1", "Type 2", "Type 3"};
 
 	PH1 (29);	P ("End-to-end Data Protection Type Settings (DPS):\n");
 				P ("%26c  Protection information: at the %s eight bytes of metadata\n", SP, F(3,3)? "FIRST" : "LAST");

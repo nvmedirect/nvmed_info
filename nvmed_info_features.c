@@ -12,6 +12,37 @@ struct nvmed_info_cmd features_cmds[] = {
 	{NULL, 0, NULL, NULL}
 };
 
+struct feature_set {
+	int	fid;
+	int cns;
+	int datalen;		// whether data page is need to be attached
+	char *fname;
+};
+
+static struct feature_set features[] = {
+	{FEATURE_ARBITRATION,					0, 	0,		"Arbitration"},				
+	{FEATURE_POWER_MANAGEMENT, 				0,  0,		"Power Management"},		
+	{FEATURE_LBA_RANGE_TYPE,				1, 	4096,	"LBA Range Type"},	
+	{FEATURE_TEMPERATURE_THRESHOLD,			0, 	0,		"Temperature Threshold"},
+	{FEATURE_ERROR_RECOVERY,				0, 	0,		"Error Recovery"},	
+	{FEATURE_VOLATILE_WRITE_CACHE,			0, 	0,		"Volatile Write Cache"},
+	{FEATURE_NUMBER_OF_QUEUES,				0, 	0,		"Number of Queues"},
+	{FEATURE_INTERRUPT_COALESCING,			0, 	0,		"Interrupt Coalescing"},
+	{FEATURE_INTERRUPT_VECTOR_CONFIG,		0, 	0,		"Interrupt Vector Configuration"},
+	{FEATURE_WRITE_ATOMICITY_NORMAL,		0, 	0,		"Write Atomicity Normal"},
+	{FEATURE_ASYNC_EVENT_CONFIG,			0, 	0,		"Asynchronous Event Configuration"},
+	{FEATURE_AUTO_POWER_STATE_TRANSITION,	0, 	256,	"Autonomous Power State Transition"},
+	{FEATURE_HOST_MEMORY_BUFFER,			0, 	4096,	"Host Memory Buffer"},
+	{FEATURE_KEEP_ALIVE_TIMER,				0,	0,		"Keep Alive Timer"},
+	{FEATURE_SW_PROGRESS_MARKER,			0, 	0,		"Software Progress Marker"},
+	{FEATURE_HOST_IDENTIFIER,				0, 	4096,	"Host Identifier"},
+	{FEATURE_RESERVATION_NOTI_MASK,			0, 	0,		"Reservation Notification Mask"},
+	{FEATURE_RESERVATION_PERSISTENCE,		0, 	0,		"Reservation Persistence"},
+	{0,										0, 	0,		NULL}
+};
+
+
+
 int nvmed_info_features (NVMED *nvmed, char **cmd_args)
 {
 	struct nvmed_info_cmd *c;
@@ -52,36 +83,6 @@ int nvmed_info_get_features_issue (NVMED *nvmed, int fid, int nsid, __u8 *p, int
 	*result = cmd.result;
 	return rc;
 }
-
-struct feature_set {
-	int	fid;
-	int cns;
-	int datalen;		// whether data page is need to be attached
-	char *fname;
-};
-
-static struct feature_set features[] = {
-	{FEATURE_ARBITRATION,					0, 	0,	"Arbitration"},				
-	{FEATURE_POWER_MANAGEMENT, 				0,  0,	"Power Management"},		
-	{FEATURE_LBA_RANGE_TYPE,				1, 	4096,	"LBA Range Type"},	
-	{FEATURE_TEMPERATURE_THRESHOLD,			0, 	0,	"Temperature Threshold"},
-	{FEATURE_ERROR_RECOVERY,				0, 	0,	"Error Recovery"},	
-	{FEATURE_VOLATILE_WRITE_CACHE,			0, 	0,	"Volatile Write Cache"},
-	{FEATURE_NUMBER_OF_QUEUES,				0, 	0,	"Number of Queues"},
-	{FEATURE_INTERRUPT_COALESCING,			0, 	0,	"Interrupt Coalescing"},
-	{FEATURE_INTERRUPT_VECTOR_CONFIG,		0, 	0,	"Interrupt Vector Configuration"},
-	{FEATURE_WRITE_ATOMICITY_NORMAL,		0, 	0,	"Write Atomicity Normal"},
-	{FEATURE_ASYNC_EVENT_CONFIG,			0, 	0,	"Asynchronous Event Configuration"},
-	{FEATURE_AUTO_POWER_STATE_TRANSITION,	0, 	256,	"Autonomous Power State Transition"},
-	{FEATURE_HOST_MEMORY_BUFFER,			0, 	4096,	"Host Memory Buffer"},
-	{FEATURE_KEEP_ALIVE_TIMER,				0,	0,	"Keep Alive Timer"},
-	{FEATURE_SW_PROGRESS_MARKER,			0, 	0,	"Software Progress Marker"},
-	{FEATURE_HOST_IDENTIFIER,				0, 	4096,	"Host Identifier"},
-	{FEATURE_RESERVATION_NOTI_MASK,			0, 	0,	"Reservation Notification Mask"},
-	{FEATURE_RESERVATION_PERSISTENCE,		0, 	0,	"Reservation Persistence"},
-	{0,										0, 	0,	NULL}
-};
-
 
 int nvmed_info_get_features (NVMED *nvmed, char **cmd_args)
 {

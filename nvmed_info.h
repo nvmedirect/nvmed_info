@@ -67,6 +67,20 @@ extern char *nvme_sc[];
 #define LOG_CHANGED_NAMESPACE_LIST              (0x04)
 #define LOG_COMMAND_EFFECTS                     (0x05)
 
+#define PCI_CAP_NEXT(id)	(((id) >> 8) & 0xff)
+#define PCI_CAP_CID(id)		((id) & 0xff)
+
+#define PCI_PMCAP_CID		(0x01)
+#define PCI_MSICAP_CID		(0x05)
+#define	PCI_MSIXCAP_CID		(0x11)
+#define PCI_PXCAP_CID		(0x10)
+#define PCI_AERCAP_CID		(0x0001)						// This has a 32-bit header
+
+#define PCI_CAP_OFFSET		52
+
+#define PCI_FILE_COPY		0
+#define PCI_FILE_MMAP		1
+
 // Admin command set (1.2 spec, p52)
 // 
 // 00:03 CDW0	Command Dword 0
@@ -126,6 +140,7 @@ extern char *nvme_sc[];
 	printf ("    %02x     %08x     ", id, res);
 #endif
 
+#if 0
 #define ISSET_BIT0(x)	((p[x]) & (__u8) 0x01)
 #define ISSET_BIT1(x)	((p[x]) & (__u8) 0x02)
 #define ISSET_BIT2(x)	((p[x]) & (__u8) 0x04)
@@ -143,6 +158,7 @@ extern char *nvme_sc[];
 #define YN_BIT5(x)		(ISSET_BIT5(x)? "Yes" : "No")
 #define YN_BIT6(x)		(ISSET_BIT6(x)? "Yes" : "No")
 #define YN_BIT7(x)		(ISSET_BIT7(x)? "Yes" : "No")
+#endif
 
 
 #define P	printf
