@@ -97,18 +97,29 @@ extern char *nvme_sc[];
 
 
 // print utilities
+#define U8(x)			((__u8) *((__u8 *) &p[x]))
+#define U16(x)			((__u16) *((__u16 *) &p[x]))
+#define U32(x)			((__u32) *((__u32 *) &p[x]))
+#define U64(x)			((__u64) *((__u64 *) &p[x]))
+
+
 #define PH1(offset) \
-	printf ("%04d       %02x           ", offset, p[offset]);
+	_v = U8(offset); printf ("%04d       %02x           ", offset, p[offset]);
 
 #define PH2(offset) \
-	printf ("%04d:%04d  %02x %02x        ", offset, offset+1, p[offset], p[offset+1]);
+	_v = U16(offset); printf ("%04d:%04d  %02x %02x        ", offset, offset+1, p[offset], p[offset+1]);
 
 #define PH3(offset) \
+	_v = U32(offset) & 0x00ffffff; \
 	printf ("%04d:%04d  %02x %02x %02x     ", offset, offset+2, p[offset], p[offset+1], p[offset+2]);
 
 #define PH4(offset) \
-	printf ("%04d:%04d  %02x %02x %02x %02x  ", offset, offset+3,  \
+	_v = U32(offset); printf ("%04d:%04d  %02x %02x %02x %02x  ", offset, offset+3,  \
 			p[offset], p[offset+1], p[offset+2], p[offset+3]);
+
+#define F(start,end)	(__u32) ((end-start==31)? (_v) : (((_v) >> (start)) & ((1 << (end - start + 1)) - 1)))
+#define YN(start)		(F(start,start)? "Yes" : "No")
+
 #if 0
 #define PF4(id) \
 	printf ("    %02x     %08x     ", id, res);
@@ -132,10 +143,6 @@ extern char *nvme_sc[];
 #define YN_BIT6(x)		(ISSET_BIT6(x)? "Yes" : "No")
 #define YN_BIT7(x)		(ISSET_BIT7(x)? "Yes" : "No")
 
-#define U8(x)			((__u8) *((__u8 *) &p[x]))
-#define U16(x)			((__u16) *((__u16 *) &p[x]))
-#define U32(x)			((__u32) *((__u32 *) &p[x]))
-#define U64(x)			((__u64) *((__u64 *) &p[x]))
 
 #define P	printf
 #define SP	' '
@@ -188,25 +195,5 @@ extern void nvmed_info_pci_parse_msicap (NVMED *nvmed, struct pci_info *pci, int
 extern void nvmed_info_pci_parse_msixcap (NVMED *nvmed, struct pci_info *pci, int offset);
 extern void nvmed_info_pci_parse_pxcap (NVMED *nvmed, struct pci_info *pci, int offset);
 extern void print_bytes (__u8 *p, int len);
-
-#if 0
-extern int unvme_command_issue (int fd, struct nvme_admin_cmd *cmd);
-extern int unvme_help (char *s);
-extern int unvme_identify (int fd, char **cmd_args);
-extern int unvme_identify_help (char *s);
-extern int unvme_identify_controller (int fd, char **cmd_args);
-extern int unvme_identify_namespace (int fd, char **cmd_args);
-extern int unvme_identify_issue (int fd, int cns, int nsid);
-extern void unvme_identify_parse_controller (__u8 *p);
-extern void unvme_identify_parse_namespace (__u8 *p, int nsid);
-extern int unvme_features (int fd, char **cmd_args);
-extern int unvme_features_issue (int fd, int fid, int nsid, __u8 *buf, __u32 *r);
-extern int unvme_get_features (int fd, char **cmd_args);
-extern int unvme_logs (int fd, char **cmd_args);
-extern int unvme_logs_issue (int fd, int logid, int nsid, __u8 *buf, __u32 *result);
-
-extern struct unvme_command *find_command (struct unvme_command *list, char *str);
-extern int unvme_command_help (char *invalid_command, char *command_name, struct unvme_command *c);
-#endif
 
 #endif /* _NVMED_INFO_H */

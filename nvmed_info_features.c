@@ -90,6 +90,7 @@ int nvmed_info_get_features (NVMED *nvmed, char **cmd_args)
 	int nsid = 1;
 	struct feature_set *f;
 	__u8 *p;
+	__u32 _v;
 
 	p = (__u8 *) nvmed_get_buffer(nvmed, 1);
 	if (p == NULL) {
@@ -120,46 +121,46 @@ int nvmed_info_get_features (NVMED *nvmed, char **cmd_args)
 			continue;
 		}
 		else {
-			printf ("    %02x     0x%08x  %s", f->fid, res, f->fname);
+			printf ("\n    %02x     0x%08x  %s", f->fid, res, f->fname);
 			if (f->cns)
 				P (" (Namespace ID: %d)\n", nsid);
 			else
 				P ("\n");
 		}
 
+		_v = res;
 		switch (f->fid) {
 			case FEATURE_ARBITRATION:	/* Arbitration */
-				P ("%24c  High Priority Weight (HPW): %u\n", SP, (res >> 24) & 0xff);
-				P ("%24c  Medium Priority Weight (MPW): %u\n", SP, (res >> 16) & 0xff);
-				P ("%24c  Low Priority Weight (MPW): %u\n", SP, (res >> 8) & 0xff);
+				P ("%24c  High Priority Weight (HPW): %u\n", SP, F(24,31));
+				P ("%24c  Medium Priority Weight (MPW): %u\n", SP, F(16,23));
+				P ("%24c  Low Priority Weight (MPW): %u\n", SP, F(8,15));
 				P ("%24c  Arbitration Burst (AB): ", SP);
-				if ((res & 0x07) == 7)
+				if (F(0,2) == 7)
 					P ("No limit\n");
 				else
-					P ("%u\n", 1 << (res & 0x07));
+					P ("%u\n", 1 << F(0,2));
 				break;
 
 			case FEATURE_POWER_MANAGEMENT:	/* Power Management */
-				P ("%24c  Workload Hint (WH): %u\n", SP, (res >> 5) & 0x07);
-				P ("%24c  Power State (PS): %u\n", SP, (res & 0x1f));
+				P ("%24c  Workload Hint (WH): %u\n", SP, F(5,7));
+				P ("%24c  Power State (PS): %u\n", SP, F(0,4));
 				break;
 
 			case FEATURE_LBA_RANGE_TYPE: {	/* LBA Range Type */
 				int i, entries;
-				static char *lbatype[] = {"Reserved", "Filesystem", "RAID", "Cache", "Page/swap file", 
-										  "Reserved", "Vendor Specific"};
-				entries = res & 0x3f;
+				static char *lbatype[] = {"Reserved", "Filesystem", "RAID", "Cache", "Page/swap file"};
+				entries = F(0,5);
 				P ("%24c  Number of LBA Ranges (NUM): %u\n", SP, entries);
 				for (i = 0; i < entries; i++) {
 					P ("LBA Range Type %d\n", i);
 						PH1 (i*64+0);	P ("Type (Type): %s\n", 
-											(p[i*64+0] <= 0x04)? lbatype[p[i*64+0]] :
-											(p[i*64+0] <= 0x7f)? lbatype[5] : lbatype[6]);
+											(F(0,7) <= 0x04)? lbatype[F(0,7)] :
+											(F(0,7) <= 0x7f)? lbatype[0] : "Vendor Specific");
 						PH1 (i*64+1);	P ("Attributes:\n");
-											P ("%24c  The LBA range may %s overwritten\n", SP,
-												ISSET_BIT0(i*64+1)? "be" : "not be");
-											P ("%24c  The LBA range should be %s the OS\n", SP,
-												ISSET_BIT1(i*64+1)? "hidden from" : "visible to");
+											P ("%24c  The LBA range may %s overwritten\n", 
+												SP, F(0,0)? "be" : "not be");
+											P ("%24c  The LBA range should be %s the OS\n", 
+												SP, F(1,1)? "hidden from" : "visible to");
 						PV (i*64+16, i*64+23, "Starting LBA (SLBA)", "block");
 						PV (i*64+24, i*64+31, "Number of Logical Blocks (NLB)", "blocks");
 						PI (i*64+32, i*64+47, "Unique Identifier (GUID)");
@@ -169,13 +170,13 @@ int nvmed_info_get_features (NVMED *nvmed, char **cmd_args)
 
 			case FEATURE_TEMPERATURE_THRESHOLD:	/* Temperature Threshold */
 				P ("%24c  Threshold Type Select (THSEL): %s\n", SP,
-						(((res >> 20) & 3) == 0)? "Over temperature threshold" :
-						(((res >> 20) & 3) == 1)? "Under temperature threshold" : "Reserved");
+						(F(20,21) == 0)? "Over temperature threshold" :
+						(F(20,21) == 1)? "Under temperature threshold" : "Reserved");
 				P ("%24c  Threshold Temperature Select (TMPSEL): ", SP);
-				switch ((res >> 16) & 0x0f)
+				switch (F(16,19))
 				{
 					case 0:
-						printf ("Composite temperature\n");
+						P ("Composite temperature\n");
 						break;
 					case 1:
 					case 2:
@@ -185,91 +186,85 @@ int nvmed_info_get_features (NVMED *nvmed, char **cmd_args)
 					case 6:
 					case 7:
 					case 8:
-						printf ("Temperature sensor %d\n", ((res >> 16) & 0x0f));
+						P ("Temperature sensor %d\n", F(16,19));
 						break;
 					default:
 						printf ("Reserved\n");
 				}
-				P ("%24c  Temperature Threshold (TMPTH): %u\n", SP, res & 0xffff);
+				P ("%24c  Temperature Threshold (TMPTH): %u\n", SP, F(0,15));
 				break;
 
 			case FEATURE_ERROR_RECOVERY:	/* Error Recovery */
-				P ("%24c  Deallocated or Unwritten Logical Block Error Enable (DULBE): %s\n", SP,
-					((res >> 16) & 1)? "Yes" : "No");
-				P ("%24c  Time Limited Error Recovery (TLER): %u (100msec)\n", SP, res & 0xffff);
+				P ("%24c  Deallocated or Unwritten Logical Block Error Enable (DULBE): %s\n", SP, YN(16));
+				P ("%24c  Time Limited Error Recovery (TLER): %u (100msec)\n", SP, F(0,15));
 				break;
 
 			case FEATURE_VOLATILE_WRITE_CACHE:	/* Volatile Write Cache */
-				P ("%24c  Volatile Write Cache Enable (WCE): %s\n", SP, (res & 1)? "Yes" : "No");
+				P ("%24c  Volatile Write Cache Enable (WCE): %s\n", SP, YN(0));
 				break;
 
 			case FEATURE_NUMBER_OF_QUEUES:	/* Number of Queues */
-				P ("%24c  Number of I/O Completion Queues Allocated (NCQA): %u\n", SP, res >> 16);
-				P ("%24c  Number of I/O Submission Queues Allocated (NSQA): %u\n", SP, res & 0xffff);
+				P ("%24c  Number of I/O Completion Queues Allocated (NCQA): %u\n", SP, F(16,31));
+				P ("%24c  Number of I/O Submission Queues Allocated (NSQA): %u\n", SP, F(0,15));
 				break;
 
 			case FEATURE_INTERRUPT_COALESCING:	/* Interrupt Coalescing */
 				P ("%24c  Aggregation Time: ", SP);
-				if (((res >> 8) & 0xff))
-					printf ("%u (100 msec)\n", (res >> 8) & 0xff);
+				if (F(8,15))
+					printf ("%u (100 msec)\n", F(8,15));
 				else 
 					printf ("No delay\n");
-				P ("%24c  Aggreation Threshold (THR): %u (entries)\n", SP, res & 0xff);
+				P ("%24c  Aggreation Threshold (THR): %u (entries)\n", SP, F(0,7));
 				break;
 
 			case FEATURE_INTERRUPT_VECTOR_CONFIG:	/* Interrupt Vector Configuration */
-				P ("%24c  Coalescing Disable (CD): %s\n", SP,
-					((res >> 16) & 1)? "Yes" : "No");
-				P ("%24c  Interrupt Vector (IV): 0x%02x\n", SP, res & 0xff);
+				P ("%24c  Coalescing Disable (CD): %s\n", SP, YN(16));
+				P ("%24c  Interrupt Vector (IV): 0x%02x\n", SP, F(0,15));
 				break;
 
 			case FEATURE_WRITE_ATOMICITY_NORMAL:	/* Write Atomicity Normal */
-				P ("%24c  Disable Normal (DN): %s\n", SP,
-					(res & 1)? "Yes" : "No");
+				P ("%24c  Disable Normal (DN): %s\n", SP, YN(0));
 				break;
 
 			case FEATURE_ASYNC_EVENT_CONFIG:	/* Asynchronous Event Configuration */
-				P ("%24c  Firmware Activation Notices: %s\n", SP,
-					((res >> 9) & 1)? "Yes" : "No");
-				P ("%24c  Namespace Attribute Notices: %s\n", SP,
-					((res >> 8) & 1)? "Yes" : "No");
-				P ("%24c  SMART / Health Critical Warnings: 0x%02x\n", SP, res & 0xff);
+				P ("%24c  Firmware Activation Notices: %s\n", SP, YN(9));
+				P ("%24c  Namespace Attribute Notices: %s\n", SP, YN(8));
+				P ("%24c  SMART / Health Critical Warnings: 0x%02x\n", SP, F(0,7));
 				break;
 
 			case FEATURE_AUTO_POWER_STATE_TRANSITION: {	/* Autonomous Power State Transition */
 				int i;
 
-				P ("%24c  Autonomous Power State Transition Enable (APSTE): %s\n", SP,
-					(res & 1)? "Yes" : "No");
+				P ("%24c  Autonomous Power State Transition Enable (APSTE): %s\n", SP, YN(0));
 
 				for (i = 0; i < 256; i += 8) {
 					if (U64(p[i]) == 0) 
 						break;
 
 					P ("Power State %d\n", i/8);
-						PH1 (i*8+0);	P ("Idle Transition Power State (ITPS): %u\n", (p[i*8+0] >> 3) & 0x1f);
+						PH1 (i*8+0);	P ("Idle Transition Power State (ITPS): %u\n", F(3,7));
 						PV (i*8+1, i*8+3, "Idle Time Prior to Transition (ITPT):", "(msec)");
 				}
 			  	} 
 				break;
 
 			case FEATURE_HOST_MEMORY_BUFFER: {	/* Host Memory Buffer */
-				P ("%24c  Memory Return (MR): %s\n", SP, ((res >> 1) & 1)? "Yes" : "No");
-				P ("%24c  Enable Host Memory (EHM): %s\n", SP, (res & 1)? "Yes" : "No");
+				P ("%24c  Memory Return (MR): %s\n", SP, YN(1));
+				P ("%24c  Enable Host Memory (EHM): %s\n", SP, YN(0));
 				P ("Host Memory Buffer Attributes\n");
-					PH4 (0);	P ("Host Memory Buffer Size (HSIZE): %u (pages)\n", U32(0));
-					PH4 (4);	P ("Host Memory Descriptor List Address Lower (HMDLAL): 0x%08x\n", U32(4));
-					PH4 (8);	P ("Host Memory Descriptor List Address Upper (HMDLAU): 0x%08x\n", U32(8));
-					PH4 (12);	P ("Host Memory Descriptor List Entry Count (HMDLEC): 0x%d\n", U32(12));
+					PH4 (0);	P ("Host Memory Buffer Size (HSIZE): %u (pages)\n", F(0,31));
+					PH4 (4);	P ("Host Memory Descriptor List Address Lower (HMDLAL): 0x%08x\n", F(0,31));
+					PH4 (8);	P ("Host Memory Descriptor List Address Upper (HMDLAU): 0x%08x\n", F(0,31));
+					PH4 (12);	P ("Host Memory Descriptor List Entry Count (HMDLEC): 0x%d\n", F(0,31));
 				}
 				break;
 
 			case FEATURE_KEEP_ALIVE_TIMER: 		/* Keep Alive Timer */
-				P ("%24c  Keep Alive Timeout (KATO): %u (msec)\n", SP, res);
+				P ("%24c  Keep Alive Timeout (KATO): %u (msec)\n", SP, F(0,31));
 				break;
 
 			case FEATURE_SW_PROGRESS_MARKER:	/* Software Progress Marker */
-				P ("%24c  Pre-boot Software Load Count (PBSLC): %u\n", SP, res & 0xff);
+				P ("%24c  Pre-boot Software Load Count (PBSLC): %u\n", SP, F(0,7));
 				break;
 
 			case FEATURE_HOST_IDENTIFIER:	/* Host Identifier */
@@ -277,16 +272,13 @@ int nvmed_info_get_features (NVMED *nvmed, char **cmd_args)
 				break;
 
 			case FEATURE_RESERVATION_NOTI_MASK:	/* Reservation Notification Mask */
-				P ("%24c  Mask Reservation Preempted Notification (RESPRE): %s\n", SP,
-					(res >> 3) & 1? "Yes" : "No");
-				P ("%24c  Mask Reservation Released Notification (RESREL): %s\n", SP,
-					(res >> 2) & 1? "Yes" : "No");
-				P ("%24c  Mask Registration Preempted Notification (REGPRE): %s\n", SP,
-					(res >> 1) & 1? "Yes" : "No");
+				P ("%24c  Mask Reservation Preempted Notification (RESPRE): %s\n", SP, YN(3));
+				P ("%24c  Mask Reservation Released Notification (RESREL): %s\n", SP, YN(2));
+				P ("%24c  Mask Registration Preempted Notification (REGPRE): %s\n", SP, YN(1));
 				break;
 
 			case FEATURE_RESERVATION_PERSISTENCE:	/* Reservation Persistence */
-				P ("%24c  Persist Through Power Loss (PTPL): %s\n", SP, (res & 1)? "Yes" : "No");
+				P ("%24c  Persist Through Power Loss (PTPL): %s\n", SP, YN(0));
 				break;
 
 			default:

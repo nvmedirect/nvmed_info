@@ -143,6 +143,7 @@ int nvmed_info_pci_config (NVMED *nvmed, char **cmd_args)
 void nvmed_info_pci_parse_config (NVMED *nvmed, struct pci_info *pci)
 {
 	__u8 *p;
+	__u32 _v;
 	
 	if (pci == NULL || pci->regs == NULL)
 		return;
@@ -155,77 +156,77 @@ void nvmed_info_pci_parse_config (NVMED *nvmed, struct pci_info *pci)
 	P ("---------  -----------  -----------\n");
 	P ("\n[PCI Header]\n");
 	PH4 (0);	P ("Identifiers (ID):\n");
-				P ("%26c Device ID (VID): 0x%04x\n", SP, U16(2));
-				P ("%26c Vendor ID (VID): 0x%04x\n", SP, U16(0));
+				P ("%26c Device ID (VID): 0x%04x\n", SP, F(16,31));
+				P ("%26c Vendor ID (VID): 0x%04x\n", SP, F(0,15));
 
 	PH2 (4);	P ("Command (CMD):\n");
-				P ("%26c Interrupt Disable (ID): %s\n", SP, YN_BIT2(5));
-			  	P ("%26c SERR# Enable (SEE): %s\n", SP, YN_BIT0(5));
-				P ("%26c Parity Error Response Enable (PEE): %s\n", SP, YN_BIT6(4));
-				P ("%26c Bus Master Enable (BME): %s\n", SP, YN_BIT2(4));
-				P ("%26c Memory Space Enable (MSE): %s\n", SP, YN_BIT1(4));
-				P ("%26c I/O Space Enable (IOSE): %s\n", SP, YN_BIT0(4));
+				P ("%26c Interrupt Disable (ID): %s\n", SP, YN(10));
+			  	P ("%26c SERR# Enable (SEE): %s\n", SP, YN(8));
+				P ("%26c Parity Error Response Enable (PEE): %s\n", SP, YN(6));
+				P ("%26c Bus Master Enable (BME): %s\n", SP, YN(2));
+				P ("%26c Memory Space Enable (MSE): %s\n", SP, YN(1));
+				P ("%26c I/O Space Enable (IOSE): %s\n", SP, YN(0));
 
 	PH2 (6);	P ("Device Status (STS):\n");
-				P ("%26c Detected Parity Error (DPE): %s\n", SP, YN_BIT7(7));
-				P ("%26c Signaled System Error (SSE): %s\n", SP, YN_BIT6(7));
-				P ("%26c Received Master-Abort (RMA): %s\n", SP, YN_BIT5(7));
-				P ("%26c Received Target-Abort (RTA): %s\n", SP, YN_BIT4(7));
-				P ("%26c Master Data Parity Error Detected (DPD): %s\n", SP, YN_BIT0(7));
-				P ("%26c Capabilities List (CL): %s\n", SP, YN_BIT4(6));
-				P ("%26c Interrupt Status (IS): %s\n", SP, YN_BIT3(6));
+				P ("%26c Detected Parity Error (DPE): %s\n", SP, YN(15));
+				P ("%26c Signaled System Error (SSE): %s\n", SP, YN(14));
+				P ("%26c Received Master-Abort (RMA): %s\n", SP, YN(13));
+				P ("%26c Received Target-Abort (RTA): %s\n", SP, YN(12));
+				P ("%26c Master Data Parity Error Detected (DPD): %s\n", SP, YN(8));
+				P ("%26c Capabilities List (CL): %s\n", SP, YN(4));
+				P ("%26c Interrupt Status (IS): %s\n", SP, YN(3));
 
-	PH1 (8);	P ("Revision ID (RID): %02x\n", U8(8));
+	PH1 (8);	P ("Revision ID (RID): %02x\n", F(0,7));
 
 	PH3 (9);	P ("Class Code (CC):\n");
-				P ("%26c Base Class Code (BCC): %02x\n", SP, U8(11));
-				P ("%26c Sub Class Code (SCC): %02x\n", SP, U8(10));
-				P ("%26c Programming Interface (PI): %02x\n", SP, U8(9));
+				P ("%26c Base Class Code (BCC): %02x\n", SP, F(16,23));
+				P ("%26c Sub Class Code (SCC): %02x\n", SP, F(8,15));
+				P ("%26c Programming Interface (PI): %02x\n", SP, F(0,7));
 
-	PH1 (12)	P ("Cache Line Size (CLS): %d\n", U8(12));
+	PH1 (12)	P ("Cache Line Size (CLS): %d\n", F(0,7));
 
 	//PH1 (13);	P ("Master Latency Timer (MLT): %d clocks\n", U8(13));
 
 	PH1 (14);	P ("Header Type (HTYPE):\n");
-				P ("%26c Multi-Function Device (MFD): %s\n", SP, YN_BIT7(14));
-				P ("%26c Header Layout (HL): %d\n", SP, U8(14) & 0x7f);
+				P ("%26c Multi-Function Device (MFD): %s\n", SP, YN(7));
+				P ("%26c Header Layout (HL): %d\n", SP, F(0,6));
 
-	PH1 (15);	P ("Built In Self Test (BIST): [Optional] %s\n", U8(15)? "" : "Not supported");
-			if (U8(15)) {
-				P ("%26c BIST Capable (BC): %s\n", SP, YN_BIT7(15));
-				P ("%26c Start BIST (SB): %s\n", SP, YN_BIT6(15));
-				P ("%26c Completion Code (CC): %d\n", SP, U8(15) & 0x0f);
+	PH1 (15);	P ("Built In Self Test (BIST): [Optional] %s\n", F(0,7)? "" : "Not supported");
+			if (F(0,7)) {
+				P ("%26c BIST Capable (BC): %s\n", SP, YN(7));
+				P ("%26c Start BIST (SB): %s\n", SP, YN(6));
+				P ("%26c Completion Code (CC): %d\n", SP, F(0,3));
 			}
 
 	PH4 (16); 	P ("Memory Register Base Address Lower 32-bits (MLBAR, BAR0):\n");
-				P ("%26c Base Address (BA): 0x%08x\n", SP, U32(16) & ~0x3fff);
-				P ("%26c Prefetchable (PF): %s\n", SP, YN_BIT3(16));
-				P ("%26c Type (TP): %d\n", SP, (U8(16) >> 1) & 0x03);
-				P ("%26c Resource Type Indicator (RTE): %s\n", SP, YN_BIT0(16));
+				P ("%26c Base Address (BA): 0x%08x\n", SP, F(14,31) << 14);
+				P ("%26c Prefetchable (PF): %s\n", SP, YN(3));
+				P ("%26c Type (TP): %d\n", SP, F(1,2));
+				P ("%26c Resource Type Indicator (RTE): %s\n", SP, YN(0));
 	
-	PH4 (20);	P ("Memory Register Base Address Upper 32-bits (MUBAR, BAR1): 0x%08x\n", U32(20));
+	PH4 (20);	P ("Memory Register Base Address Upper 32-bits (MUBAR, BAR1): 0x%08x\n", F(0,31));
 
 	PH4 (24);	P ("Index/Data Pair Register Base Address (IDBAR, BAR2): [Optional] %s\n",
-					U32(24)? "" : "Not supported");
-			if (U32(24)) {
-				P ("%26c Base Address (BA): 0x%08x\n", SP, U32(24) & ~0x07);
-				P ("%26c Resource Type Indicator (RTE): %s\n", SP, YN_BIT0(24));
+					F(0,31)? "" : "Not supported");
+			if (F(0,31)) {
+				P ("%26c Base Address (BA): 0x%08x\n", SP, F(3,31) << 3);
+				P ("%26c Resource Type Indicator (RTE): %s\n", SP, YN(0));
 			}
 
 	PH4 (44);	P ("Sub System Identifiers (SS)\n");
-				P ("%26c Subsystem ID (SSID): 0x%04x\n", SP, U16(46));
-				P ("%26c Subsystem Vendor ID (SSVID): 0x%04x\n", SP, U16(44));
+				P ("%26c Subsystem ID (SSID): 0x%04x\n", SP, F(16,31));
+				P ("%26c Subsystem Vendor ID (SSVID): 0x%04x\n", SP, F(0,15));
 
-	PH4 (48);	P ("Expansion ROM: [Optional] %s\n", U32(48)? "" : "Not supported");
-			if (U32(48)) 
-				P ("%26c ROM Base Address (RBA): 0x%08x\n", SP, U32(48));
+	PH4 (48);	P ("Expansion ROM: [Optional] %s\n", F(0,31)? "" : "Not supported");
+			if (F(0,31)) 
+				P ("%26c ROM Base Address (RBA): 0x%08x\n", SP, F(0,31));
 
 	PH1 (52);	P ("Capabilities Pointer (CAP):\n");
-				P ("%26c Capability Pointer (CP): 0x%02x\n", SP, U8(52));
+				P ("%26c Capability Pointer (CP): 0x%02x\n", SP, F(0,7));
 
 	PH2 (60);	P ("Interrupt Information (INTR):\n");
-				P ("%26c Interrupt Pin (IPIN): %d\n", SP, U8(61));
-				P ("%26c Interrupt Line (ILINE): %d\n", SP, U8(60));
+				P ("%26c Interrupt Pin (IPIN): %d\n", SP, F(8,15));
+				P ("%26c Interrupt Line (ILINE): %d\n", SP, F(0,7));
 
 	nvmed_info_pci_parse_caps (nvmed, pci);
 
@@ -289,172 +290,176 @@ void nvmed_info_pci_parse_caps (NVMED *nvmed, struct pci_info *pci)
 void nvmed_info_pci_parse_pmcap (NVMED *nvmed, struct pci_info *pci, int offset)
 {
 	__u8 *p = (__u8 *) pci->regs + offset;
+	__u32 _v;
 	static char *ps[] = { "D0", "D1", "D2", "D3_HOT" };
 
 	P ("\n[PCI Power Management Capabilities] @ offset 0x%02x\n", offset);
 
 	PH2 (0);	P ("PCI Power Management Capability ID (PID):\n");
-				P ("%26c Next Capability (NEXT): 0x%02x\n", SP, U8(1));
-				P ("%26c Cap ID (CID): 0x%02x\n", SP, U8(0));
+				P ("%26c Next Capability (NEXT): 0x%02x\n", SP, F(8,15));
+				P ("%26c Cap ID (CID): 0x%02x\n", SP, F(0,7));
 
 	PH2 (2);	P ("PCI Power Management Capabilities (PC):\n");
-				P ("%26c Device Specific Initialization (DSI): %s\n", SP, YN_BIT5(2));
-				P ("%26c PME Clock (PMEC): %d\n", SP, (U8(2) >> 3) & 0x01);
-				P ("%26c Version (VS): %d\n", SP, U8(2) & 0x07);
+				P ("%26c Device Specific Initialization (DSI): %s\n", SP, YN(5));
+				P ("%26c PME Clock (PMEC): %d\n", SP, F(3,3));
+				P ("%26c Version (VS): %d\n", SP, F(0,2));
 
 	PH2 (4);	P ("PCI Power Management Control and Status (PMCS):\n");
-				P ("%26c PME Status (PMES): %d\n", SP, U8(5) >> 7);
-				P ("%26c Data Scale (DSC): %d\n", SP, (U8(5) >> 5) & 0x03);
-				P ("%26c Data Select (DSE): %d\n", SP, (U8(5) >> 1) & 0x0f);
-				P ("%26c PME Enable (PMEE): %d\n", SP, U8(5) & 0x01);
-				P ("%26c No Soft Reset (NSFRST): %d\n", SP, (U8(4) >> 3) & 0x01);
-				P ("%26c Power Stats (PS): %s state\n", SP, ps[U8(4) & 0x03]);
+				P ("%26c PME Status (PMES): %d\n", SP, F(15,15));
+				P ("%26c Data Scale (DSC): %d\n", SP, F(13,14));
+				P ("%26c Data Select (DSE): %d\n", SP, F(9,12));
+				P ("%26c PME Enable (PMEE): %d\n", SP, F(8,8));
+				P ("%26c No Soft Reset (NSFRST): %d\n", SP, F(3,3));
+				P ("%26c Power Stats (PS): %s state\n", SP, ps[F(0,1)]);
 }
 
 
 void nvmed_info_pci_parse_msicap (NVMED *nvmed, struct pci_info *pci, int offset)
 {
 	__u8 *p = (__u8 *) pci->regs + offset;
+	__u32 _v;
 
 	P ("\n[Message Signaled Interrupt Capabilities] @ offset 0x%02x [Optional]\n", offset);
 
 	PH2 (0);	P ("Message Signaled Interrupt Identifiers (MID):\n");
-				P ("%26c Next Pointer (NEXT): 0x%02x\n", SP, U8(1));
-				P ("%26c Capability ID (CID): 0x%02x\n", SP, U8(0));
+				P ("%26c Next Pointer (NEXT): 0x%02x\n", SP, F(8,15));
+				P ("%26c Capability ID (CID): 0x%02x\n", SP, F(0,7));
 
 	PH2 (2);	P ("Message Signaled Interrupt Message Control (MC):\n");
-				P ("%26c Per-Vector Masking Capable (PVM): %s\n", SP, YN_BIT0(3));
-				P ("%26c 64bit Address Capable (C64): %s\n", SP, YN_BIT7(2));
-				P ("%26c Multiple Message Enable (MME): %d\n", SP, (U8(2) >> 4) & 0x07);
-				P ("%26c Multiple Message Capable (MMC): %d\n", SP, (U8(2) >> 1) & 0x07);
-				P ("%26c MSI Enable (MSIE): %s\n", SP, YN_BIT0(2));
+				P ("%26c Per-Vector Masking Capable (PVM): %s\n", SP, YN(8));
+				P ("%26c 64bit Address Capable (C64): %s\n", SP, YN(7));
+				P ("%26c Multiple Message Enable (MME): %d\n", SP, F(4,6));
+				P ("%26c Multiple Message Capable (MMC): %d\n", SP, F(1,3));
+				P ("%26c MSI Enable (MSIE): %s\n", SP, YN(0));
 
-	PH4 (4);	P ("Message Signaled Interrupt Message Address (MA): 0x%08x\n", U32(4));
+	PH4 (4);	P ("Message Signaled Interrupt Message Address (MA): 0x%08x\n", F(2,31) << 2);
 
-	PH4 (8);	P ("Message Signaled Interrupt Upper Address (MUA): 0x%08x\n", U32(8));
+	PH4 (8);	P ("Message Signaled Interrupt Upper Address (MUA): 0x%08x\n", F(0,31));
 
-	PH2 (12);	P ("Message Signaled Interrupt Message Data (MD): 0x%04x\n", U16(12));
-	PH4 (16);	P ("Message Signaled Interrupt Mask Bits (MMASK): 0x%08x\n", U32(16));
-	PH4 (20);	P ("Message Signaled Interrupt Pending Bits (MPEND): 0x%08x\n", U32(20));
+	PH2 (12);	P ("Message Signaled Interrupt Message Data (MD): 0x%04x\n", F(0,15));
+	PH4 (16);	P ("Message Signaled Interrupt Mask Bits (MMASK): 0x%08x\n", F(0,31));
+	PH4 (20);	P ("Message Signaled Interrupt Pending Bits (MPEND): 0x%08x\n", F(0,31));
 }
 
 
 void nvmed_info_pci_parse_msixcap (NVMED *nvmed, struct pci_info *pci, int offset)
 {
 	__u8 *p = (__u8 *) pci->regs + offset;
+	__u32 _v;
 	static char *bir[] = {"0x10", "N/A", "N/A", "Reserved", "0x20", "0x24", "Reserved", "Reserved"};
 
 	P ("\n[MSI-X Capabilities] @ offset 0x%02x [Optional]\n", offset);
 
 	PH2 (0);	P ("MSI-X Identifiers (MXID):\n");
-				P ("%26c Next Pointer (NEXT): 0x%02x\n", SP, U8(1));
-				P ("%26c Capability ID (CID): 0x%02x\n", SP, U8(0));
+				P ("%26c Next Pointer (NEXT): 0x%02x\n", SP, F(8,15));
+				P ("%26c Capability ID (CID): 0x%02x\n", SP, F(0,7));
 
 	PH2 (2);	P ("MSI-X Message Control (MXC):\n");
-				P ("%26c MSI-X Enable (MXE): %s\n", SP, YN_BIT7(3));
-				P ("%26c Function Mask (FM): %s\n", SP, YN_BIT6(3));
-				P ("%26c Table Size (TS): %d\n", SP, U16(2) & 0x07ff);
+				P ("%26c MSI-X Enable (MXE): %s\n", SP, YN(15));
+				P ("%26c Function Mask (FM): %s\n", SP, YN(14));
+				P ("%26c Table Size (TS): %d\n", SP, F(0,10));
 
 	PH4 (4);	P ("MSI-X Table Offset / Table BIR (MTAB):\n");
-				P ("%26c Table Offset (TO): 0x%08x\n", SP, U32(4) & ~0x07);
-				P ("%26c Table BIR (TBIR): %s\n", SP, bir[U8(4) & 0x07]);
+				P ("%26c Table Offset (TO): 0x%08x\n", SP, F(3,31) << 3);
+				P ("%26c Table BIR (TBIR): %s\n", SP, bir[F(0,2)]);
 
 	PH4 (8);	P ("MSI-X PBA Offset / PBA BIR (MPBA):\n");
-				P ("%26c PBA Offset (PBAO): 0x%08x\n", SP, U32(8) & ~0x07);
-				P ("%26c PBA BIR (PBIR): %s\n", SP, bir[U8(8) & 0x07]);
+				P ("%26c PBA Offset (PBAO): 0x%08x\n", SP, F(3,31) << 3);
+				P ("%26c PBA BIR (PBIR): %s\n", SP, bir[F(0,2)]);
 
 }
 void nvmed_info_pci_parse_pxcap (NVMED *nvmed, struct pci_info *pci, int offset)
 {
 	__u8 *p = (__u8 *) pci->regs + offset;
+	__u32 _v;
 
 	P ("\n[PCI Express Capabilities] @ offset 0x%02x\n", offset);
 
 	PH2 (0);	P ("PCI Express Capability ID (PXID):\n");
-				P ("%26c Next Pointer (NEXT): 0x%02x\n", SP, U8(1));
-				P ("%26c Capability ID (CID): 0x%02x\n", SP, U8(0));
+				P ("%26c Next Pointer (NEXT): 0x%02x\n", SP, F(8,15));
+				P ("%26c Capability ID (CID): 0x%02x\n", SP, F(0,7));
 
 	PH2 (2);	P ("PCI Express Capabilities (PXCAP):\n");
-				P ("%26c Interrupt Message Number (IMN): %d\n", SP, (U16(2) >> 9) & 0x001f);
-				P ("%26c Device/Port Type (DPT): %d\n", SP, (U16(2) >> 4) & 0x000f);
-				P ("%26c Capability Version (VER): %d\n", SP, (U16(2) & 0x000f));
+				P ("%26c Interrupt Message Number (IMN): %d\n", SP, F(9,13));
+				P ("%26c Device/Port Type (DPT): %d\n", SP, F(4,7));
+				P ("%26c Capability Version (VER): %d\n", SP, F(0,3));
 	
 	PH4 (4);	P ("PCI Express Device Capabilities (PXDCAP):\n");
-				P ("%26c Function Level Reset Capability (FLRC): %s\n", SP, YN_BIT5(7));
-				P ("%26c Captured Slot Power Limit Scale (CSPLS): %d\n", SP, (U32(4) >> 26) & 0x03);
-				P ("%26c Captured Slot Power Limit Value (CSPLV): %d\n", SP, (U32(4) >> 18) & 0xff);
-				P ("%26c Role-based Error Reporting (RER): %s\n", SP, YN_BIT7(5));
-				P ("%26c Endpoint L1 Acceptable Latency (L1L): %d\n", SP, (U32(4) >> 9) & 0x07);
-				P ("%26c Endpoint L0s Acceptable Latency (L0SL): %d\n", SP, (U32(4) >> 6) & 0x07);
-				P ("%26c Extended Tag Field Supported (ETFS): %s\n", SP, YN_BIT5(4));
-				P ("%26c Phantom Functions Supported (PFS): %d\n", SP, (U32(4) >> 3) & 0x03);
-				P ("%26c Max_Payload_Size Supported (MPS): %d\n", SP, U32(4) & 0x07);
+				P ("%26c Function Level Reset Capability (FLRC): %s\n", SP, YN(28));
+				P ("%26c Captured Slot Power Limit Scale (CSPLS): %d\n", SP, F(26,27));
+				P ("%26c Captured Slot Power Limit Value (CSPLV): %d\n", SP, F(18,25));
+				P ("%26c Role-based Error Reporting (RER): %s\n", SP, YN(15));
+				P ("%26c Endpoint L1 Acceptable Latency (L1L): %d\n", SP, F(9,11));
+				P ("%26c Endpoint L0s Acceptable Latency (L0SL): %d\n", SP, F(6,8));
+				P ("%26c Extended Tag Field Supported (ETFS): %s\n", SP, YN(5));
+				P ("%26c Phantom Functions Supported (PFS): %d\n", SP, F(3,4));
+				P ("%26c Max_Payload_Size Supported (MPS): %d\n", SP, F(0,2));
 
 	PH2 (8);	P ("PCI Express Device Control (PXDC):\n");
-				P ("%26c Initiate Function level Reset (IFLR): %s\n", SP, YN_BIT7(9));
-				P ("%26c Max_Read_Request Size (MRRS): %d\n", SP, (U16(8) >> 12) & 0x07);
-				P ("%26c Enable No Snoop (ENS): %s\n", SP, YN_BIT3(9));
-				P ("%26c AUX Power PM Enable (APPME): %s\n", SP, YN_BIT2(9));
-				P ("%26c Phantom Functions Enable (PFE): %s\n", SP, YN_BIT1(9));
-				P ("%26c Extended Tag Enable (ETE): %s\n", SP, YN_BIT0(9));
-				P ("%26c Max_Payload_Size (MPS): %d\n", SP, (U16(8) >> 5) & 0x07);
-				P ("%26c Enable Relaxed Ordering (ERO): %s\n", SP, YN_BIT4(8));
-				P ("%26c Unsupported Request Reporting Enable (URRE): %s\n", SP, YN_BIT3(8));
-				P ("%26c Fatal Error Reporting Enable (FERE): %s\n", SP, YN_BIT2(8));
-				P ("%26c Non-Fatal Error Reporting Enable (NFERE): %s\n", SP, YN_BIT1(8));
-				P ("%26c Correctable Error Reporting Enable (CERE): %s\n", SP, YN_BIT0(8));
+				P ("%26c Initiate Function level Reset (IFLR): %s\n", SP, YN(15));
+				P ("%26c Max_Read_Request Size (MRRS): %d\n", SP, F(12,14));
+				P ("%26c Enable No Snoop (ENS): %s\n", SP, YN(11));
+				P ("%26c AUX Power PM Enable (APPME): %s\n", SP, YN(10));
+				P ("%26c Phantom Functions Enable (PFE): %s\n", SP, YN(9));
+				P ("%26c Extended Tag Enable (ETE): %s\n", SP, YN(8));
+				P ("%26c Max_Payload_Size (MPS): %d\n", SP, F(5,7));
+				P ("%26c Enable Relaxed Ordering (ERO): %s\n", SP, YN(4));
+				P ("%26c Unsupported Request Reporting Enable (URRE): %s\n", SP, YN(3));
+				P ("%26c Fatal Error Reporting Enable (FERE): %s\n", SP, YN(2));
+				P ("%26c Non-Fatal Error Reporting Enable (NFERE): %s\n", SP, YN(1));
+				P ("%26c Correctable Error Reporting Enable (CERE): %s\n", SP, YN(0));
 	
 	PH2 (10);	P ("PCI Express Device Status (PXDS):\n");
-				P ("%26c Transactions Pending (TP): %s\n", SP, YN_BIT5(10));
-				P ("%26c AUX Power Detected (APD): %s\n", SP, YN_BIT4(10));
-				P ("%26c Unsupported Request Detected (URD): %s\n", SP, YN_BIT3(10));
-				P ("%26c Fatal Error Detected (FED): %s\n", SP, YN_BIT2(10));
-				P ("%26c Non-Fatal Error Detected (NFED): %s\n", SP, YN_BIT1(10));
-				P ("%26c Correctable Error Detected (CED): %s\n", SP, YN_BIT0(10));
+				P ("%26c Transactions Pending (TP): %s\n", SP, YN(5));
+				P ("%26c AUX Power Detected (APD): %s\n", SP, YN(4));
+				P ("%26c Unsupported Request Detected (URD): %s\n", SP, YN(3));
+				P ("%26c Fatal Error Detected (FED): %s\n", SP, YN(2));
+				P ("%26c Non-Fatal Error Detected (NFED): %s\n", SP, YN(1));
+				P ("%26c Correctable Error Detected (CED): %s\n", SP, YN(0));
 
 	PH4 (12);	P ("PCI Express Link Capabilities (PXLCAP):\n");
-				P ("%26c Port Number (PN): 0x%02x\n", SP, (U32(12) >> 24) & 0xff);
-				P ("%26c ASPM Optionality Compliance (AOC): %s\n", SP, YN_BIT6(14));
-				P ("%26c Clock Power Management (CPM): %s\n", SP, YN_BIT2(14));
-				P ("%26c L1 Exit Latency (L1EL): %d\n", SP, (U32(12) >> 15) & 0x07);
-				P ("%26c L0s Exit Latency (L0SEL): %d\n", SP, (U32(12) >> 12) & 0x07);
-				P ("%26c Active State Power Management Support (ASPMS): %d\n", SP, (U32(12) >> 10) & 0x03);
-				P ("%26c Maximum Link Width (MLW): %d lanes\n", SP, (U32(12) >> 4) & 0x3f);
-				P ("%26c Supported Link Speeds (SLS): Gen %d\n", SP, U32(12) & 0x0f);
+				P ("%26c Port Number (PN): 0x%02x\n", SP, F(24,31));
+				P ("%26c ASPM Optionality Compliance (AOC): %s\n", SP, YN(22));
+				P ("%26c Clock Power Management (CPM): %s\n", SP, YN(18));
+				P ("%26c L1 Exit Latency (L1EL): %d\n", SP, F(15,17));
+				P ("%26c L0s Exit Latency (L0SEL): %d\n", SP, F(12,14));
+				P ("%26c Active State Power Management Support (ASPMS): %d\n", SP, F(10,11));
+				P ("%26c Maximum Link Width (MLW): %d lanes\n", SP, F(4,9));
+				P ("%26c Supported Link Speeds (SLS): Gen %d\n", SP, F(0,3));
 
 	PH2 (16);	P ("PCI Express Link Control (PXLC):\n");
-				P ("%26c Hardware Autonomous Width Disable (HAWD): %s\n", SP, YN_BIT1(17));
-				P ("%26c Enable Clock Power Management (ECPM): %s\n", SP, YN_BIT0(17));
-				P ("%26c Extended Synch (ES): %s\n", SP, YN_BIT7(16));
-				P ("%26c Common Clock Configuration (CCC): %s\n", SP, YN_BIT6(16));
-				P ("%26c Read Completion Boundary (RCB): %d\n", SP, ISSET_BIT3(16));
-				P ("%26c Active State Power Management Control (ASPMC): %d\n", SP, U16(16) & 0x03);
+				P ("%26c Hardware Autonomous Width Disable (HAWD): %s\n", SP, YN(9));
+				P ("%26c Enable Clock Power Management (ECPM): %s\n", SP, YN(8));
+				P ("%26c Extended Synch (ES): %s\n", SP, YN(7));
+				P ("%26c Common Clock Configuration (CCC): %s\n", SP, YN(6));
+				P ("%26c Read Completion Boundary (RCB): %d\n", SP, F(3,3));
+				P ("%26c Active State Power Management Control (ASPMC): %d\n", SP, F(0,1));
 
 	PH2 (18);	P ("PCI Express Link Status (PXLS):\n");
-				P ("%26c Slot Clock Configuration (SCC): %d\n", SP, ISSET_BIT4(19));
-				P ("%26c Negotiated Link Width (NLW): %d lanes\n", SP, (U16(18) >> 4) & 0x3f);
-				P ("%26c Current Link Speed (CLS): Gen %d\n", SP, U16(18) & 0x0f);
+				P ("%26c Slot Clock Configuration (SCC): %d\n", SP, F(12,12));
+				P ("%26c Negotiated Link Width (NLW): %d lanes\n", SP, F(4,9));
+				P ("%26c Current Link Speed (CLS): Gen %d\n", SP,F(0,3));
 
 	static char *tph[] = {"None", "TPH Completer Supported", "Reserved", "Both TPH and Extended TPH Completer Supported"};
 
 	PH4 (36);	P ("PCI Express Device Capabilities 2 (PXDCAP2):\n");
-				P ("%26c Max End-End TLP Prefixes (MEETP): %d\n", SP, (U32(36) >> 22) & 0x03);
-				P ("%26c End-End TLP Prefix Supported (EETPS): %s\n", SP, YN_BIT5(38));
-				P ("%26c Extended Fmt Field Supported (EFFS): %s\n", SP, YN_BIT4(38));
-				P ("%26c OBFF Supported (OBFFS): %d\n", SP, (U32(36) >> 18) & 0x03);
-				P ("%26c TPH Completer Supported (TPHCS): %s\n", SP, tph[(U32(36) >> 12) & 0x03]);
-				P ("%26c Latency Tolerance Reporting Supported (LTRS): %s\n", SP, YN_BIT3(37));
-				P ("%26c 128-bit CAS Completer Supported (128CCS): %s\n", SP, YN_BIT1(37));
-				P ("%26c 64-bit AtomicOp Completer Supported (64AOCS): %s\n", SP, YN_BIT0(37));
-				P ("%26c 32-bit AtomicOp Completer Supported (32AOCS): %s\n", SP, YN_BIT7(36));
-				P ("%26c Completion Timeout Disable Supported (CTDS): %s\n", SP, YN_BIT4(36));
-				P ("%26c Completion Timeout Ranges Supported (CTRS): %d\n", SP, U32(36) & 0x0f);
+				P ("%26c Max End-End TLP Prefixes (MEETP): %d\n", SP, F(22,23));
+				P ("%26c End-End TLP Prefix Supported (EETPS): %s\n", SP, YN(21));
+				P ("%26c Extended Fmt Field Supported (EFFS): %s\n", SP, YN(20));
+				P ("%26c OBFF Supported (OBFFS): %d\n", SP, F(18,19));
+				P ("%26c TPH Completer Supported (TPHCS): %s\n", SP, tph[F(12,13)]);
+				P ("%26c Latency Tolerance Reporting Supported (LTRS): %s\n", SP, YN(11));
+				P ("%26c 128-bit CAS Completer Supported (128CCS): %s\n", SP, YN(9));
+				P ("%26c 64-bit AtomicOp Completer Supported (64AOCS): %s\n", SP, YN(8));
+				P ("%26c 32-bit AtomicOp Completer Supported (32AOCS): %s\n", SP, YN(7));
+				P ("%26c Completion Timeout Disable Supported (CTDS): %s\n", SP, YN(4));
+				P ("%26c Completion Timeout Ranges Supported (CTRS): %d\n", SP, F(0,3));
 
 	PH4 (40);	P ("PCI Express Device Control 2 (PXDC2):\n");
-				P ("%26c OBFF Enable (OBFFE): %d\n", SP, (U32(40) >> 13) & 0x03);
-				P ("%26c Latency Tolerance Reporting Mechanism Enable (LTRME): %s\n", SP, YN_BIT2(41));
-				P ("%26c Completion Timeout Disable (CTD): %s\n", SP, YN_BIT4(40)); 
-				P ("%26c Completion Timeout Value (CTV): %d\n", SP, U32(40) & 0x0f);
+				P ("%26c OBFF Enable (OBFFE): %d\n", SP, F(13,14));
+				P ("%26c Latency Tolerance Reporting Mechanism Enable (LTRME): %s\n", SP, YN(10));
+				P ("%26c Completion Timeout Disable (CTD): %s\n", SP, YN(4));
+				P ("%26c Completion Timeout Value (CTV): %d\n", SP, F(0,3));
 
 }
 

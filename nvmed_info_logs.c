@@ -129,39 +129,42 @@ int nvmed_info_get_logs (NVMED *nvmed, char **cmd_args)
 
 int nvmed_info_logs_error (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 res)
 {
+	__u32 _v;
+
 	PV (0, 7, "Error Count", "");
-	PH2 (8);	P ("Submission Queue ID: 0x%x\n", U16(8));
-	PH2 (10);	P ("Command ID: 0x%x\n", U16(10));
-	PH2 (12);	P ("Status Field: 0x%x\n", U16(12));
+	PH2 (8);	P ("Submission Queue ID: 0x%x\n", F(0,15));
+	PH2 (10);	P ("Command ID: 0x%x\n", F(0,15));
+	PH2 (12);	P ("Status Field: 0x%x\n", F(0,15));
 	PH2 (14);	P ("Parameter Error Location:\n");
-				P ("%26c  Byte in Command that contained the error: %d\n", SP, U16(14) & 0xff);
-				P ("%26c  Bit in Command that contained the error:  %d\n", SP, (U16(14) >> 8) & 0x07);
+				P ("%26c  Byte in Command that contained the error: %d\n", SP, F(0,7));
+				P ("%26c  Bit in Command that contained the error:  %d\n", SP, F(8,10));
 	PV (16, 23, "LBA", "");
-	PH4 (24);	P ("Namespace: %d\n", U32(24));
-	PH1 (28);	P ("Vendor Specific Information Available: 0x%02x\n", p[28]);
+	PH4 (24);	P ("Namespace: %d\n", F(0,31));
+	PH1 (28);	P ("Vendor Specific Information Available: 0x%02x\n", F(0,7));
 	PV (32, 39, "Command Specific Information", "");
 	return 0;
 }
 int nvmed_info_logs_smart (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 res)
 {
 	int i;
+	__u32 _v;
 
-	PH1 (0);	P ("Critical Warning: %s\n", p[0]? "" : "None");
-	if (ISSET_BIT0(p[0]))
+	PH1 (0);	P ("Critical Warning: %s\n", F(0,7)? "" : "None");
+	if (F(0,0))
 		P ("%26c  The available spare space has fallen below the threshold\n", SP);
-	if (ISSET_BIT1(p[0]))
-		P ("%26c  Temperature is above (or below) an over (or under) temperature threshold\n", SP);
-	if (ISSET_BIT2(p[0]))
+	if (F(1,1))
+		P ("%26c  A temperature is above (or below) an over (or under) temperature threshold\n", SP);
+	if (F(2,2))
 		P ("%26c  The NVM subsystem reliability has been degraded due to errors\n", SP);
-	if (ISSET_BIT3(p[0]))
+	if (F(3,3))
 		P ("%26c  The media has been palce in read only mode\n", SP);
-	if (ISSET_BIT4(p[0]))
+	if (F(4,4))
 		P ("%26c  The volatile memory backup device has failed\n", SP);
 
-	PH2 (1); 	P ("Composite Temperature: %d\n", U16(1));
-	PH1 (3);	P ("Available Space: %d%%\n", p[3]);
-	PH1 (4);	P ("Available Spare Threshold: %d%%\n", p[4]);
-	PH1 (5);	P ("Percent Used: %d%%\n", p[5]);
+	PH2 (1); 	P ("Composite Temperature: %d\n", F(0,15));
+	PH1 (3);	P ("Available Space: %d%%\n", F(0,7));
+	PH1 (4);	P ("Available Spare Threshold: %d%%\n", F(0,7));
+	PH1 (5);	P ("Percent Used: %d%%\n", F(0,7));
 	PV (32, 47, "Data Units Read", "(x1000 512 bytes)");
 	PV (48, 63, "Data Units Written", "(x1000 512 bytes)");
 	PV (64, 79, "Host Read Commands", "");
@@ -173,21 +176,21 @@ int nvmed_info_logs_smart (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, 
 	PV (160, 175, "Media and Data Integrity Errors", "");
 	PV (176, 191, "Number of Error Information Log Entries", "");
 
-	PH4 (192);	P ("Warning Composite Temperature Time: %d (min)\n", U32(192));
-	PH4 (196); 	P ("Critical Composite Temperature Time: %d (min)\n", U32(196));
+	PH4 (192);	P ("Warning Composite Temperature Time: %d (min)\n", F(0,31));
+	PH4 (196); 	P ("Critical Composite Temperature Time: %d (min)\n", F(0,31));
 	for (i = 0; i < 8; i++) {
-		PH2 (200+i*2);	P ("Temperature Sensor %d: %d\n", i, U16(200+i*2));
+		PH2 (200+i*2);	P ("Temperature Sensor %d: %d\n", i, F(0,15));
 	}
 
 	return 0;
 }
 int nvmed_info_logs_firmware (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 res)
 {
+	__u32 _v;
 
 	PH1 (0);	P ("Active Firmware Info (AFI):\n");
-				P ("%26c  Slot to be activated at the next controller reset: %d\n", SP, ((p[0] >> 4) & 0x7));
-				P ("%26c  Slot the actively running firmware revision was loaded: %d\n", SP,
-					(p[0] & 0x7));
+				P ("%26c  Slot to be activated at the next controller reset: %d\n", SP, F(4,6));
+				P ("%26c  Slot the actively running firmware revision was loaded: %d\n", SP, F(0,2));
 
 	PS (8, 15, "Firmware Revision for Slot 1 (FRS1)");
 	PS (16, 23, "Firmware Revision for Slot 2 (FRS2)");
