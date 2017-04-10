@@ -14,6 +14,7 @@
 
 
 struct nvmed_info_cmd main_cmds[] = {
+	{"pci", 1, "PCI Registers", nvmed_info_pci},
 	{"identify", 1, "IDENTIFY Command", nvmed_info_identify},
 	{"features", 1, "FEATURES Command", nvmed_info_features},
 	{"logs", 1, "LOG PAGES Command", nvmed_info_logs},

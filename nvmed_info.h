@@ -21,6 +21,13 @@ struct nvmed_info_cmd {
 	int (*cmd_fn)(NVMED *nvmed, char **cmd_args);	// subfunction to handle the subcommand
 };
 
+struct pci_info {
+	int fd;
+	int len;
+	int type;
+	void *regs;
+};
+
 extern char *nvme_sc[];
 
 #define pow2(x)		(1 << (x))
@@ -125,6 +132,7 @@ extern char *nvme_sc[];
 #define YN_BIT6(x)		(ISSET_BIT6(x)? "Yes" : "No")
 #define YN_BIT7(x)		(ISSET_BIT7(x)? "Yes" : "No")
 
+#define U8(x)			((__u8) *((__u8 *) &p[x]))
 #define U16(x)			((__u16) *((__u16 *) &p[x]))
 #define U32(x)			((__u32) *((__u32 *) &p[x]))
 #define U64(x)			((__u64) *((__u64 *) &p[x]))
@@ -168,6 +176,17 @@ extern int nvmed_info_logs_smart (NVMED *nvmed, int logid, int nsid, __u8 *p, in
 extern int nvmed_info_logs_firmware (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 result);
 extern int nvmed_info_logs_namespace (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 result);
 extern int nvmed_info_logs_command (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 result);
+extern int nvmed_info_pci (NVMED *nvmed, char **cmd_args);
+extern int nvmed_info_pci_config (NVMED *nvmed, char **cmd_args);
+extern int nvmed_info_pci_help (char *s);
+extern int nvmed_info_pci_open (NVMED *nvmed, char *name, int type, struct pci_info *pci);
+extern int nvmed_info_pci_close (struct pci_info *pci);
+extern void nvmed_info_pci_parse_config (NVMED *nvmed, struct pci_info *pci);
+extern void nvmed_info_pci_parse_caps (NVMED *nvmed, struct pci_info *pci);
+extern void nvmed_info_pci_parse_pmcap (NVMED *nvmed, struct pci_info *pci, int offset);
+extern void nvmed_info_pci_parse_msicap (NVMED *nvmed, struct pci_info *pci, int offset);
+extern void nvmed_info_pci_parse_msixcap (NVMED *nvmed, struct pci_info *pci, int offset);
+extern void nvmed_info_pci_parse_pxcap (NVMED *nvmed, struct pci_info *pci, int offset);
 extern void print_bytes (__u8 *p, int len);
 
 #if 0
