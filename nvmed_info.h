@@ -13,6 +13,7 @@ extern "C" {
 #include <errno.h>
 
 #define NVMED_INFO_VERSION	"0.9"
+#define NVME_SPEC_VERSION	"1.2.1"
 
 struct nvmed_info_cmd {
 	const char *cmd_name;					// subcommand name
@@ -147,7 +148,8 @@ extern char *nvme_sc[];
 #define P	printf
 #define SP	' '
 #define S	printf("%26c", ' ')
-#define PRINT_NVMED_INFO	printf("nvmed_info version " NVMED_INFO_VERSION "\n\n")
+#define PRINT_NVMED_INFO	printf("nvmed_info version " NVMED_INFO_VERSION \
+								" (Compliant to NVMe Spec. " NVME_SPEC_VERSION ")\n\n")
 
 enum print_format { FORMAT_STRING, FORMAT_ID, FORMAT_VALUE };
 
