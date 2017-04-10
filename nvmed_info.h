@@ -187,6 +187,7 @@ extern int nvmed_info_logs_namespace (NVMED *nvmed, int logid, int nsid, __u8 *p
 extern int nvmed_info_logs_command (NVMED *nvmed, int logid, int nsid, __u8 *p, int len, __u32 result);
 extern int nvmed_info_pci (NVMED *nvmed, char **cmd_args);
 extern int nvmed_info_pci_config (NVMED *nvmed, char **cmd_args);
+extern int nvmed_info_pci_nvme (NVMED *nvmed, char **cmd_args);
 extern int nvmed_info_pci_help (char *s);
 extern int nvmed_info_pci_open (NVMED *nvmed, char *name, int type, struct pci_info *pci);
 extern int nvmed_info_pci_close (struct pci_info *pci);
@@ -196,6 +197,7 @@ extern void nvmed_info_pci_parse_pmcap (NVMED *nvmed, struct pci_info *pci, int 
 extern void nvmed_info_pci_parse_msicap (NVMED *nvmed, struct pci_info *pci, int offset);
 extern void nvmed_info_pci_parse_msixcap (NVMED *nvmed, struct pci_info *pci, int offset);
 extern void nvmed_info_pci_parse_pxcap (NVMED *nvmed, struct pci_info *pci, int offset);
+extern void nvmed_info_pci_parse_nvme (NVMED *nvmed, struct pci_info *pci);
 extern void print_bytes (__u8 *p, int len);
 
 #endif /* _NVMED_INFO_H */

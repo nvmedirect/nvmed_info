@@ -17,7 +17,8 @@
 #define PCI_FILE_MMAP	1
 
 struct nvmed_info_cmd pci_cmds[] = {
-	{"config", 1, "PCIe Config Space", nvmed_info_pci_config},
+	{"nvme", 1, "NVMe Controller Registers", nvmed_info_pci_nvme},
+	{"config", 1, "PCIe Config Registers", nvmed_info_pci_config},
 	{NULL, 0, NULL, NULL}
 };
 
@@ -26,7 +27,7 @@ int nvmed_info_pci (NVMED *nvmed, char **cmd_args)
 	struct nvmed_info_cmd *c;
 
 	if (cmd_args[0] == NULL)
-		return nvmed_info_pci_config(nvmed, NULL);
+		return nvmed_info_pci_nvme(nvmed, NULL);
 
 	c = cmd_lookup(pci_cmds, cmd_args[0]);
 	if (c)
@@ -127,13 +128,27 @@ int nvmed_info_pci_config (NVMED *nvmed, char **cmd_args)
 {
 	int rc;
 	struct pci_info pci;
-	//__u8 *p;
 
 	rc = nvmed_info_pci_open(nvmed, "config", PCI_FILE_COPY, &pci);
 	if (rc < 0)
 		return -1;
 
 	nvmed_info_pci_parse_config(nvmed, &pci);
+
+	nvmed_info_pci_close(&pci);
+	return 0;
+}
+
+int nvmed_info_pci_nvme (NVMED *nvmed, char **cmd_args)
+{
+	int rc;
+	struct pci_info pci;
+
+	rc = nvmed_info_pci_open(nvmed, "resource0", PCI_FILE_MMAP, &pci);
+	if (rc < 0)
+		return -1;
+
+	nvmed_info_pci_parse_nvme(nvmed, &pci);
 
 	nvmed_info_pci_close(&pci);
 	return 0;
@@ -464,122 +479,103 @@ void nvmed_info_pci_parse_pxcap (NVMED *nvmed, struct pci_info *pci, int offset)
 }
 
 
-
-
-#if 0
-
-int nlib_pcibar_print (struct nvme_pcibar *regs)
+void nvmed_info_pci_parse_nvme (NVMED *nvmed, struct pci_info *pci)
 {
-	char *cc_shn[] = {
-		"No notification; no effect",
+	__u8 *p;
+	__u64 _v;			// This is a hack for handling 64-bit entry (e.g. CAP).
+						// Safe, as long as a sub-field is less than or equal to 32-bit.
+	static char *cc_shn[] = {
+		"No notification; no effect", 
 		"Normal shutdown notification",
 		"Abrupt shutdwon notification",
 		"Reserved" };
-	char *csts_shst[] = {
+	static char *csts_shst[] = {
 		"Normal operation",
 		"Shutdown processing occurring",
 		"Shutdown processing complete",
 		"Reserved" };
-	char *cmbsz_szu[] = {
-		"4 KB", "64 KB", "1 MB", "16 MB", "256 MB", "4 GB", "64 GB" };
+	 static char *cmbsz_szu[] = {"4 KB", "64 KB", "1 MB", "16 MB", "256 MB", "4 GB", "64 GB"};
 
 
+	if (pci == NULL || pci->regs == NULL)
+		return;
+
+	p = (__u8 *) pci->regs;
+
+	PRINT_NVMED_INFO;
 	P ("NVMe Controller Registers\n");
-	P ("-------------------------\n");
-	PH4 (regs, cap.d.l);	P ("Controller Capabilities (CAP)\n");
-	PH4 (regs, cap.d.h);	
-				   P ("  Memory Page Size Maximum (MPSMAX): %u bytes\n",
-						pow2 (12 + NVME_CAP_MPSMAX(regs->cap.q)));
-				S; P ("Memory Page Size Minimum (MPSMIN): %u bytes\n",
-						pow2 (12 + NVME_CAP_MPSMIN(regs->cap.q)));
-				S; P ("Command Sets Supported (CSS): %s\n",
-						(NVME_CAP_CSS(regs->cap.q) & 1)? "NVM command set" : "");
-				S; P ("NVM Subsystem Reset Supported (NSSRS): %s\n",
-						NVME_CAP_NSSRS(regs->cap.q)? YES : NO);
-				S; P ("Doorbell Stride (DSTRD): %u bytes\n",
-						pow2 (2 + NVME_CAP_DSTRD(regs->cap.q)));
-				S; P ("Timeout (TO): %u * 500 ms\n",
-						NVME_CAP_TO(regs->cap.q));
-				S; P ("Arbitration Mechanism Supported (AMS): %s\n", 
-						(NVME_CAP_AMS(regs->cap.q) == 0)? "Round Robin" :
-						(NVME_CAP_AMS(regs->cap.q) == 1)? "Weighted Round Robin with Urgent Priority Class" :
-						(NVME_CAP_AMS(regs->cap.q) == 2)? "Vendor Specific" :
-						"WRR + VS");
-				S; P ("Contiguous Queues Required (CQR): %s\n",
-						NVME_CAP_CQR(regs->cap.q)? YES : NO);
-				S; P ("Maximum Queue Entries Supported (MQES): %u\n",
-						NVME_CAP_MQES(regs->cap.q));
-	PH4 (regs, vs);	P ("Version (VS): %u.%u\n", 
-						NVME_VS_MJR(regs->vs), NVME_VS_MNR(regs->vs));
-	PH4 (regs, intms);	P ("Interrupt Mask Set (IVMS): 0x%04x\n", 
-						regs->intms);
-	PH4 (regs, intmc);	P ("Interrupt Vector Mask Clear (IVMC): 0x%04x\n",
-						regs->intmc);
-	PH4 (regs, cc);	P ("Controller Configuration (CC):\n");
-				S; P ("I/O Completion Queue Entry Size (IOCQES): %u bytes\n",
-						pow2 (NVME_CC_IOCQES(regs->cc)));
-				S; P ("I/O Submission Queue Entry Size (IOSQES): %u bytes\n",
-						pow2 (NVME_CC_IOSQES(regs->cc)));
-				S; P ("Shutdown Notification (SHN): %s\n",
-						cc_shn[NVME_CC_SHN(regs->cc)]);
-				S; P ("Arbitration Mechanism Selected (AMS): %s\n",
-						NVME_CC_AMS(regs->cc) == 0? "Round Robin" :
-						NVME_CC_AMS(regs->cc) == 1? "Weighted Round Robin with Urgent Priority Class" :
-						NVME_CC_AMS(regs->cc) == 7? "Vendor Specific" :
-						"Reserved");
-				S; P ("Memory Page Size (MPS): %u bytes\n",
-						pow2 (12 + NVME_CC_MPS(regs->cc)));
-				S; P ("I/O Command Set Selected (CSS): %s\n",
-						NVME_CC_CSS(regs->cc) == 0? "NVM Command Set" :
-						"Reserved");
-				S; P ("Enable (EN): %s\n", 
-						NVME_CC_EN(regs->cc)? YES : NO);
-	PH4 (regs, csts);	P ("Controller Status (CSTS):\n");	
-				S; P ("Processing Paused (PP): %s\n",
-						NVME_CSTS_PP(regs->csts)? YES : NO);
-				S; P ("NVM Subsystem Reset Occurred (NSSRO): %s\n",
-						NVME_CSTS_NSSRO(regs->csts)? YES : NO);
-				S; P ("Shutdown status (SHST): %s\n",
-						csts_shst[NVME_CSTS_SHST(regs->csts)]);
-				S; P ("Controller Fatal Status (CFS): %s\n",
-						NVME_CSTS_CFS(regs->csts)? YES : NO);
-				S; P ("Ready (RDY): %s\n",
-						NVME_CSTS_RDY(regs->csts)? YES : NO);
-	PH4 (regs, nssr);	P ("NVM Subsystem Reset (NSSR)\n");
-	PH4 (regs, aqa);		P ("Admin Queue Attributes (AQA):\n");
-				S; P ("Admin Completion Queue Size (ACQS): %u entries\n",
-						NVME_AQA_ACQS(regs->aqa));
-				S; P ("Admin Submission Queue Size (ASQS): %u entries\n",
-						NVME_AQA_ASQS(regs->aqa));
-	PH4 (regs, asq.d.l);	P ("Admin Submission Queue Base (ASQB): 0x%08llx\n",
-						regs->asq.q);
-	PH4 (regs, asq.d.h);	P ("\n");
-	PH4 (regs, acq.d.l);	P ("Admin Completion Queue Base (ACQB): 0x%08llx\n",
-						regs->acq.q);
-	PH4 (regs, acq.d.h);	P ("\n");
-	PH4 (regs, cmbloc);	P ("Controller Memory Buffer Location (CMBLOC):\n");
-				S; P ("Base Indicator Register (BIR): %u\n",
-						NVME_CMBLOC_BIR(regs->cmbloc));
-				S; P ("Offset (OFST): %u (in CMBSZ)\n",
-						NVME_CMBLOC_OFST(regs->cmbloc));
-	PH4 (regs, cmbsz);	P ("Controller Memory Buffer Size (CMBSZ):\n");
-				S; P ("Size (SZ): %u (in SZU)\n", 
-						NVME_CMBSZ_SZ(regs->cmbsz));
-				S; P ("Size Units (SZU): %s\n", (NVME_CMBSZ_SZU(regs->cmbsz) < 7)?
-						cmbsz_szu[NVME_CMBSZ_SZU(regs->cmbsz)] : "Reserved");
-				S; P ("Write Data Support (WDS): %s\n",
-						NVME_CMBSZ_WDS(regs->cmbsz)? YES : NO);
-				S; P ("Read Data Support (RDS): %s\n",
-						NVME_CMBSZ_RDS(regs->cmbsz)? YES : NO);
-				S; P ("PRP/SGL List Support (LISTS): PRP/SGL Lists in %s\n",
-						NVME_CMBSZ_LISTS(regs->cmbsz)? "Controller Memory Buffer":
-						"Host Memory");
-				S; P ("Completion Queue Support (CQS): CQs in %s\n",
-						NVME_CMBSZ_CQS(regs->cmbsz)? "Controller Memory Buffer" :
-						"Host Memory");
-				S; P ("Submission Queue Support (SQS): SQs in %s\n",
-						NVME_CMBSZ_SQS(regs->cmbsz)? "Controller Memory Buffer" :
-						"Host Memory");
+    P ("Bytes      Values       Description\n");
+	P ("---------  -----------  -----------\n\n");
+
+	PH4 (0);	P ("Controller Capabilities (CAP):\n");
+	PH4 (4);	_v = U64(0);							// hack for handling a 64-bit entry
+				P ("   Memory Page Size Maximum (MPSMAX): 2^%u bytes\n", 12 + F(52,55));
+				P ("%26c Memory Page Size Minimum (MPSMIN): 2^%u bytes\n", SP, 12 + F(48,51));
+				P ("%26c Command Sets Supported (CSS): %s\n", SP, F(37,37)? "NVM command set" : "Reserved");
+				P ("%26c NVM Subsystem Reset Supported (NSSRS): %s\n", SP, YN(36));
+				P ("%26c Doorbell Stride (DSTRD): %u bytes\n", SP, pow2 (2+F(32,35)));
+				P ("%26c Timeout (TO): %u * 500 ms\n", SP, F(24,31));
+				P ("%26c Arbitration Mechanism Supported (AMS): %s%s%s\n", SP,
+						F(17,18) == 0? "Round Robin " : "",
+						F(17,17)? "Weighted Round Robin with Urgent Priority Class " : "",
+						F(18,18)? "Vendor Specific" : "");
+				P ("%26c Contiguous Queues Required (CQR): %s\n", SP, YN(16));
+				P ("%26c Maximum Queue Entries Supported (MQES): %u entries\n", SP, F(0,15)+1);
+	PH4 (8);	P ("Version (VS):\n");
+				P ("%26c Major Version Number (MJR): %u\n", SP, F(16,31));
+				P ("%26c Minor Version Number (MNR): %u\n", SP, F(8,15));
+				P ("%26c Tertiary Version Number (TNR): %u\n", SP, F(0,7));
+
+	PH4 (12);	P ("Interrupt Mask Set (IVMS): 0x%08x\n", F(0,31));
+
+	PH4 (16);	P ("Interrupt Vector Mask Clear (IVMC): 0x%08x\n", F(0,31));
+
+	PH4 (20);	P ("Controller Configuration (CC):\n");
+				P ("%26c I/O Completion Queue Entry Size (IOCQES): %u bytes\n", SP, pow2(F(20,23)));
+				P ("%26c I/O Submission Queue Entry Size (IOSQES): %u bytes\n", SP, pow2(F(16,19)));
+				P ("%26c Shutdown Notification (SHN): %s\n", SP, cc_shn[F(14,15)]);
+				P ("%26c Arbitration Mechanism Selected (AMS): %s\n", SP,
+						F(11,13) == 0? "Round Robin" :
+						F(11,13) == 1? "Weighted Round Robin with Urgent Priority Class" :
+						F(11,13) == 7? "Vendor Specific" : "Reserved");
+				P ("%26c Memory Page Size (MPS): %u bytes\n", SP, pow2(12+F(7,10)));
+				P ("%26c I/O Command Set Selected (CSS): %s\n", SP, 
+						F(4,6) == 0? "NVM Command Set" : "Reserved");
+				P ("%26c Enable (EN): %s\n", SP, YN(0));
+
+	PH4 (28);	P ("Controller Status (CSTS):\n");	
+				P ("%26c Processing Paused (PP): %s\n", SP, YN(5));
+				P ("%26c NVM Subsystem Reset Occurred (NSSRO): %s\n", SP, YN(4));
+				P ("%26c Shutdown status (SHST): %s\n", SP, csts_shst[F(2,3)]);
+				P ("%26c Controller Fatal Status (CFS): %s\n", SP, YN(1));
+				P ("%26c Ready (RDY): %s\n", SP, YN(0));
+
+	PH4 (32);	P ("NVM Subsystem Reset (NSSR)\n");
+
+	PH4 (36);	P ("Admin Queue Attributes (AQA):\n");
+				P ("%26c Admin Completion Queue Size (ACQS): %u entries\n", SP, F(16,27)+1);
+				P ("%26c Admin Submission Queue Size (ASQS): %u entries\n", SP, F(0,11)+1);
+
+	PH4 (40);	P ("Admin Submission Queue Base (ASQB): 0x%016llx\n", U64(40));
+	PH4 (44);   P ("\n");
+
+	PH4 (48);	P ("Admin Completion Queue Base (ACQB): 0x%016llx\n", U64(48));
+	PH4 (52);   P ("\n");
+
+	PH4 (56);	P ("Controller Memory Buffer Location (CMBLOC):\n");
+				P ("%26c Offset (OFST): 0x%08x\n", SP, F(12,31) << 12);
+				P ("%26c Base Indicator Register (BIR): %u\n", SP, F(0,2));
+
+	PH4 (60);	P ("Controller Memory Buffer Size (CMBSZ):\n");
+				P ("%26c Size (SZ): %u (in SZU)\n", SP, F(12,31));
+				P ("%26c Size Units (SZU): %s\n", SP, (F(8,11) < 7)? cmbsz_szu[F(8,11)] : "Reserved");
+				P ("%26c Write Data Support (WDS): %s\n", SP, YN(4));
+				P ("%26c Read Data Support (RDS): %s\n", SP, YN(3));
+				P ("%26c PRP/SGL List Support (LISTS): PRP/SGL Lists in %s\n", SP,
+						F(2,2)? "Controller Memory Buffer": "Host Memory");
+				P ("%26c Completion Queue Support (CQS): CQs in %s\n", SP,
+						F(1,1)? "Controller Memory Buffer" : "Host Memory");
+				P ("%26c Submission Queue Support (SQS): SQs in %s\n", SP,
+						F(0,0)? "Controller Memory Buffer" : "Host Memory");
 
 }
-#endif
