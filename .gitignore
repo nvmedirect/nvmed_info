@@ -10,3 +10,4 @@ modules.order
 Module.symvers
 tags
 nvmed_info
+sample_output/*

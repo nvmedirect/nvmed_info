@@ -18,9 +18,11 @@ struct nvmed_info_cmd main_cmds[] = {
 	{"identify", 1, "IDENTIFY Command", nvmed_info_identify},
 	{"features", 1, "FEATURES Command", nvmed_info_features},
 	{"logs", 1, "LOG PAGES Command", nvmed_info_logs},
+	{"all", 1, "Print All Information", nvmed_info_all},
 	{NULL, 0, NULL, NULL}
 };
 
+int dev_fd;
 
 int main (int argc, char **argv)
 {
@@ -36,10 +38,12 @@ int main (int argc, char **argv)
 
 	dev_path = argv[1];
 	nvmed = nvmed_open(dev_path, 0);
-	if (nvmed == NULL) {
+	dev_fd = open(dev_path, O_RDWR);
+	if (nvmed == NULL || dev_fd < 0) {
 		printf("%s: Cannot open the NVMe device \"%s\"\n", argv[0], dev_path);
 		return -1;
 	}
+
 
 	if (argc == 2) 
 		main_cmds[0].cmd_fn(nvmed, &argv[2]);
@@ -51,6 +55,7 @@ int main (int argc, char **argv)
 	}
 	
 	nvmed_close(nvmed);
+	close(dev_fd);
 	return 0;
 
 }
@@ -72,3 +77,24 @@ int nvmed_info_usage (char *arg0, char *invalid_cmd)
 
 	return -1;
 }
+
+int nvmed_info_all (NVMED *nvmed, char **cmd_arg)
+{
+
+	nvmed_info_pci_config(nvmed, NULL);
+	nvmed_info_pci_nvme(nvmed, NULL);
+
+	nvmed_info_identify_controller(nvmed, NULL);
+	nvmed_info_identify_namespace(nvmed, NULL);
+
+	nvmed_info_get_features(nvmed, NULL);
+	nvmed_info_get_logs(nvmed, NULL);
+
+	return 0;
+}
+
+
+
+
+
+

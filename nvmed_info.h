@@ -29,7 +29,32 @@ struct pci_info {
 	void *regs;
 };
 
-extern char *nvme_sc[];
+struct nvme_passthru_cmd {
+	    __u8    opcode;
+	    __u8    flags;
+	    __u16   rsvd1;
+	    __u32   nsid;
+	    __u32   cdw2;
+	    __u32   cdw3;
+	    __u64   metadata;
+	    __u64   addr;
+	    __u32   metadata_len;
+	    __u32   data_len;
+	    __u32   cdw10;
+	    __u32   cdw11;
+	    __u32   cdw12;
+	    __u32   cdw13;
+	    __u32   cdw14;
+	    __u32   cdw15;
+	    __u32   timeout_ms;
+	    __u32   result;
+};
+
+#define nvme_admin_cmd nvme_passthru_cmd
+#define NVME_IOCTL_ADMIN_CMD	_IOWR('N', 0x41, struct nvme_admin_cmd)
+
+//extern char *nvme_sc[];
+extern int dev_fd;
 
 #define pow2(x)		(1 << (x))
 
@@ -180,6 +205,7 @@ extern struct nvmed_info_cmd *cmd_lookup (struct nvmed_info_cmd *list, char *str
 extern int cmd_help (char *invalid_cmd, char *cmd_name, struct nvmed_info_cmd *c);
 extern int nvmed_info_admin_command (NVMED *nvmed, struct nvme_admin_cmd *cmd);
 extern int nvmed_info_usage (char *arg0, char *invalid_cmd);
+extern int nvmed_info_all (NVMED *nvmed, char **cmd_args);
 extern int nvmed_info_identify (NVMED *nvmed, char **cmd_args);
 extern int nvmed_info_identify_help (char *s);
 extern int nvmed_info_identify_controller (NVMED *nvmed, char **cmd_args);

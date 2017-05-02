@@ -39,7 +39,7 @@ int nvmed_info_admin_command (NVMED *nvmed, struct nvme_admin_cmd *cmd)
 {
 	int rc;
 
-	rc = ioctl (nvmed->dev_fd, NVMED_IOCTL_ADMIN_CMD, cmd);
+	rc = ioctl (dev_fd, NVME_IOCTL_ADMIN_CMD, cmd);
 	if (rc < 0) {
 		printf("ioctl() failed, rc = %d.\n", rc);
 		return -1;

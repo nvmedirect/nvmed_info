@@ -205,8 +205,8 @@ int nvmed_info_get_features (NVMED *nvmed, char **cmd_args)
 				break;
 
 			case FEATURE_NUMBER_OF_QUEUES:	/* Number of Queues */
-				P ("%24c  Number of I/O Completion Queues Allocated (NCQA): %u\n", SP, F(16,31));
-				P ("%24c  Number of I/O Submission Queues Allocated (NSQA): %u\n", SP, F(0,15));
+				P ("%24c  Number of I/O Completion Queues Allocated (NCQA): %u\n", SP, F(16,31)+1);
+				P ("%24c  Number of I/O Submission Queues Allocated (NSQA): %u\n", SP, F(0,15)+1);
 				break;
 
 			case FEATURE_INTERRUPT_COALESCING:	/* Interrupt Coalescing */
