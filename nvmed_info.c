@@ -14,8 +14,8 @@
 
 
 struct nvmed_info_cmd main_cmds[] = {
-	{"pci", 1, "PCI Registers", nvmed_info_pci},
 	{"identify", 1, "IDENTIFY Command", nvmed_info_identify},
+	{"pci", 1, "PCI Registers", nvmed_info_pci},
 	{"features", 1, "FEATURES Command", nvmed_info_features},
 	{"logs", 1, "LOG PAGES Command", nvmed_info_logs},
 	{"all", 1, "Print All Information", nvmed_info_all},
@@ -80,15 +80,14 @@ int nvmed_info_usage (char *arg0, char *invalid_cmd)
 
 int nvmed_info_all (NVMED *nvmed, char **cmd_arg)
 {
-
-	nvmed_info_pci_config(nvmed, NULL);
-	nvmed_info_pci_nvme(nvmed, NULL);
-
 	nvmed_info_identify_controller(nvmed, NULL);
 	nvmed_info_identify_namespace(nvmed, NULL);
 
 	nvmed_info_get_features(nvmed, NULL);
 	nvmed_info_get_logs(nvmed, NULL);
+
+	nvmed_info_pci_config(nvmed, NULL);
+	nvmed_info_pci_nvme(nvmed, NULL);
 
 	return 0;
 }
