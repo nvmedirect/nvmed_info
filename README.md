@@ -1,6 +1,6 @@
 # nvmed_info
 
-A user-level tool to get various information on the NVMe SSD based on the NVMeDirect framework.
+A user-level tool to get various information on the NVMe SSD.
 
 
 ## Introduction
@@ -16,7 +16,7 @@ __nvmed_info__ shows the following information for the specified NVMe SSD in a t
 
 ## How to Install
 
-1. Install the NVMeDirect framework referring to [this instruction] (https://github.com/nvmedirect/nvmedirect/blob/master/README.md)
+1. Install the NVMeDirect framework referring to [this instruction](https://github.com/nvmedirect/nvmedirect/blob/master/README.md)
 You need the following files to build __nvmed_info__.
 ```shell
 /usr/local/include/nvme_hdr.h
@@ -41,28 +41,28 @@ $ mv nvmed_info /usr/local/bin
 $ sudo nvmed_info [dev] [command] [subcommand] [args]
 ```
 - You should be a root to run __nvmed_info__
-- __dev__: The target device you want to examine such as /dev/nvme0n1
-- __command__: The following commands are available. Note that you can specify any number of characters that can distinguish between commands. The command shown in parenthesis denotes the default one when none was specified.
+- __`dev`__: The target device you want to examine such as `/dev/nvme0n1`
+- __`command`__: The following commands are available. Note that you can specify any number of characters that can distinguish between commands. The command shown in parenthesis denotes the default one when none was specified.
 ```shell
-   [identify]:	for IDENTIFY command
-   pci:			for PCI Express and Controller registers
-   features: 	for GET FEATURES command
-   logs:		for GET LOG PAGE command
-   all:			for all of the above
+   [identify]:          for IDENTIFY command
+   pci:                 for PCI Express and Controller registers
+   features:            for GET FEATURES command
+   logs:                for GET LOG PAGE command
+   all:                 for all of the above
 ```
-- __subcommand__: The available subcommands depend on the __command__. The following subcommands are available. The subcommand shown in parenthesis denotes the dfault one when none was specified. 
+- __`subcommand`__: The available subcommands depend on the __`command`__. The following subcommands are available. The subcommand shown in parenthesis denotes the dfault one when none was specified. 
 ```shell
    identify 
-   			[controller]: 	for IDENTIFY CONTROLLER command
-			namespace:		for IDENTIFY NAMESPACE command
-							(The following __args__ specifies the namespace ID.)
+       [controller]:    for IDENTIFY CONTROLLER command
+       namespace:       for IDENTIFY NAMESPACE command
+                        (The following __args__ specifies the namespace ID.)
    pci		
-   			[nvme]:			for NVMe Controller registers
-			config:			for PCIe Config registers
+       [nvme]:          for NVMe Controller registers
+       config:          for PCIe Config registers
    features
-   			[get]:			for GET FEATURES command
+       [get]:           for GET FEATURES command
    logs
-   			[get]:			for GET LOG PAGE command
+       [get]:           for GET LOG PAGE command
 ```
 - Examples:
 Shows all the information
@@ -72,41 +72,41 @@ $ sudo nvmed_info /dev/nvme0n1 all
 
 Shows the result of IDENTIFY CONTROLLER command
 ```shell
-$ sudo nvmed_info /dev/nvme0n1 identify controller		# or
-# sudo nvmed_info /dev/nvme0n1 i c						# or
-$ sudo nvmed_info /dev/nvme0n1 i						# or
+$ sudo nvmed_info /dev/nvme0n1 identify controller      # or
+# sudo nvmed_info /dev/nvme0n1 i c                      # or
+$ sudo nvmed_info /dev/nvme0n1 i                        # or
 $ sudo nvmed_info /dev/nvme0n1 
 ```
 
 Show the result of IDENTIFY NAMESPACE command
 ```shell
-$ sudo nvmed_info /dev/nvme0n1 identify name			# or
-# sudo nvmed_info /dev/nvme0n1 i n						# or
-# sudo nvmed_info /dev/nvme0n1 i n 1		
+$ sudo nvmed_info /dev/nvme0n1 identify name            # or
+# sudo nvmed_info /dev/nvme0n1 i n                      # or
+# sudo nvmed_info /dev/nvme0n1 i n 1               
 ```
 
 Shows the NVMe Controller registers
 ```shell
-$ sudo nvmed_info /dev/nvme0n1 pci						# or
-$ sudo nvmed_info /dev/nvme0n1 p n 				
-$ sudo nvmed_info /dev/nvme0n1 p						# or
+$ sudo nvmed_info /dev/nvme0n1 pci                      # or
+$ sudo nvmed_info /dev/nvme0n1 p n                      # or
+$ sudo nvmed_info /dev/nvme0n1 p					
 ```
 
 Shows the PCIe Config registers
 ```shell
-$ sudo nvmed_info /dev/nvme0n1 pci config				# or
+$ sudo nvmed_info /dev/nvme0n1 pci config               # or
 $ sudo nvmed_info /dev/nvme0n1 p c 				
 ```
 
 Shows the result of GET FEATURES command
 ```shell
-$ sudo nvmed_info /dev/nvme0n1 features					# or
+$ sudo nvmed_info /dev/nvme0n1 features                 # or
 $ sudo nvmed_info /dev/nvme0n1 f
 ```
 
 Shows the result of GET LOG PAGE command
 ```shell
-$ sudo nvmed_info /dev/nvme0n1 logs						# or
+$ sudo nvmed_info /dev/nvme0n1 logs                     # or
 $ sudo nvmed_info /dev/nvme0n1 l
 ```
 
@@ -115,6 +115,6 @@ $ sudo nvmed_info /dev/nvme0n1 l
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-For bugs or feature requests, you are kindly invited to [file an issue] (https://github.com/nvmedirect/nvmed_info/issues). 
+For bugs or feature requests, you are kindly invited to [file an issue](https://github.com/nvmedirect/nvmed_info/issues). 
 
 
