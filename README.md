@@ -16,8 +16,7 @@ __nvmed_info__ shows the following information for the specified NVMe SSD in a t
 
 ## How to Install
 
-1. Install the NVMeDirect framework referring to [this instruction](https://github.com/nvmedirect/nvmedirect)
-You need the following files to build __nvmed_info__.
+1. Install the NVMeDirect framework referring to [this instruction](https://github.com/nvmedirect/nvmedirect). You need the following files to build __nvmed_info__.
 ```shell
 /usr/local/include/nvme_hdr.h
 /usr/local/include/nvmed.h
