@@ -251,7 +251,7 @@ void nvmed_info_identify_parse_namespace (__u8 *p, int nsid)
 	P ("Bytes      Values       Description\n");
 	P ("---------  -----------  -----------\n");
 	
-	PV (0, 7, "Namespace Size (NSZE)", "bytes");
+	PV (0, 7, "Namespace Size (NSZE)", "blocks");
 	PV (8, 15, "Namespace Capacity (NCAP)", "blocks");
 	PV (16, 23, "Namespace Utilization (NUSE)", "blocks");
 	PH1 (24);	P ("Namespace Features (NSFEAT)\n");

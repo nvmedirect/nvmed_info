@@ -5,31 +5,31 @@ Bytes      Values       Description
 ---------  -----------  -----------
 
 [Controller Capabilities and Features]
-0000:0001  4d 14        PCI Vendor ID (VID): 0x144d
-0002:0003  4d 14        PCI Subsystem Vendor ID (SSVID): 0x144d
-0004:0023  53 32 47 4d  Serial Number (SN): S2GMNCAGA09481F     
-           4e 43 41 47  
-           41 30 39 34  
-           38 31 46 20  
-           20 20 20 20  
-0024:0063  53 61 6d 73  Model Number (MN): Samsung SSD 950 PRO 512GB               
-           75 6e 67 20  
-           53 53 44 20  
-           39 35 30 20  
-           50 52 4f 20  
-           35 31 32 47  
-           42 20 20 20  
+0000:0001  86 80        PCI Vendor ID (VID): 0x8086
+0002:0003  86 80        PCI Subsystem Vendor ID (SSVID): 0x8086
+0004:0023  43 56 43 51  Serial Number (SN): CVCQ5246005A400AGN  
+           35 32 34 36  
+           30 30 35 41  
+           34 30 30 41  
+           47 4e 20 20  
+0024:0063  49 4e 54 45  Model Number (MN): INTEL SSDPEDMW400G4                     
+           4c 20 53 53  
+           44 50 45 44  
+           4d 57 34 30  
+           30 47 34 20  
            20 20 20 20  
            20 20 20 20  
            20 20 20 20  
-0064:0071  31 42 30 51  Firmware Revision (FR): 1B0QBXX7
-           42 58 58 37  
-0072       02           Recommended Arbitration Burst (RAB): 2
-0073:0075  38 25 00     IEEE OUI Identifier (IEEE): 0x002538
+           20 20 20 20  
+           20 20 20 20  
+0064:0071  38 45 56 31  Firmware Revision (FR): 8EV10135
+           30 31 33 35  
+0072       00           Recommended Arbitration Burst (RAB): 0
+0073:0075  e4 d2 5c     IEEE OUI Identifier (IEEE): 0x5cd2e4
 0076       00           Controller Multi-Path I/O and Namespace Sharing Capabilities (CMIC):
                             PCI Function, Single controller, Single port
 0077       05           Maximum Data Transfer Size (MDTS): 5 
-0078:0079  01 00        Controller ID (CNTLID): 0x1
+0078:0079  00 00        Controller ID (CNTLID): 0x0
 0080:0083  00 00 00 00  Version (VER): 0x0
 0084:0087  00 00 00 00  RTD3 Resume Latency (RTD3R): 0x0
 0088:0091  00 00 00 00  RTD3 Entry Latency (RTD3E): 0x0
@@ -40,26 +40,26 @@ Bytes      Values       Description
                             Supports a 128-bit Host Identifier: No
 
 [Admin Command Set Attributes & Optional Controller Capabilities]
-0256:0257  07 00        Optional Admin Command Support (OACS):
+0256:0257  06 00        Optional Admin Command Support (OACS):
                             Supports Namespace Management and Namespace Attachment commands: No
                             Supports Firmware Commit and Firmware Image Download commands: Yes
                             Supports Format NVM command: Yes
-                            Supports Security Send and Security Receive commands: Yes
-0258       07           Abort Command Limit (ACL): 7
+                            Supports Security Send and Security Receive commands: No
+0258       03           Abort Command Limit (ACL): 3
 0259       03           Asynchronous Event Request Limit (AERL): 3
-0260       06           Firmware Updates (FRMW)
+0260       02           Firmware Updates (FRMW)
                             Supports firmware activation without a reset: No
-                            The number of firmware slots: 3
+                            The number of firmware slots: 1
                             First firmware slot: read/write
-0261       01           Log Page Attributes (LPA)
+0261       00           Log Page Attributes (LPA)
                             Supports extended data for Get Log page: No
                             Supports the Command Effects log page: No
-                            Supports the SMART / Health information log page per namespace: Yes
+                            Supports the SMART / Health information log page per namespace: No
 0262       3f           Error Log Page Entries (ELPE): 63
-0263       04           Number of Power States Supported (NPSS): 4
-0264       01           Admin Vendor Specific Command Configuration (AVSCC): Standard format
-0265       01           Autonomous Power State Transition Attributes (APSTA):
-                            Supports autonomous power state transitions: Yes
+0263       00           Number of Power States Supported (NPSS): 0
+0264       00           Admin Vendor Specific Command Configuration (AVSCC): Vendor specific format
+0265       00           Autonomous Power State Transition Attributes (APSTA):
+                            Supports autonomous power state transitions: No
 0266:0267  00 00        Warning Composite Temperature Threshold (WCTEMP): 0
 0268:0269  00 00        Critical Composite Temperature Threshold (CCTEMP): 0
 0270:0271  00 00        Maximum Time for Firmware Activation (MTFA): 0
@@ -86,34 +86,34 @@ Bytes      Values       Description
                             Required Completion Queue entry size: 16
 0514:0515  00 00        Maximum Outstanding Commands (MAXCMD): 0
 0516:0519  01 00 00 00  Number of Namespaces (NN): 1
-0520:0521  1f 00        Optional NVM Command Support (ONCS):
+0520:0521  06 00        Optional NVM Command Support (ONCS):
                             Supports reservations: No
-                            Supports Save/Select field in the Set/Get Features command: Yes
-                            Supports Write Zeroes command: Yes
+                            Supports Save/Select field in the Set/Get Features command: No
+                            Supports Write Zeroes command: No
                             Supports Dataset Management command: Yes
                             Supports Write Uncorrectable command: Yes
-                            Supports Compare command: Yes
+                            Supports Compare command: No
 0522:0523  00 00        Fused Operation Support (FUSES)
                             Supports Compare and Write fused operation: No
-0524       04           Format NVM Attributes (FNA):
+0524       07           Format NVM Attributes (FNA):
                             Supports cryptographic erase: Yes
-                            Does cryptographic erase and user data erase apply to all namespaces?: No
-                            Does the format operation apply to all namespaces?: No
-0525       01           Volatile Write Cache (VWC)
-                            A volatile write cache present: Yes
-0526:0527  ff 00        Atomic Write Unit Normal (AWUN): 255 blocks
+                            Does cryptographic erase and user data erase apply to all namespaces?: Yes
+                            Does the format operation apply to all namespaces?: Yes
+0525       00           Volatile Write Cache (VWC)
+                            A volatile write cache present: No
+0526:0527  00 00        Atomic Write Unit Normal (AWUN): 0 blocks
 0528:0529  00 00        Atomic Write Unit Power Fail (AWUPF): 0 blocks
-0530       01           NVM Vendor Specific Command Configuration (NVSCC): Standard format
+0530       00           NVM Vendor Specific Command Configuration (NVSCC): Vendor specific format
 0532:0533  00 00        Atomic Compare & Write Unit (ACWU): 0 blocks
 0536:0539  00 00 00 00  SGL Support (SGLS): No
 
 [Power State Descriptor 0 (PSD0)]
-2048:2049  8a 02        Maximum Power (MP): 650 (in MXPS)
+2048:2049  c4 09        Maximum Power (MP): 2500 (in MXPS)
 2051       00           Max Power Scale (MXPS) / Non-Operational Staet (NOPS):
                            Max Power Scale (MXPS): 0.01 (W)
                            The controller PROCESSES I/O commands in this state
-2052:2055  05 00 00 00  Entry Latency (ENLAT): 5 (microseconds)
-2056:2059  05 00 00 00  Exit Latency (EXLAT): 5 (microseconds)
+2052:2055  00 00 00 00  Entry Latency (ENLAT): 0 (microseconds)
+2056:2059  00 00 00 00  Exit Latency (EXLAT): 0 (microseconds)
 2060       00           Relative Read Throughput (RRT): 0
 2061       00           Relative Read Latency (RRL): 0
 2062       00           Relative Write Throughput (RWT): 0
@@ -131,29 +131,29 @@ nvmed_info version 0.9 (Compliant to NVMe Spec. 1.2.1)
 IDENTIFY Namespace 1
 Bytes      Values       Description
 ---------  -----------  -----------
-0000:0007  b0 12 9e 3b  Namespace Size (NSZE): 1000215216 bytes
+0000:0007  b0 90 93 2e  Namespace Size (NSZE): 781422768 blocks
            00 00 00 00  
-0008:0015  b0 12 9e 3b  Namespace Capacity (NCAP): 1000215216 blocks
+0008:0015  b0 90 93 2e  Namespace Capacity (NCAP): 781422768 blocks
            00 00 00 00  
-0016:0023  20 21 ff 00  Namespace Utilization (NUSE): 16720160 blocks
+0016:0023  b0 90 93 2e  Namespace Utilization (NUSE): 781422768 blocks
            00 00 00 00  
 0024       00           Namespace Features (NSFEAT)
                             Supports Deallocated or Unwritten Logical Block error: No
                             Supports NAWUN, NAWUPF, and NACWU fields: No
                             Supports thin provisioning: No
-0025       00           Number of LBA Formats (NLBAF): 0
+0025       06           Number of LBA Formats (NLBAF): 6
 0026       00           Formatted LBA Size (FLBAS):
                             Metadata transferred at the end of the data LBA: No
                             Supported LBA formats: 0
-0027       00           Metadata Capabilties (MC):
+0027       01           Metadata Capabilties (MC):
                             Supports the metadata being transferred as part of a separate buffer: No
-                            Supports the metadata being transferred as part of an extended data LBA: No
-0028       00           End-to-end Data Protection Capabilties (DPC)
-                            Supports protection information transferred as the last eight bytes of metadata: No
+                            Supports the metadata being transferred as part of an extended data LBA: Yes
+0028       11           End-to-end Data Protection Capabilties (DPC)
+                            Supports protection information transferred as the last eight bytes of metadata: Yes
                             Supports protection information transferred as the first eight bytes of metadata: No
                             Supports Protection Information Type 3: No
                             Supports Protection Information Type 2: No
-                            Supports Protection Information Type 1: No
+                            Supports Protection Information Type 1: Yes
 0029       00           End-to-end Data Protection Type Settings (DPS):
                             Protection information: at the LAST eight bytes of metadata
                             Protection information: Not enabled
@@ -184,12 +184,36 @@ Bytes      Values       Description
            00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
            00 00 00 00  
            00 00 00 00  
-0120:0127  00 25 38 53  IEEE Extended Unique Identifier (EUI64):
-           5a 16 25 09  09-25-16-5a-53-38-25-00
-0128:0131  00 00 09 00  LBA Format 0 Support (LBAF0):
-                            Relative Performance (RP): Best performance
+0120:0127  00 00 00 00  IEEE Extended Unique Identifier (EUI64):
+           00 00 00 00  00-00-00-00-00-00-00-00
+0128:0131  00 00 09 02  LBA Format 0 Support (LBAF0):
+                            Relative Performance (RP): Good performance
                             LBA Data Size (LBADS): 512 bytes
                             Metadata Size: 0 bytes
+0132:0135  08 00 09 02  LBA Format 1 Support (LBAF1):
+                            Relative Performance (RP): Good performance
+                            LBA Data Size (LBADS): 512 bytes
+                            Metadata Size: 8 bytes
+0136:0139  10 00 09 02  LBA Format 2 Support (LBAF2):
+                            Relative Performance (RP): Good performance
+                            LBA Data Size (LBADS): 512 bytes
+                            Metadata Size: 16 bytes
+0140:0143  00 00 0c 00  LBA Format 3 Support (LBAF3):
+                            Relative Performance (RP): Best performance
+                            LBA Data Size (LBADS): 4096 bytes
+                            Metadata Size: 0 bytes
+0144:0147  08 00 0c 00  LBA Format 4 Support (LBAF4):
+                            Relative Performance (RP): Best performance
+                            LBA Data Size (LBADS): 4096 bytes
+                            Metadata Size: 8 bytes
+0148:0151  40 00 0c 00  LBA Format 5 Support (LBAF5):
+                            Relative Performance (RP): Best performance
+                            LBA Data Size (LBADS): 4096 bytes
+                            Metadata Size: 64 bytes
+0152:0155  80 00 0c 00  LBA Format 6 Support (LBAF6):
+                            Relative Performance (RP): Best performance
+                            LBA Data Size (LBADS): 4096 bytes
+                            Metadata Size: 128 bytes
 
 
 nvmed_info version 0.9 (Compliant to NVMe Spec. 1.2.1)
@@ -198,860 +222,40 @@ GET FEATURES
 Feature    Values      Description
 ---------  ----------  -----------
 
-    01     0x00000002  Arbitration
+    01     0x00000000  Arbitration
                           High Priority Weight (HPW): 0
                           Medium Priority Weight (MPW): 0
                           Low Priority Weight (MPW): 0
-                          Arbitration Burst (AB): 4
+                          Arbitration Burst (AB): 1
 
     02     0x00000000  Power Management
                           Workload Hint (WH): 0
                           Power State (PS): 0
+NVMe Error 2 (Opcode 0a): Invalid Field in Command
+    03     ----N/A---  LBA Range Type
 
-    03     0xffffffff  LBA Range Type (Namespace ID: 1)
-                          Number of LBA Ranges (NUM): 63
-LBA Range Type 0
-0000       00           Type (Type): Reserved
-0001       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-0016:0023  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-0024:0031  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-0032:0047  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 1
-0064       00           Type (Type): Reserved
-0065       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-0080:0087  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-0088:0095  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-0096:0111  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 2
-0128       00           Type (Type): Reserved
-0129       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-0144:0151  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-0152:0159  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-0160:0175  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 3
-0192       00           Type (Type): Reserved
-0193       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-0208:0215  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-0216:0223  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-0224:0239  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 4
-0256       00           Type (Type): Reserved
-0257       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-0272:0279  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-0280:0287  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-0288:0303  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 5
-0320       00           Type (Type): Reserved
-0321       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-0336:0343  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-0344:0351  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-0352:0367  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 6
-0384       00           Type (Type): Reserved
-0385       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-0400:0407  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-0408:0415  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-0416:0431  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 7
-0448       00           Type (Type): Reserved
-0449       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-0464:0471  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-0472:0479  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-0480:0495  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 8
-0512       00           Type (Type): Reserved
-0513       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-0528:0535  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-0536:0543  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-0544:0559  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 9
-0576       00           Type (Type): Reserved
-0577       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-0592:0599  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-0600:0607  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-0608:0623  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 10
-0640       00           Type (Type): Reserved
-0641       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-0656:0663  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-0664:0671  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-0672:0687  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 11
-0704       00           Type (Type): Reserved
-0705       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-0720:0727  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-0728:0735  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-0736:0751  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 12
-0768       00           Type (Type): Reserved
-0769       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-0784:0791  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-0792:0799  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-0800:0815  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 13
-0832       00           Type (Type): Reserved
-0833       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-0848:0855  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-0856:0863  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-0864:0879  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 14
-0896       00           Type (Type): Reserved
-0897       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-0912:0919  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-0920:0927  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-0928:0943  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 15
-0960       00           Type (Type): Reserved
-0961       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-0976:0983  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-0984:0991  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-0992:1007  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 16
-1024       00           Type (Type): Reserved
-1025       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-1040:1047  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-1048:1055  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-1056:1071  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 17
-1088       00           Type (Type): Reserved
-1089       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-1104:1111  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-1112:1119  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-1120:1135  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 18
-1152       00           Type (Type): Reserved
-1153       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-1168:1175  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-1176:1183  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-1184:1199  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 19
-1216       00           Type (Type): Reserved
-1217       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-1232:1239  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-1240:1247  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-1248:1263  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 20
-1280       00           Type (Type): Reserved
-1281       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-1296:1303  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-1304:1311  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-1312:1327  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 21
-1344       00           Type (Type): Reserved
-1345       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-1360:1367  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-1368:1375  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-1376:1391  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 22
-1408       00           Type (Type): Reserved
-1409       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-1424:1431  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-1432:1439  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-1440:1455  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 23
-1472       00           Type (Type): Reserved
-1473       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-1488:1495  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-1496:1503  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-1504:1519  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 24
-1536       00           Type (Type): Reserved
-1537       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-1552:1559  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-1560:1567  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-1568:1583  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 25
-1600       00           Type (Type): Reserved
-1601       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-1616:1623  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-1624:1631  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-1632:1647  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 26
-1664       00           Type (Type): Reserved
-1665       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-1680:1687  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-1688:1695  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-1696:1711  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 27
-1728       00           Type (Type): Reserved
-1729       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-1744:1751  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-1752:1759  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-1760:1775  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 28
-1792       00           Type (Type): Reserved
-1793       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-1808:1815  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-1816:1823  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-1824:1839  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 29
-1856       00           Type (Type): Reserved
-1857       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-1872:1879  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-1880:1887  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-1888:1903  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 30
-1920       00           Type (Type): Reserved
-1921       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-1936:1943  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-1944:1951  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-1952:1967  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 31
-1984       00           Type (Type): Reserved
-1985       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-2000:2007  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-2008:2015  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-2016:2031  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 32
-2048       00           Type (Type): Reserved
-2049       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-2064:2071  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-2072:2079  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-2080:2095  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 33
-2112       00           Type (Type): Reserved
-2113       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-2128:2135  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-2136:2143  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-2144:2159  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 34
-2176       00           Type (Type): Reserved
-2177       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-2192:2199  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-2200:2207  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-2208:2223  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 35
-2240       00           Type (Type): Reserved
-2241       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-2256:2263  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-2264:2271  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-2272:2287  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 36
-2304       00           Type (Type): Reserved
-2305       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-2320:2327  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-2328:2335  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-2336:2351  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 37
-2368       00           Type (Type): Reserved
-2369       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-2384:2391  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-2392:2399  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-2400:2415  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 38
-2432       00           Type (Type): Reserved
-2433       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-2448:2455  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-2456:2463  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-2464:2479  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 39
-2496       00           Type (Type): Reserved
-2497       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-2512:2519  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-2520:2527  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-2528:2543  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 40
-2560       00           Type (Type): Reserved
-2561       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-2576:2583  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-2584:2591  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-2592:2607  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 41
-2624       00           Type (Type): Reserved
-2625       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-2640:2647  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-2648:2655  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-2656:2671  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 42
-2688       00           Type (Type): Reserved
-2689       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-2704:2711  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-2712:2719  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-2720:2735  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 43
-2752       00           Type (Type): Reserved
-2753       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-2768:2775  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-2776:2783  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-2784:2799  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 44
-2816       00           Type (Type): Reserved
-2817       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-2832:2839  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-2840:2847  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-2848:2863  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 45
-2880       00           Type (Type): Reserved
-2881       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-2896:2903  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-2904:2911  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-2912:2927  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 46
-2944       00           Type (Type): Reserved
-2945       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-2960:2967  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-2968:2975  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-2976:2991  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 47
-3008       00           Type (Type): Reserved
-3009       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-3024:3031  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-3032:3039  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-3040:3055  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 48
-3072       00           Type (Type): Reserved
-3073       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-3088:3095  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-3096:3103  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-3104:3119  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 49
-3136       00           Type (Type): Reserved
-3137       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-3152:3159  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-3160:3167  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-3168:3183  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 50
-3200       00           Type (Type): Reserved
-3201       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-3216:3223  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-3224:3231  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-3232:3247  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 51
-3264       00           Type (Type): Reserved
-3265       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-3280:3287  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-3288:3295  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-3296:3311  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 52
-3328       00           Type (Type): Reserved
-3329       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-3344:3351  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-3352:3359  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-3360:3375  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 53
-3392       00           Type (Type): Reserved
-3393       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-3408:3415  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-3416:3423  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-3424:3439  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 54
-3456       00           Type (Type): Reserved
-3457       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-3472:3479  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-3480:3487  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-3488:3503  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 55
-3520       00           Type (Type): Reserved
-3521       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-3536:3543  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-3544:3551  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-3552:3567  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 56
-3584       00           Type (Type): Reserved
-3585       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-3600:3607  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-3608:3615  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-3616:3631  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 57
-3648       00           Type (Type): Reserved
-3649       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-3664:3671  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-3672:3679  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-3680:3695  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 58
-3712       00           Type (Type): Reserved
-3713       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-3728:3735  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-3736:3743  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-3744:3759  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 59
-3776       00           Type (Type): Reserved
-3777       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-3792:3799  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-3800:3807  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-3808:3823  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 60
-3840       00           Type (Type): Reserved
-3841       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-3856:3863  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-3864:3871  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-3872:3887  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 61
-3904       00           Type (Type): Reserved
-3905       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-3920:3927  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-3928:3935  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-3936:3951  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-LBA Range Type 62
-3968       00           Type (Type): Reserved
-3969       00           Attributes:
-                          The LBA range may not be overwritten
-                          The LBA range should be visible to the OS
-3984:3991  00 00 00 00  Starting LBA (SLBA): 0 block
-           00 00 00 00  
-3992:3999  00 00 00 00  Number of Logical Blocks (NLB): 0 blocks
-           00 00 00 00  
-4000:4015  00 00 00 00  Unique Identifier (GUID):
-           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-           00 00 00 00  
-           00 00 00 00  
-
-    04     0x00000161  Temperature Threshold
+    04     0x00000166  Temperature Threshold
                           Threshold Type Select (THSEL): Over temperature threshold
                           Threshold Temperature Select (TMPSEL): Composite temperature
-                          Temperature Threshold (TMPTH): 353
+                          Temperature Threshold (TMPTH): 358
 
     05     0x00000000  Error Recovery
                           Deallocated or Unwritten Logical Block Error Enable (DULBE): No
                           Time Limited Error Recovery (TLER): 0 (100msec)
 
-    06     0x00000001  Volatile Write Cache
-                          Volatile Write Cache Enable (WCE): Yes
+    06     0x00000000  Volatile Write Cache
+                          Volatile Write Cache Enable (WCE): No
 
-    07     0x00070007  Number of Queues
-                          Number of I/O Completion Queues Allocated (NCQA): 8
-                          Number of I/O Submission Queues Allocated (NSQA): 8
+    07     0x001e001e  Number of Queues
+                          Number of I/O Completion Queues Allocated (NCQA): 31
+                          Number of I/O Submission Queues Allocated (NSQA): 31
 
     08     0x00000000  Interrupt Coalescing
                           Aggregation Time: No delay
                           Aggreation Threshold (THR): 0 (entries)
 
-    09     0x00010000  Interrupt Vector Configuration
-                          Coalescing Disable (CD): Yes
+    09     0x00000000  Interrupt Vector Configuration
+                          Coalescing Disable (CD): No
                           Interrupt Vector (IV): 0x00
 
     0a     0x00000000  Write Atomicity Normal
@@ -1061,30 +265,19 @@ LBA Range Type 62
                           Firmware Activation Notices: No
                           Namespace Attribute Notices: No
                           SMART / Health Critical Warnings: 0x00
-
-    0c     0x00000000  Autonomous Power State Transition
-                          Autonomous Power State Transition Enable (APSTE): No
-Power State 0
-0000       18           Idle Transition Power State (ITPS): 3
-0001:0003  3c 00 00    Idle Time Prior to Transition (ITPT):: 60 (msec)
-Power State 1
-0064       00           Idle Transition Power State (ITPS): 0
-0065:0067  00 00 00    Idle Time Prior to Transition (ITPT):: 0 (msec)
-Power State 2
-0128       00           Idle Transition Power State (ITPS): 0
-0129:0131  00 00 00    Idle Time Prior to Transition (ITPT):: 0 (msec)
-NVMe Error 8194 (Opcode 0a)
+NVMe Error 2 (Opcode 0a): Invalid Field in Command
+    0c     ----N/A---  Autonomous Power State Transition
+NVMe Error 2 (Opcode 0a): Invalid Field in Command
     0d     ----N/A---  Host Memory Buffer
-NVMe Error 8194 (Opcode 0a)
+NVMe Error 2 (Opcode 0a): Invalid Field in Command
     0f     ----N/A---  Keep Alive Timer
-
-    80     0x00000000  Software Progress Marker
-                          Pre-boot Software Load Count (PBSLC): 0
-NVMe Error 8194 (Opcode 0a)
+NVMe Error 6 (Opcode 0a): Internal Error
+    80     ----N/A---  Software Progress Marker
+NVMe Error 2 (Opcode 0a): Invalid Field in Command
     81     ----N/A---  Host Identifier
-NVMe Error 8194 (Opcode 0a)
+NVMe Error 2 (Opcode 0a): Invalid Field in Command
     82     ----N/A---  Reservation Notification Mask
-NVMe Error 8194 (Opcode 0a)
+NVMe Error 2 (Opcode 0a): Invalid Field in Command
     83     ----N/A---  Reservation Persistence
 
 
@@ -1094,56 +287,56 @@ GET LOG PAGES
 Log Pages  Values      Description
 ---------  ----------  -----------
 01-------  0x00000000  Error Information
-0000:0007  3c 00 00 00  Error Count: 60 
+0000:0007  01 00 00 00  Error Count: 1 
            00 00 00 00  
-0008:0009  00 00        Submission Queue ID: 0x0
-0010:0011  72 00        Command ID: 0x72
-0012:0013  04 40        Status Field: 0x4004
+0008:0009  09 00        Submission Queue ID: 0x9
+0010:0011  01 00        Command ID: 0x1
+0012:0013  84 41        Status Field: 0x4184
 0014:0015  00 00        Parameter Error Location:
                             Byte in Command that contained the error: 0
                             Bit in Command that contained the error:  0
 0016:0023  00 00 00 00  LBA: 0 
            00 00 00 00  
-0024:0027  00 00 00 00  Namespace: 0
+0024:0027  01 00 00 00  Namespace: 1
 0028       00           Vendor Specific Information Available: 0x00
 0032:0039  00 00 00 00  Command Specific Information: 0 
            00 00 00 00  
 
 02-------  0x00000000  SMART/Health Information
 0000       00           Critical Warning: None
-0001:0002  47 01        Composite Temperature: 327
+0001:0002  37 01        Composite Temperature: 311
 0003       64           Available Space: 100%
 0004       0a           Available Spare Threshold: 10%
-0005       00           Percent Used: 0%
-0032:0047  82 27 00 00  Data Units Read: 10114 (x1000 512 bytes)
+0005       02           Percent Used: 2%
+0032:0047  10 a1 19 00  Data Units Read: 1679632 (x1000 512 bytes)
            00 00 00 00  
            00 00 00 00  
            00 00 00 00  
-0048:0063  6e 42 00 00  Data Units Written: 17006 (x1000 512 bytes)
+0048:0063  a6 af 27 00  Data Units Written: 2600870 (x1000 512 bytes)
            00 00 00 00  
            00 00 00 00  
            00 00 00 00  
-0064:0079  9c 69 02 00  Host Read Commands: 158108 
+0064:0079  a4 70 6a 7d  Host Read Commands: 2104127652 
            00 00 00 00  
            00 00 00 00  
            00 00 00 00  
-0080:0095  27 8e 03 00  Host Write Commands: 232999 
+0080:0095  d5 3a f9 cf  Host Write Commands: 3489217237 
            00 00 00 00  
            00 00 00 00  
            00 00 00 00  
-0096:0111  01 00 00 00  Controller Busy Time: 1 (mins)
+0096:0111  02 00 00 00  Controller Busy Time: 2 (mins)
            00 00 00 00  
            00 00 00 00  
            00 00 00 00  
-0112:0127  20 00 00 00  Power Cycles: 32 
+0112:0127  76 00 00 00  Power Cycles: 118 
            00 00 00 00  
            00 00 00 00  
            00 00 00 00  
-0128:0143  49 2c 00 00  Power On Hours: 11337 (hours)
+0128:0143  06 36 00 00  Power On Hours: 13830 (hours)
            00 00 00 00  
            00 00 00 00  
            00 00 00 00  
-0144:0159  12 00 00 00  Unsafe Shutdowns: 18 
+0144:0159  13 00 00 00  Unsafe Shutdowns: 19 
            00 00 00 00  
            00 00 00 00  
            00 00 00 00  
@@ -1151,7 +344,7 @@ Log Pages  Values      Description
            00 00 00 00  
            00 00 00 00  
            00 00 00 00  
-0176:0191  3c 00 00 00  Number of Error Information Log Entries: 60 
+0176:0191  02 00 00 00  Number of Error Information Log Entries: 2 
            00 00 00 00  
            00 00 00 00  
            00 00 00 00  
@@ -1170,8 +363,8 @@ Log Pages  Values      Description
 0000       01           Active Firmware Info (AFI):
                             Slot to be activated at the next controller reset: 0
                             Slot the actively running firmware revision was loaded: 1
-0008:0015  31 42 30 51  Firmware Revision for Slot 1 (FRS1): 1B0QBXX7
-           42 58 58 37  
+0008:0015  38 45 56 31  Firmware Revision for Slot 1 (FRS1): 8EV10135
+           30 31 33 35  
 0016:0023  00 00 00 00  Firmware Revision for Slot 2 (FRS2): 
            00 00 00 00  
 0024:0031  00 00 00 00  Firmware Revision for Slot 3 (FRS3): 
@@ -1194,16 +387,16 @@ Bytes      Values       Description
 ---------  -----------  -----------
 
 [PCI Header]
-0000:0003  4d 14 02 a8  Identifiers (ID):
-                           Device ID (VID): 0xa802
-                           Vendor ID (VID): 0x144d
-0004:0005  07 04        Command (CMD):
+0000:0003  86 80 53 09  Identifiers (ID):
+                           Device ID (VID): 0x0953
+                           Vendor ID (VID): 0x8086
+0004:0005  06 04        Command (CMD):
                            Interrupt Disable (ID): Yes
                            SERR# Enable (SEE): No
                            Parity Error Response Enable (PEE): No
                            Bus Master Enable (BME): Yes
                            Memory Space Enable (MSE): Yes
-                           I/O Space Enable (IOSE): Yes
+                           I/O Space Enable (IOSE): No
 0006:0007  10 00        Device Status (STS):
                            Detected Parity Error (DPE): No
                            Signaled System Error (SSE): No
@@ -1222,20 +415,18 @@ Bytes      Values       Description
                            Multi-Function Device (MFD): No
                            Header Layout (HL): 0
 0015       00           Built In Self Test (BIST): [Optional] Not supported
-0016:0019  04 00 01 df  Memory Register Base Address Lower 32-bits (MLBAR, BAR0):
-                           Base Address (BA): 0xdf010000
+0016:0019  04 00 21 df  Memory Register Base Address Lower 32-bits (MLBAR, BAR0):
+                           Base Address (BA): 0xdf210000
                            Prefetchable (PF): No
                            Type (TP): 2
                            Resource Type Indicator (RTE): No
 0020:0023  00 00 00 00  Memory Register Base Address Upper 32-bits (MUBAR, BAR1): 0x00000000
-0024:0027  01 e0 00 00  Index/Data Pair Register Base Address (IDBAR, BAR2): [Optional] 
-                           Base Address (BA): 0x0000e000
-                           Resource Type Indicator (RTE): Yes
-0044:0047  4d 14 01 a8  Sub System Identifiers (SS)
-                           Subsystem ID (SSID): 0xa801
-                           Subsystem Vendor ID (SSVID): 0x144d
-0048:0051  00 00 00 df  Expansion ROM: [Optional] 
-                           ROM Base Address (RBA): 0xdf000000
+0024:0027  00 00 00 00  Index/Data Pair Register Base Address (IDBAR, BAR2): [Optional] Not supported
+0044:0047  86 80 0d 37  Sub System Identifiers (SS)
+                           Subsystem ID (SSID): 0x370d
+                           Subsystem Vendor ID (SSVID): 0x8086
+0048:0051  00 00 20 df  Expansion ROM: [Optional] 
+                           ROM Base Address (RBA): 0xdf200000
 0052       40           Capabilities Pointer (CAP):
                            Capability Pointer (CP): 0x40
 0060:0061  0b 01        Interrupt Information (INTR):
@@ -1258,131 +449,115 @@ Bytes      Values       Description
                            No Soft Reset (NSFRST): 1
                            Power Stats (PS): D0 state
 
-[Message Signaled Interrupt Capabilities] @ offset 0x50 [Optional]
-0000:0001  05 70        Message Signaled Interrupt Identifiers (MID):
-                           Next Pointer (NEXT): 0x70
-                           Capability ID (CID): 0x05
-0002:0003  86 00        Message Signaled Interrupt Message Control (MC):
-                           Per-Vector Masking Capable (PVM): No
-                           64bit Address Capable (C64): Yes
-                           Multiple Message Enable (MME): 0
-                           Multiple Message Capable (MMC): 3
-                           MSI Enable (MSIE): No
-0004:0007  00 00 00 00  Message Signaled Interrupt Message Address (MA): 0x00000000
-0008:0011  00 00 00 00  Message Signaled Interrupt Upper Address (MUA): 0x00000000
-0012:0013  00 00        Message Signaled Interrupt Message Data (MD): 0x0000
-0016:0019  00 00 00 00  Message Signaled Interrupt Mask Bits (MMASK): 0x00000000
-0020:0023  00 00 00 00  Message Signaled Interrupt Pending Bits (MPEND): 0x00000000
+[MSI-X Capabilities] @ offset 0x50 [Optional]
+0000:0001  11 60        MSI-X Identifiers (MXID):
+                           Next Pointer (NEXT): 0x60
+                           Capability ID (CID): 0x11
+0002:0003  1f 80        MSI-X Message Control (MXC):
+                           MSI-X Enable (MXE): Yes
+                           Function Mask (FM): No
+                           Table Size (TS): 31
+0004:0007  00 20 00 00  MSI-X Table Offset / Table BIR (MTAB):
+                           Table Offset (TO): 0x00002000
+                           Table BIR (TBIR): 0x10
+0008:0011  00 30 00 00  MSI-X PBA Offset / PBA BIR (MPBA):
+                           PBA Offset (PBAO): 0x00003000
+                           PBA BIR (PBIR): 0x10
 
-[PCI Express Capabilities] @ offset 0x70
-0000:0001  10 b0        PCI Express Capability ID (PXID):
-                           Next Pointer (NEXT): 0xb0
+[PCI Express Capabilities] @ offset 0x60
+0000:0001  10 00        PCI Express Capability ID (PXID):
+                           Next Pointer (NEXT): 0x00
                            Capability ID (CID): 0x10
 0002:0003  02 00        PCI Express Capabilities (PXCAP):
                            Interrupt Message Number (IMN): 0
                            Device/Port Type (DPT): 0
                            Capability Version (VER): 2
-0004:0007  c0 8f e8 17  PCI Express Device Capabilities (PXDCAP):
+0004:0007  a1 85 00 10  PCI Express Device Capabilities (PXDCAP):
                            Function Level Reset Capability (FLRC): Yes
-                           Captured Slot Power Limit Scale (CSPLS): 1
-                           Captured Slot Power Limit Value (CSPLV): 250
+                           Captured Slot Power Limit Scale (CSPLS): 0
+                           Captured Slot Power Limit Value (CSPLV): 0
                            Role-based Error Reporting (RER): Yes
-                           Endpoint L1 Acceptable Latency (L1L): 7
-                           Endpoint L0s Acceptable Latency (L0SL): 7
-                           Extended Tag Field Supported (ETFS): No
+                           Endpoint L1 Acceptable Latency (L1L): 2
+                           Endpoint L0s Acceptable Latency (L0SL): 6
+                           Extended Tag Field Supported (ETFS): Yes
                            Phantom Functions Supported (PFS): 0
-                           Max_Payload_Size Supported (MPS): 0
-0008:0009  1f 28        PCI Express Device Control (PXDC):
+                           Max_Payload_Size Supported (MPS): 1
+0008:0009  3f 29        PCI Express Device Control (PXDC):
                            Initiate Function level Reset (IFLR): No
                            Max_Read_Request Size (MRRS): 2
                            Enable No Snoop (ENS): Yes
                            AUX Power PM Enable (APPME): No
                            Phantom Functions Enable (PFE): No
-                           Extended Tag Enable (ETE): No
-                           Max_Payload_Size (MPS): 0
+                           Extended Tag Enable (ETE): Yes
+                           Max_Payload_Size (MPS): 1
                            Enable Relaxed Ordering (ERO): Yes
                            Unsupported Request Reporting Enable (URRE): Yes
                            Fatal Error Reporting Enable (FERE): Yes
                            Non-Fatal Error Reporting Enable (NFERE): Yes
                            Correctable Error Reporting Enable (CERE): Yes
-0010:0011  10 00        PCI Express Device Status (PXDS):
+0010:0011  09 00        PCI Express Device Status (PXDS):
                            Transactions Pending (TP): No
-                           AUX Power Detected (APD): Yes
-                           Unsupported Request Detected (URD): No
+                           AUX Power Detected (APD): No
+                           Unsupported Request Detected (URD): Yes
                            Fatal Error Detected (FED): No
                            Non-Fatal Error Detected (NFED): No
-                           Correctable Error Detected (CED): No
-0012:0015  43 68 47 00  PCI Express Link Capabilities (PXLCAP):
+                           Correctable Error Detected (CED): Yes
+0012:0015  43 6c 41 00  PCI Express Link Capabilities (PXLCAP):
                            Port Number (PN): 0x00
                            ASPM Optionality Compliance (AOC): Yes
-                           Clock Power Management (CPM): Yes
-                           L1 Exit Latency (L1EL): 6
+                           Clock Power Management (CPM): No
+                           L1 Exit Latency (L1EL): 2
                            L0s Exit Latency (L0SEL): 6
-                           Active State Power Management Support (ASPMS): 2
+                           Active State Power Management Support (ASPMS): 3
                            Maximum Link Width (MLW): 4 lanes
                            Supported Link Speeds (SLS): Gen 3
-0016:0017  40 01        PCI Express Link Control (PXLC):
+0016:0017  00 00        PCI Express Link Control (PXLC):
                            Hardware Autonomous Width Disable (HAWD): No
-                           Enable Clock Power Management (ECPM): Yes
+                           Enable Clock Power Management (ECPM): No
                            Extended Synch (ES): No
-                           Common Clock Configuration (CCC): Yes
+                           Common Clock Configuration (CCC): No
                            Read Completion Boundary (RCB): 0
                            Active State Power Management Control (ASPMC): 0
-0018:0019  43 10        PCI Express Link Status (PXLS):
-                           Slot Clock Configuration (SCC): 1
+0018:0019  43 00        PCI Express Link Status (PXLS):
+                           Slot Clock Configuration (SCC): 0
                            Negotiated Link Width (NLW): 4 lanes
                            Current Link Speed (CLS): Gen 3
-0036:0039  10 08 00 00  PCI Express Device Capabilities 2 (PXDCAP2):
+0036:0039  1f 00 00 00  PCI Express Device Capabilities 2 (PXDCAP2):
                            Max End-End TLP Prefixes (MEETP): 0
                            End-End TLP Prefix Supported (EETPS): No
                            Extended Fmt Field Supported (EFFS): No
                            OBFF Supported (OBFFS): 0
                            TPH Completer Supported (TPHCS): None
-                           Latency Tolerance Reporting Supported (LTRS): Yes
+                           Latency Tolerance Reporting Supported (LTRS): No
                            128-bit CAS Completer Supported (128CCS): No
                            64-bit AtomicOp Completer Supported (64AOCS): No
                            32-bit AtomicOp Completer Supported (32AOCS): No
                            Completion Timeout Disable Supported (CTDS): Yes
-                           Completion Timeout Ranges Supported (CTRS): 0
-0040:0043  00 04 00 00  PCI Express Device Control 2 (PXDC2):
+                           Completion Timeout Ranges Supported (CTRS): 15
+0040:0043  00 00 00 00  PCI Express Device Control 2 (PXDC2):
                            OBFF Enable (OBFFE): 0
-                           Latency Tolerance Reporting Mechanism Enable (LTRME): Yes
+                           Latency Tolerance Reporting Mechanism Enable (LTRME): No
                            Completion Timeout Disable (CTD): No
                            Completion Timeout Value (CTV): 0
-
-[MSI-X Capabilities] @ offset 0xb0 [Optional]
-0000:0001  11 00        MSI-X Identifiers (MXID):
-                           Next Pointer (NEXT): 0x00
-                           Capability ID (CID): 0x11
-0002:0003  08 80        MSI-X Message Control (MXC):
-                           MSI-X Enable (MXE): Yes
-                           Function Mask (FM): No
-                           Table Size (TS): 8
-0004:0007  00 30 00 00  MSI-X Table Offset / Table BIR (MTAB):
-                           Table Offset (TO): 0x00003000
-                           Table BIR (TBIR): 0x10
-0008:0011  00 20 00 00  MSI-X PBA Offset / PBA BIR (MPBA):
-                           PBA Offset (PBAO): 0x00002000
-                           PBA BIR (PBIR): 0x10
 nvmed_info version 0.9 (Compliant to NVMe Spec. 1.2.1)
 
 NVMe Controller Registers
 Bytes      Values       Description
 ---------  -----------  -----------
 
-0000:0003  ff 3f 01 3c  Controller Capabilities (CAP):
-0004:0007  20 00 f0 00     Memory Page Size Maximum (MPSMAX): 2^27 bytes
+0000:0003  ff 0f 01 28  Controller Capabilities (CAP):
+0004:0007  20 00 00 00     Memory Page Size Maximum (MPSMAX): 2^12 bytes
                            Memory Page Size Minimum (MPSMIN): 2^12 bytes
                            Command Sets Supported (CSS): NVM command set
                            NVM Subsystem Reset Supported (NSSRS): No
                            Doorbell Stride (DSTRD): 4 bytes
-                           Timeout (TO): 60 * 500 ms
+                           Timeout (TO): 40 * 500 ms
                            Arbitration Mechanism Supported (AMS): Round Robin 
                            Contiguous Queues Required (CQR): Yes
-                           Maximum Queue Entries Supported (MQES): 16384 entries
-0008:0011  00 01 01 00  Version (VS):
+                           Maximum Queue Entries Supported (MQES): 4096 entries
+0008:0011  00 00 01 00  Version (VS):
                            Major Version Number (MJR): 1
-                           Minor Version Number (MNR): 1
+                           Minor Version Number (MNR): 0
                            Tertiary Version Number (TNR): 0
 0012:0015  00 00 00 00  Interrupt Mask Set (IVMS): 0x00000000
 0016:0019  00 00 00 00  Interrupt Vector Mask Clear (IVMC): 0x00000000
@@ -1404,9 +579,9 @@ Bytes      Values       Description
 0036:0039  ff 00 ff 00  Admin Queue Attributes (AQA):
                            Admin Completion Queue Size (ACQS): 256 entries
                            Admin Submission Queue Size (ASQS): 256 entries
-0040:0043  00 00 4e 0e  Admin Submission Queue Base (ASQB): 0x000000080e4e0000
+0040:0043  00 80 ea 0c  Admin Submission Queue Base (ASQB): 0x000000080cea8000
 0044:0047  08 00 00 00  
-0048:0051  00 70 57 0f  Admin Completion Queue Base (ACQB): 0x000000080f577000
+0048:0051  00 80 97 0f  Admin Completion Queue Base (ACQB): 0x000000080f978000
 0052:0055  08 00 00 00  
 0056:0059  00 00 00 00  Controller Memory Buffer Location (CMBLOC):
                            Offset (OFST): 0x00000000
