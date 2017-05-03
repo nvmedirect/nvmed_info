@@ -35,11 +35,15 @@ $ mv nvmed_info /usr/local/bin
 ```
 
 ## How to Run
+- You should be a root to run __nvmed_info__
+- Make sure the `nvmed` kernel module is already loaded. If not, please perform the following command.
+```shell
+$ sudo modprobe nvmed
+```
 - Usage:
 ```shell
 $ sudo nvmed_info [dev] [command] [subcommand] [args]
 ```
-- You should be a root to run __nvmed_info__
 - __`dev`__: The target device you want to examine such as `/dev/nvme0n1`
 - __`command`__: The following commands are available. Note that you can specify any number of characters that can distinguish between commands. The command shown in parenthesis denotes the default one when none was specified.
 ```shell
@@ -64,7 +68,7 @@ $ sudo nvmed_info [dev] [command] [subcommand] [args]
        [get]:           for GET LOG PAGE command
 ```
 
-## Examples:
+## Examples
 - Shows all the information
 ```shell
 $ sudo nvmed_info /dev/nvme0n1 all
@@ -109,6 +113,9 @@ $ sudo nvmed_info /dev/nvme0n1 f
 $ sudo nvmed_info /dev/nvme0n1 logs                     # or
 $ sudo nvmed_info /dev/nvme0n1 l
 ```
+
+## Sample Outputs
+You can see some outputs of `nvmed_info` [here](https://github.com/nvmedirect/nvmed_info/tree/master/samples).
 
 
 ## Disclaimer
