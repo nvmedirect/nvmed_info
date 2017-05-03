@@ -1,0 +1,596 @@
+nvmed_info version 0.9 (Compliant to NVMe Spec. 1.2.1)
+
+IDENTIFY Controller
+Bytes      Values       Description
+---------  -----------  -----------
+
+[Controller Capabilities and Features]
+0000:0001  86 80        PCI Vendor ID (VID): 0x8086
+0002:0003  86 80        PCI Subsystem Vendor ID (SSVID): 0x8086
+0004:0023  43 56 43 51  Serial Number (SN): CVCQ5246005A400AGN  
+           35 32 34 36  
+           30 30 35 41  
+           34 30 30 41  
+           47 4e 20 20  
+0024:0063  49 4e 54 45  Model Number (MN): INTEL SSDPEDMW400G4                     
+           4c 20 53 53  
+           44 50 45 44  
+           4d 57 34 30  
+           30 47 34 20  
+           20 20 20 20  
+           20 20 20 20  
+           20 20 20 20  
+           20 20 20 20  
+           20 20 20 20  
+0064:0071  38 45 56 31  Firmware Revision (FR): 8EV10135
+           30 31 33 35  
+0072       00           Recommended Arbitration Burst (RAB): 0
+0073:0075  e4 d2 5c     IEEE OUI Identifier (IEEE): 0x5cd2e4
+0076       00           Controller Multi-Path I/O and Namespace Sharing Capabilities (CMIC):
+                            PCI Function, Single controller, Single port
+0077       05           Maximum Data Transfer Size (MDTS): 5 
+0078:0079  00 00        Controller ID (CNTLID): 0x0
+0080:0083  00 00 00 00  Version (VER): 0x0
+0084:0087  00 00 00 00  RTD3 Resume Latency (RTD3R): 0x0
+0088:0091  00 00 00 00  RTD3 Entry Latency (RTD3E): 0x0
+0092:0095  00 00 00 00  Optional Asynchronous Events Supported (OAES):
+                            Supports sending Namespace Attribute Notices: No
+                            Supports sending Firmware Activation Notices: No
+0096:0099  00 00 00 00  Controller Attributes (CTRATT):
+                            Supports a 128-bit Host Identifier: No
+
+[Admin Command Set Attributes & Optional Controller Capabilities]
+0256:0257  06 00        Optional Admin Command Support (OACS):
+                            Supports Namespace Management and Namespace Attachment commands: No
+                            Supports Firmware Commit and Firmware Image Download commands: Yes
+                            Supports Format NVM command: Yes
+                            Supports Security Send and Security Receive commands: No
+0258       03           Abort Command Limit (ACL): 3
+0259       03           Asynchronous Event Request Limit (AERL): 3
+0260       02           Firmware Updates (FRMW)
+                            Supports firmware activation without a reset: No
+                            The number of firmware slots: 1
+                            First firmware slot: read/write
+0261       00           Log Page Attributes (LPA)
+                            Supports extended data for Get Log page: No
+                            Supports the Command Effects log page: No
+                            Supports the SMART / Health information log page per namespace: No
+0262       3f           Error Log Page Entries (ELPE): 63
+0263       00           Number of Power States Supported (NPSS): 0
+0264       00           Admin Vendor Specific Command Configuration (AVSCC): Vendor specific format
+0265       00           Autonomous Power State Transition Attributes (APSTA):
+                            Supports autonomous power state transitions: No
+0266:0267  00 00        Warning Composite Temperature Threshold (WCTEMP): 0
+0268:0269  00 00        Critical Composite Temperature Threshold (CCTEMP): 0
+0270:0271  00 00        Maximum Time for Firmware Activation (MTFA): 0
+0272:0275  00 00 00 00  Host Memory Buffer Preferred Size (HMPRE): 0 (in 4KB units)
+0276:0279  00 00 00 00  Host Memory Buffer Minimum Size (HMMIN): 0 (in 4KB units)
+
+0280:0295  00 00 00 00  Total NVM Capacity (TNVMCAP): 0 bytes
+           00 00 00 00  
+           00 00 00 00  
+           00 00 00 00  
+0296:0311  00 00 00 00  Unallocated NVM Capacity (UNVMCAP): 0 bytes
+           00 00 00 00  
+           00 00 00 00  
+           00 00 00 00  
+0312:0315  00 00 00 00  Replay Protected Memory Block Support (RPMBS): not supported
+0320:0321  00 00        Keep Alive Support (KAS): 0 (in 100ms)
+
+[NVM Command Set Attributes]
+0512       66           Submission Queue Entry Size (SQES):
+                            Maximum Submission Queue entry size: 64
+                            Required Submission Queue entry size: 64
+0513       44           Completion Queue Entry Size (CQES):
+                            Maximum Completion Queue entry size: 16
+                            Required Completion Queue entry size: 16
+0514:0515  00 00        Maximum Outstanding Commands (MAXCMD): 0
+0516:0519  01 00 00 00  Number of Namespaces (NN): 1
+0520:0521  06 00        Optional NVM Command Support (ONCS):
+                            Supports reservations: No
+                            Supports Save/Select field in the Set/Get Features command: No
+                            Supports Write Zeroes command: No
+                            Supports Dataset Management command: Yes
+                            Supports Write Uncorrectable command: Yes
+                            Supports Compare command: No
+0522:0523  00 00        Fused Operation Support (FUSES)
+                            Supports Compare and Write fused operation: No
+0524       07           Format NVM Attributes (FNA):
+                            Supports cryptographic erase: Yes
+                            Does cryptographic erase and user data erase apply to all namespaces?: Yes
+                            Does the format operation apply to all namespaces?: Yes
+0525       00           Volatile Write Cache (VWC)
+                            A volatile write cache present: No
+0526:0527  00 00        Atomic Write Unit Normal (AWUN): 0 blocks
+0528:0529  00 00        Atomic Write Unit Power Fail (AWUPF): 0 blocks
+0530       00           NVM Vendor Specific Command Configuration (NVSCC): Vendor specific format
+0532:0533  00 00        Atomic Compare & Write Unit (ACWU): 0 blocks
+0536:0539  00 00 00 00  SGL Support (SGLS): No
+
+[Power State Descriptor 0 (PSD0)]
+2048:2049  c4 09        Maximum Power (MP): 2500 (in MXPS)
+2051       00           Max Power Scale (MXPS) / Non-Operational Staet (NOPS):
+                           Max Power Scale (MXPS): 0.01 (W)
+                           The controller PROCESSES I/O commands in this state
+2052:2055  00 00 00 00  Entry Latency (ENLAT): 0 (microseconds)
+2056:2059  00 00 00 00  Exit Latency (EXLAT): 0 (microseconds)
+2060       00           Relative Read Throughput (RRT): 0
+2061       00           Relative Read Latency (RRL): 0
+2062       00           Relative Write Throughput (RWT): 0
+2063       00           Relative Write Latency (RWL): 0
+2064:2065  00 00        Idle Power (IDLP): 0 (in MXPS)
+2066       00           Idle Power Scale (IPS): Not reported
+2068:2069  00 00        Active Power (ACTP): 0 (in APS)
+2070       00           Active Power Workload (APW) / Active Power Scale (APS)
+                           Active Power Workload (APW): 0
+                           Active Power Scale (APS): Not reported
+
+
+nvmed_info version 0.9 (Compliant to NVMe Spec. 1.2.1)
+
+IDENTIFY Namespace 1
+Bytes      Values       Description
+---------  -----------  -----------
+0000:0007  b0 90 93 2e  Namespace Size (NSZE): 781422768 bytes
+           00 00 00 00  
+0008:0015  b0 90 93 2e  Namespace Capacity (NCAP): 781422768 blocks
+           00 00 00 00  
+0016:0023  b0 90 93 2e  Namespace Utilization (NUSE): 781422768 blocks
+           00 00 00 00  
+0024       00           Namespace Features (NSFEAT)
+                            Supports Deallocated or Unwritten Logical Block error: No
+                            Supports NAWUN, NAWUPF, and NACWU fields: No
+                            Supports thin provisioning: No
+0025       06           Number of LBA Formats (NLBAF): 6
+0026       00           Formatted LBA Size (FLBAS):
+                            Metadata transferred at the end of the data LBA: No
+                            Supported LBA formats: 0
+0027       01           Metadata Capabilties (MC):
+                            Supports the metadata being transferred as part of a separate buffer: No
+                            Supports the metadata being transferred as part of an extended data LBA: Yes
+0028       11           End-to-end Data Protection Capabilties (DPC)
+                            Supports protection information transferred as the last eight bytes of metadata: Yes
+                            Supports protection information transferred as the first eight bytes of metadata: No
+                            Supports Protection Information Type 3: No
+                            Supports Protection Information Type 2: No
+                            Supports Protection Information Type 1: Yes
+0029       00           End-to-end Data Protection Type Settings (DPS):
+                            Protection information: at the LAST eight bytes of metadata
+                            Protection information: Not enabled
+0030       00           Namespace Multi-path I/O and Namespace Sharing Capabilities (NMIC):
+                            Namespace may be accessible by two or more controllers?: No
+0031       00           Reservation Capabilities (RESCAP)
+                            Supports Exclusive Access - All Registrants: No
+                            Supports Write Exclusive Access - All Registrants: No
+                            Supports Exclusive Access - Registrants Only: No
+                            Supports Write Exclusive Access - Registrants Only: No
+                            Supports Exclusive Access: No
+                            Supports Write Exclusive Access: No
+                            Supports Persist Through Power Loss capability: No
+0032       00           Format Progress Indicator (FPI):
+                            Supports the Format Proress Indicator: No
+                            Percentage of the namespace that remains to be formatted: 0
+0034:0035  00 00        Namespace Atomic Write Unit Normal (NAWUN): 0 blocks
+0036:0037  00 00        Namespace Atomic Write Unit Power Fail (NAWUPF): 0 blocks
+0038:0039  00 00        Namespace Atomic Write Unit Compare & Write Unit (NACWU): 0 blocks
+0040:0041  00 00        Namespace Atomic Boundary Size Normal (NABSN): 0 blocks
+0042:0043  00 00        Namespace Atomic Boundary Offset (NABO): 0
+0044:0045  00 00        Namespace Atomic Boundary Size Power Fail (NABSPF): 0
+0048:0063  00 00 00 00  NVM Capacity (NVMCAP): 0 bytes
+           00 00 00 00  
+           00 00 00 00  
+           00 00 00 00  
+0104:0119  00 00 00 00  Namespace Globally Unique Identifier (NGUID):
+           00 00 00 00  00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
+           00 00 00 00  
+           00 00 00 00  
+0120:0127  00 00 00 00  IEEE Extended Unique Identifier (EUI64):
+           00 00 00 00  00-00-00-00-00-00-00-00
+0128:0131  00 00 09 02  LBA Format 0 Support (LBAF0):
+                            Relative Performance (RP): Good performance
+                            LBA Data Size (LBADS): 512 bytes
+                            Metadata Size: 0 bytes
+0132:0135  08 00 09 02  LBA Format 1 Support (LBAF1):
+                            Relative Performance (RP): Good performance
+                            LBA Data Size (LBADS): 512 bytes
+                            Metadata Size: 8 bytes
+0136:0139  10 00 09 02  LBA Format 2 Support (LBAF2):
+                            Relative Performance (RP): Good performance
+                            LBA Data Size (LBADS): 512 bytes
+                            Metadata Size: 16 bytes
+0140:0143  00 00 0c 00  LBA Format 3 Support (LBAF3):
+                            Relative Performance (RP): Best performance
+                            LBA Data Size (LBADS): 4096 bytes
+                            Metadata Size: 0 bytes
+0144:0147  08 00 0c 00  LBA Format 4 Support (LBAF4):
+                            Relative Performance (RP): Best performance
+                            LBA Data Size (LBADS): 4096 bytes
+                            Metadata Size: 8 bytes
+0148:0151  40 00 0c 00  LBA Format 5 Support (LBAF5):
+                            Relative Performance (RP): Best performance
+                            LBA Data Size (LBADS): 4096 bytes
+                            Metadata Size: 64 bytes
+0152:0155  80 00 0c 00  LBA Format 6 Support (LBAF6):
+                            Relative Performance (RP): Best performance
+                            LBA Data Size (LBADS): 4096 bytes
+                            Metadata Size: 128 bytes
+
+
+nvmed_info version 0.9 (Compliant to NVMe Spec. 1.2.1)
+
+GET FEATURES
+Feature    Values      Description
+---------  ----------  -----------
+
+    01     0x00000000  Arbitration
+                          High Priority Weight (HPW): 0
+                          Medium Priority Weight (MPW): 0
+                          Low Priority Weight (MPW): 0
+                          Arbitration Burst (AB): 1
+
+    02     0x00000000  Power Management
+                          Workload Hint (WH): 0
+                          Power State (PS): 0
+NVMe Error 2 (Opcode 0a): Invalid Field in Command
+    03     ----N/A---  LBA Range Type
+
+    04     0x00000166  Temperature Threshold
+                          Threshold Type Select (THSEL): Over temperature threshold
+                          Threshold Temperature Select (TMPSEL): Composite temperature
+                          Temperature Threshold (TMPTH): 358
+
+    05     0x00000000  Error Recovery
+                          Deallocated or Unwritten Logical Block Error Enable (DULBE): No
+                          Time Limited Error Recovery (TLER): 0 (100msec)
+
+    06     0x00000000  Volatile Write Cache
+                          Volatile Write Cache Enable (WCE): No
+
+    07     0x001e001e  Number of Queues
+                          Number of I/O Completion Queues Allocated (NCQA): 31
+                          Number of I/O Submission Queues Allocated (NSQA): 31
+
+    08     0x00000000  Interrupt Coalescing
+                          Aggregation Time: No delay
+                          Aggreation Threshold (THR): 0 (entries)
+
+    09     0x00000000  Interrupt Vector Configuration
+                          Coalescing Disable (CD): No
+                          Interrupt Vector (IV): 0x00
+
+    0a     0x00000000  Write Atomicity Normal
+                          Disable Normal (DN): No
+
+    0b     0x00000000  Asynchronous Event Configuration
+                          Firmware Activation Notices: No
+                          Namespace Attribute Notices: No
+                          SMART / Health Critical Warnings: 0x00
+NVMe Error 2 (Opcode 0a): Invalid Field in Command
+    0c     ----N/A---  Autonomous Power State Transition
+NVMe Error 2 (Opcode 0a): Invalid Field in Command
+    0d     ----N/A---  Host Memory Buffer
+NVMe Error 2 (Opcode 0a): Invalid Field in Command
+    0f     ----N/A---  Keep Alive Timer
+NVMe Error 6 (Opcode 0a): Internal Error
+    80     ----N/A---  Software Progress Marker
+NVMe Error 2 (Opcode 0a): Invalid Field in Command
+    81     ----N/A---  Host Identifier
+NVMe Error 2 (Opcode 0a): Invalid Field in Command
+    82     ----N/A---  Reservation Notification Mask
+NVMe Error 2 (Opcode 0a): Invalid Field in Command
+    83     ----N/A---  Reservation Persistence
+
+
+nvmed_info version 0.9 (Compliant to NVMe Spec. 1.2.1)
+
+GET LOG PAGES
+Log Pages  Values      Description
+---------  ----------  -----------
+01-------  0x00000000  Error Information
+0000:0007  01 00 00 00  Error Count: 1 
+           00 00 00 00  
+0008:0009  09 00        Submission Queue ID: 0x9
+0010:0011  01 00        Command ID: 0x1
+0012:0013  84 41        Status Field: 0x4184
+0014:0015  00 00        Parameter Error Location:
+                            Byte in Command that contained the error: 0
+                            Bit in Command that contained the error:  0
+0016:0023  00 00 00 00  LBA: 0 
+           00 00 00 00  
+0024:0027  01 00 00 00  Namespace: 1
+0028       00           Vendor Specific Information Available: 0x00
+0032:0039  00 00 00 00  Command Specific Information: 0 
+           00 00 00 00  
+
+02-------  0x00000000  SMART/Health Information
+0000       00           Critical Warning: None
+0001:0002  37 01        Composite Temperature: 311
+0003       64           Available Space: 100%
+0004       0a           Available Spare Threshold: 10%
+0005       02           Percent Used: 2%
+0032:0047  07 a1 19 00  Data Units Read: 1679623 (x1000 512 bytes)
+           00 00 00 00  
+           00 00 00 00  
+           00 00 00 00  
+0048:0063  a6 af 27 00  Data Units Written: 2600870 (x1000 512 bytes)
+           00 00 00 00  
+           00 00 00 00  
+           00 00 00 00  
+0064:0079  f0 6f 6a 7d  Host Read Commands: 2104127472 
+           00 00 00 00  
+           00 00 00 00  
+           00 00 00 00  
+0080:0095  d5 3a f9 cf  Host Write Commands: 3489217237 
+           00 00 00 00  
+           00 00 00 00  
+           00 00 00 00  
+0096:0111  02 00 00 00  Controller Busy Time: 2 (mins)
+           00 00 00 00  
+           00 00 00 00  
+           00 00 00 00  
+0112:0127  76 00 00 00  Power Cycles: 118 
+           00 00 00 00  
+           00 00 00 00  
+           00 00 00 00  
+0128:0143  03 36 00 00  Power On Hours: 13827 (hours)
+           00 00 00 00  
+           00 00 00 00  
+           00 00 00 00  
+0144:0159  13 00 00 00  Unsafe Shutdowns: 19 
+           00 00 00 00  
+           00 00 00 00  
+           00 00 00 00  
+0160:0175  00 00 00 00  Media and Data Integrity Errors: 0 
+           00 00 00 00  
+           00 00 00 00  
+           00 00 00 00  
+0176:0191  02 00 00 00  Number of Error Information Log Entries: 2 
+           00 00 00 00  
+           00 00 00 00  
+           00 00 00 00  
+0192:0195  00 00 00 00  Warning Composite Temperature Time: 0 (min)
+0196:0199  00 00 00 00  Critical Composite Temperature Time: 0 (min)
+0200:0201  00 00        Temperature Sensor 0: 0
+0202:0203  00 00        Temperature Sensor 1: 0
+0204:0205  00 00        Temperature Sensor 2: 0
+0206:0207  00 00        Temperature Sensor 3: 0
+0208:0209  00 00        Temperature Sensor 4: 0
+0210:0211  00 00        Temperature Sensor 5: 0
+0212:0213  00 00        Temperature Sensor 6: 0
+0214:0215  00 00        Temperature Sensor 7: 0
+
+03-------  0x00000000  Firmware Slot Information
+0000       01           Active Firmware Info (AFI):
+                            Slot to be activated at the next controller reset: 0
+                            Slot the actively running firmware revision was loaded: 1
+0008:0015  38 45 56 31  Firmware Revision for Slot 1 (FRS1): 8EV10135
+           30 31 33 35  
+0016:0023  00 00 00 00  Firmware Revision for Slot 2 (FRS2): 
+           00 00 00 00  
+0024:0031  00 00 00 00  Firmware Revision for Slot 3 (FRS3): 
+           00 00 00 00  
+0032:0039  00 00 00 00  Firmware Revision for Slot 4 (FRS4): 
+           00 00 00 00  
+0040:0047  00 00 00 00  Firmware Revision for Slot 5 (FRS5): 
+           00 00 00 00  
+0048:0055  00 00 00 00  Firmware Revision for Slot 6 (FRS6): 
+           00 00 00 00  
+0056:0063  00 00 00 00  Firmware Revision for Slot 7 (FRS7): 
+           00 00 00 00  
+
+
+
+nvmed_info version 0.9 (Compliant to NVMe Spec. 1.2.1)
+
+PCIe Config Registers
+Bytes      Values       Description
+---------  -----------  -----------
+
+[PCI Header]
+0000:0003  86 80 53 09  Identifiers (ID):
+                           Device ID (VID): 0x0953
+                           Vendor ID (VID): 0x8086
+0004:0005  06 04        Command (CMD):
+                           Interrupt Disable (ID): Yes
+                           SERR# Enable (SEE): No
+                           Parity Error Response Enable (PEE): No
+                           Bus Master Enable (BME): Yes
+                           Memory Space Enable (MSE): Yes
+                           I/O Space Enable (IOSE): No
+0006:0007  10 00        Device Status (STS):
+                           Detected Parity Error (DPE): No
+                           Signaled System Error (SSE): No
+                           Received Master-Abort (RMA): No
+                           Received Target-Abort (RTA): No
+                           Master Data Parity Error Detected (DPD): No
+                           Capabilities List (CL): Yes
+                           Interrupt Status (IS): No
+0008       01           Revision ID (RID): 01
+0009:0011  02 08 01     Class Code (CC):
+                           Base Class Code (BCC): 01
+                           Sub Class Code (SCC): 08
+                           Programming Interface (PI): 02
+0012       00           Cache Line Size (CLS): 0
+0014       00           Header Type (HTYPE):
+                           Multi-Function Device (MFD): No
+                           Header Layout (HL): 0
+0015       00           Built In Self Test (BIST): [Optional] Not supported
+0016:0019  04 00 21 df  Memory Register Base Address Lower 32-bits (MLBAR, BAR0):
+                           Base Address (BA): 0xdf210000
+                           Prefetchable (PF): No
+                           Type (TP): 2
+                           Resource Type Indicator (RTE): No
+0020:0023  00 00 00 00  Memory Register Base Address Upper 32-bits (MUBAR, BAR1): 0x00000000
+0024:0027  00 00 00 00  Index/Data Pair Register Base Address (IDBAR, BAR2): [Optional] Not supported
+0044:0047  86 80 0d 37  Sub System Identifiers (SS)
+                           Subsystem ID (SSID): 0x370d
+                           Subsystem Vendor ID (SSVID): 0x8086
+0048:0051  00 00 20 df  Expansion ROM: [Optional] 
+                           ROM Base Address (RBA): 0xdf200000
+0052       40           Capabilities Pointer (CAP):
+                           Capability Pointer (CP): 0x40
+0060:0061  0b 01        Interrupt Information (INTR):
+                           Interrupt Pin (IPIN): 1
+                           Interrupt Line (ILINE): 11
+
+[PCI Power Management Capabilities] @ offset 0x40
+0000:0001  01 50        PCI Power Management Capability ID (PID):
+                           Next Capability (NEXT): 0x50
+                           Cap ID (CID): 0x01
+0002:0003  03 00        PCI Power Management Capabilities (PC):
+                           Device Specific Initialization (DSI): No
+                           PME Clock (PMEC): 0
+                           Version (VS): 3
+0004:0005  08 00        PCI Power Management Control and Status (PMCS):
+                           PME Status (PMES): 0
+                           Data Scale (DSC): 0
+                           Data Select (DSE): 0
+                           PME Enable (PMEE): 0
+                           No Soft Reset (NSFRST): 1
+                           Power Stats (PS): D0 state
+
+[MSI-X Capabilities] @ offset 0x50 [Optional]
+0000:0001  11 60        MSI-X Identifiers (MXID):
+                           Next Pointer (NEXT): 0x60
+                           Capability ID (CID): 0x11
+0002:0003  1f 80        MSI-X Message Control (MXC):
+                           MSI-X Enable (MXE): Yes
+                           Function Mask (FM): No
+                           Table Size (TS): 31
+0004:0007  00 20 00 00  MSI-X Table Offset / Table BIR (MTAB):
+                           Table Offset (TO): 0x00002000
+                           Table BIR (TBIR): 0x10
+0008:0011  00 30 00 00  MSI-X PBA Offset / PBA BIR (MPBA):
+                           PBA Offset (PBAO): 0x00003000
+                           PBA BIR (PBIR): 0x10
+
+[PCI Express Capabilities] @ offset 0x60
+0000:0001  10 00        PCI Express Capability ID (PXID):
+                           Next Pointer (NEXT): 0x00
+                           Capability ID (CID): 0x10
+0002:0003  02 00        PCI Express Capabilities (PXCAP):
+                           Interrupt Message Number (IMN): 0
+                           Device/Port Type (DPT): 0
+                           Capability Version (VER): 2
+0004:0007  a1 85 00 10  PCI Express Device Capabilities (PXDCAP):
+                           Function Level Reset Capability (FLRC): Yes
+                           Captured Slot Power Limit Scale (CSPLS): 0
+                           Captured Slot Power Limit Value (CSPLV): 0
+                           Role-based Error Reporting (RER): Yes
+                           Endpoint L1 Acceptable Latency (L1L): 2
+                           Endpoint L0s Acceptable Latency (L0SL): 6
+                           Extended Tag Field Supported (ETFS): Yes
+                           Phantom Functions Supported (PFS): 0
+                           Max_Payload_Size Supported (MPS): 1
+0008:0009  3f 29        PCI Express Device Control (PXDC):
+                           Initiate Function level Reset (IFLR): No
+                           Max_Read_Request Size (MRRS): 2
+                           Enable No Snoop (ENS): Yes
+                           AUX Power PM Enable (APPME): No
+                           Phantom Functions Enable (PFE): No
+                           Extended Tag Enable (ETE): Yes
+                           Max_Payload_Size (MPS): 1
+                           Enable Relaxed Ordering (ERO): Yes
+                           Unsupported Request Reporting Enable (URRE): Yes
+                           Fatal Error Reporting Enable (FERE): Yes
+                           Non-Fatal Error Reporting Enable (NFERE): Yes
+                           Correctable Error Reporting Enable (CERE): Yes
+0010:0011  09 00        PCI Express Device Status (PXDS):
+                           Transactions Pending (TP): No
+                           AUX Power Detected (APD): No
+                           Unsupported Request Detected (URD): Yes
+                           Fatal Error Detected (FED): No
+                           Non-Fatal Error Detected (NFED): No
+                           Correctable Error Detected (CED): Yes
+0012:0015  43 6c 41 00  PCI Express Link Capabilities (PXLCAP):
+                           Port Number (PN): 0x00
+                           ASPM Optionality Compliance (AOC): Yes
+                           Clock Power Management (CPM): No
+                           L1 Exit Latency (L1EL): 2
+                           L0s Exit Latency (L0SEL): 6
+                           Active State Power Management Support (ASPMS): 3
+                           Maximum Link Width (MLW): 4 lanes
+                           Supported Link Speeds (SLS): Gen 3
+0016:0017  00 00        PCI Express Link Control (PXLC):
+                           Hardware Autonomous Width Disable (HAWD): No
+                           Enable Clock Power Management (ECPM): No
+                           Extended Synch (ES): No
+                           Common Clock Configuration (CCC): No
+                           Read Completion Boundary (RCB): 0
+                           Active State Power Management Control (ASPMC): 0
+0018:0019  43 00        PCI Express Link Status (PXLS):
+                           Slot Clock Configuration (SCC): 0
+                           Negotiated Link Width (NLW): 4 lanes
+                           Current Link Speed (CLS): Gen 3
+0036:0039  1f 00 00 00  PCI Express Device Capabilities 2 (PXDCAP2):
+                           Max End-End TLP Prefixes (MEETP): 0
+                           End-End TLP Prefix Supported (EETPS): No
+                           Extended Fmt Field Supported (EFFS): No
+                           OBFF Supported (OBFFS): 0
+                           TPH Completer Supported (TPHCS): None
+                           Latency Tolerance Reporting Supported (LTRS): No
+                           128-bit CAS Completer Supported (128CCS): No
+                           64-bit AtomicOp Completer Supported (64AOCS): No
+                           32-bit AtomicOp Completer Supported (32AOCS): No
+                           Completion Timeout Disable Supported (CTDS): Yes
+                           Completion Timeout Ranges Supported (CTRS): 15
+0040:0043  00 00 00 00  PCI Express Device Control 2 (PXDC2):
+                           OBFF Enable (OBFFE): 0
+                           Latency Tolerance Reporting Mechanism Enable (LTRME): No
+                           Completion Timeout Disable (CTD): No
+                           Completion Timeout Value (CTV): 0
+nvmed_info version 0.9 (Compliant to NVMe Spec. 1.2.1)
+
+NVMe Controller Registers
+Bytes      Values       Description
+---------  -----------  -----------
+
+0000:0003  ff 0f 01 28  Controller Capabilities (CAP):
+0004:0007  20 00 00 00     Memory Page Size Maximum (MPSMAX): 2^12 bytes
+                           Memory Page Size Minimum (MPSMIN): 2^12 bytes
+                           Command Sets Supported (CSS): NVM command set
+                           NVM Subsystem Reset Supported (NSSRS): No
+                           Doorbell Stride (DSTRD): 4 bytes
+                           Timeout (TO): 40 * 500 ms
+                           Arbitration Mechanism Supported (AMS): Round Robin 
+                           Contiguous Queues Required (CQR): Yes
+                           Maximum Queue Entries Supported (MQES): 4096 entries
+0008:0011  00 00 01 00  Version (VS):
+                           Major Version Number (MJR): 1
+                           Minor Version Number (MNR): 0
+                           Tertiary Version Number (TNR): 0
+0012:0015  00 00 00 00  Interrupt Mask Set (IVMS): 0x00000000
+0016:0019  00 00 00 00  Interrupt Vector Mask Clear (IVMC): 0x00000000
+0020:0023  01 00 46 00  Controller Configuration (CC):
+                           I/O Completion Queue Entry Size (IOCQES): 16 bytes
+                           I/O Submission Queue Entry Size (IOSQES): 64 bytes
+                           Shutdown Notification (SHN): No notification; no effect
+                           Arbitration Mechanism Selected (AMS): Round Robin
+                           Memory Page Size (MPS): 4096 bytes
+                           I/O Command Set Selected (CSS): NVM Command Set
+                           Enable (EN): Yes
+0028:0031  01 00 00 00  Controller Status (CSTS):
+                           Processing Paused (PP): No
+                           NVM Subsystem Reset Occurred (NSSRO): No
+                           Shutdown status (SHST): Normal operation
+                           Controller Fatal Status (CFS): No
+                           Ready (RDY): Yes
+0032:0035  00 00 00 00  NVM Subsystem Reset (NSSR)
+0036:0039  ff 00 ff 00  Admin Queue Attributes (AQA):
+                           Admin Completion Queue Size (ACQS): 256 entries
+                           Admin Submission Queue Size (ASQS): 256 entries
+0040:0043  00 80 ea 0c  Admin Submission Queue Base (ASQB): 0x000000080cea8000
+0044:0047  08 00 00 00  
+0048:0051  00 80 97 0f  Admin Completion Queue Base (ACQB): 0x000000080f978000
+0052:0055  08 00 00 00  
+0056:0059  00 00 00 00  Controller Memory Buffer Location (CMBLOC):
+                           Offset (OFST): 0x00000000
+                           Base Indicator Register (BIR): 0
+0060:0063  00 00 00 00  Controller Memory Buffer Size (CMBSZ):
+                           Size (SZ): 0 (in SZU)
+                           Size Units (SZU): 4 KB
+                           Write Data Support (WDS): No
+                           Read Data Support (RDS): No
+                           PRP/SGL List Support (LISTS): PRP/SGL Lists in Host Memory
+                           Completion Queue Support (CQS): CQs in Host Memory
+                           Submission Queue Support (SQS): SQs in Host Memory
