@@ -1,6 +1,6 @@
 # nvmed_info
 
-A user-level tool to get various information on the NVMe SSD.
+A user-level tool for obtaining various information on the NVMe SSD.
 
 
 ## Introduction
@@ -74,7 +74,7 @@ $ sudo nvmed_info /dev/nvme0n1 all
 - Shows the result of IDENTIFY CONTROLLER command
 ```shell
 $ sudo nvmed_info /dev/nvme0n1 identify controller      # or
-# sudo nvmed_info /dev/nvme0n1 i c                      # or
+$ sudo nvmed_info /dev/nvme0n1 i c                      # or
 $ sudo nvmed_info /dev/nvme0n1 i                        # or
 $ sudo nvmed_info /dev/nvme0n1 
 ```
@@ -82,8 +82,8 @@ $ sudo nvmed_info /dev/nvme0n1
 - Show the result of IDENTIFY NAMESPACE command
 ```shell
 $ sudo nvmed_info /dev/nvme0n1 identify name            # or
-# sudo nvmed_info /dev/nvme0n1 i n                      # or
-# sudo nvmed_info /dev/nvme0n1 i n 1               
+$ sudo nvmed_info /dev/nvme0n1 i n                      # or
+$ sudo nvmed_info /dev/nvme0n1 i n 1               
 ```
 
 - Shows the NVMe Controller registers
